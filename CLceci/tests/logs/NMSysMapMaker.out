@@ -1,0 +1,4 @@
+Executing stage: NMSysMapMaker @ 2025-01-22 17:44:03.733782
+    SysMapMaker reading from ./tests/inputs/dm.txt
+    SysMapMaker writing to tests/outputs/inprogress_diagnostic_maps.txt
+Stage complete: NMSysMapMaker @ 2025-01-22 17:44:03.733958 took 0.00 minutes
