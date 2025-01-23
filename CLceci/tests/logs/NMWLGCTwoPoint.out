@@ -1,0 +1,7 @@
+Executing stage: NMWLGCTwoPoint @ 2025-01-22 17:44:06.743693
+    WLGCTwoPoint reading from ./tests/outputs/tomography_catalog.txt
+    WLGCTwoPoint reading from ./tests/outputs/shear_catalog.txt
+    WLGCTwoPoint reading from ./tests/outputs/diagnostic_maps.txt
+    WLGCTwoPoint reading from ./tests/outputs/random_catalog.txt
+    WLGCTwoPoint writing to tests/outputs/inprogress_twopoint_data.txt
+Stage complete: NMWLGCTwoPoint @ 2025-01-22 17:44:06.743921 took 0.00 minutes
