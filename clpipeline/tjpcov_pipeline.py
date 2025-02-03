@@ -7,11 +7,12 @@ from .ceci_types import (
 from ceci import PipelineStage
 import sys
 
-class FirecrownPipeline(PipelineStage):
+
+class TJPCovPipeline(PipelineStage):
     """
-    Firecrown Pipeline stage.
+    TJPCov Pipeline stage.
     """
-    name = "FirecrownPipeline"
+    name = "TJPCovPipeline"
 
     inputs = [
         ("clusters_sacc_file", SACCFile),  # For firecrown Likelihood
@@ -23,8 +24,8 @@ class FirecrownPipeline(PipelineStage):
     ]
 
     config_options = {
-        "txpipe_flag": False,
-        "firecrown_flag": True
+        "txpipe_flag": True,
+        "firecrown_flag": False
     }
 
     def run(self):
@@ -36,8 +37,8 @@ class FirecrownPipeline(PipelineStage):
          - Output firecrown likelihood python file
         """
         import pyccl
-        import firecrown
         import sacc
+        import tjpcov
         ## Open the yaml configuration file
         my_config = self.config
         print("Here is my configuration :", my_config)
@@ -49,4 +50,3 @@ class FirecrownPipeline(PipelineStage):
         # Run firecrown
         # Here see how to generate the likelihood file with the counts example
         # Save if it is not automatically by firecrown of if we need to save something about this run
-    
