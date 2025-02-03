@@ -1,6 +1,0 @@
-Executing stage: WLGCSelector @ 2025-01-23 07:39:39.435535
-{zbin_edges:[0.2, 0.3, 0.5],ra_range:[-5, 5],name:WLGCSelector,metacalibration:True,stage_name:WLGCSelector,shear_catalog:./tests/outputs/shear_catalog.txt,photoz_pdfs:./tests/outputs/photoz_pdfs.txt,tomography_catalog:./tests/outputs/tomography_catalog.txt,config:./tests/config.yml,mpi:False,pdb:False,cprofile:,memmon:0,trace:False,}
-    WLGCSelector reading from ./tests/outputs/shear_catalog.txt
-    WLGCSelector reading from ./tests/outputs/photoz_pdfs.txt
-    WLGCSelector writing to tests/outputs/inprogress_tomography_catalog.txt
-Stage complete: WLGCSelector @ 2025-01-23 07:39:39.435722 took 0.00 minutes

@@ -1,0 +1,121 @@
+**********************************************************************
+*                         SLURM Batch System                         *
+*              IN2P3 Computing Centre, Villeurbanne FR               *
+**********************************************************************
+* Date:                 Mon Feb  3 09:35:49 AM CET 2025
+* Job name:             cluster.sh
+* Job id:               43584993
+* User:                 ebarroso
+* Account:              lsst
+* Submit host:          cca013
+* Partition:            lsst
+* Quality of service:   normal
+* Nodelist:             ccwslurm2002
+* Operating System:     Red Hat Enterprise Linux release 9.4 (Plow)
+* Architecture:         x86_64
+**********************************************************************
+Deprecated: The [pipeline] quiet option is deprecated.  Set [runtime] verbosity instead.
+Setting up pipeline from parameter file cluster.ini
+---------------------------------------------------
+
+Setting up module consistency
+------------------------------
+
+Setting up module camb
+-----------------------
+/pbs/home/e/ebarroso/mambaforge-pypy3/envs/firecrown_developer_new/cosmosis-standard-library/boltzmann/camb/camb_interface.py:183: UserWarning: Option kmin does not have an effect.
+  warnings.warn("Option kmin does not have an effect.")
+**** WARNING: Parameter 'kmin' in the [camb] section never used!
+
+
+Setting up module firecrown_likelihood
+---------------------------------------
+Setup all pipeline modules
+
+Module timing:
+consistency 0.002131
+camb 0.002693
+firecrown_likelihood 0.620119
+
+Parameter Priors
+----------------
+cosmological_parameters--omega_c   ~ U(0.1552, 0.3552)
+cosmological_parameters--sigma_8   ~ U(0.7, 0.9)
+cosmological_parameters--omega_k   ~ delta(0.0)
+cosmological_parameters--omega_b   ~ delta(0.0448)
+cosmological_parameters--tau       ~ delta(0.08)
+cosmological_parameters--n_s       ~ delta(0.963)
+cosmological_parameters--h0        ~ delta(0.71)
+cosmological_parameters--w         ~ delta(-1.0)
+cosmological_parameters--wa        ~ delta(0.0)
+firecrown_number_counts--mu_p0     ~ U(0.1, 10.0)
+firecrown_number_counts--mu_p1     ~ U(-2.0, 2.0)
+firecrown_number_counts--mu_p2     ~ U(-2.0, 2.0)
+firecrown_number_counts--sigma_p0  ~ U(0.1, 10.0)
+firecrown_number_counts--sigma_p1  ~ U(-2.0, 2.0)
+firecrown_number_counts--sigma_p2  ~ U(-2.0, 2.0)
+firecrown_number_counts--ac_nc     ~ delta(0.38)
+firecrown_number_counts--bc_nc     ~ delta(1.2634)
+firecrown_number_counts--ac_mc     ~ delta(13.31)
+firecrown_number_counts--bc_mc     ~ delta(0.2025)
+firecrown_number_counts--ap_nc     ~ delta(3.9193)
+firecrown_number_counts--bp_nc     ~ delta(-0.3323)
+firecrown_number_counts--ap_rc     ~ delta(1.1839)
+firecrown_number_counts--bp_rc     ~ delta(-0.4077)
+
+****************************************************
+* Running sampler 1/1: emcee
+* Running in serial mode.
+* Saving output -> output/number_counts_samples.txt
+* Note: You set resume=T so I will resume from file output/number_counts_samples.txt
+****************************************************
+Generating starting positions in small ball around starting point
+Continuing emcee from existing chain - have 1680 samples already
+**
+NUMCOSMO:ERROR:../numcosmo/math/ncm_integral_nd.c:619:ncm_integral_nd_eval: assertion failed: (ret == 0)
+Bail out! NUMCOSMO:ERROR:../numcosmo/math/ncm_integral_nd.c:619:ncm_integral_nd_eval: assertion failed: (ret == 0)
+Fatal Python error: Aborted
+
+Current thread 0x0000145ee1194240 (most recent call first):
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/eduardo/firecrown/firecrown/models/cluster/integrator/numcosmo_integrator.py", line 58 in integrate
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/eduardo/firecrown/firecrown/models/cluster/recipes/murata_binned_spec_z_selection.py", line 142 in evaluate_theory_prediction
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/eduardo/firecrown/firecrown/likelihood/binned_cluster_number_counts.py", line 153 in get_binned_cluster_counts
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/eduardo/firecrown/firecrown/likelihood/binned_cluster_number_counts.py", line 95 in _compute_theory_vector
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/eduardo/firecrown/firecrown/likelihood/statistic.py", line 121 in compute_theory_vector
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/eduardo/firecrown/firecrown/likelihood/statistic.py", line 200 in compute_theory_vector
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/eduardo/firecrown/firecrown/likelihood/gaussfamily.py", line 354 in compute_theory_vector
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/eduardo/firecrown/firecrown/likelihood/gaussfamily.py", line 111 in wrapper_repeat
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/eduardo/firecrown/firecrown/likelihood/gaussfamily.py", line 416 in compute_chisq
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/eduardo/firecrown/firecrown/likelihood/gaussfamily.py", line 111 in wrapper_repeat
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/eduardo/firecrown/firecrown/likelihood/gaussian.py", line 22 in compute_loglike
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/eduardo/firecrown/firecrown/connector/cosmosis/likelihood.py", line 130 in execute
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/eduardo/firecrown/firecrown/connector/cosmosis/likelihood.py", line 310 in execute
+  File "/pbs/home/e/ebarroso/mambaforge-pypy3/envs/firecrown_developer_new/lib/python3.12/site-packages/cosmosis/runtime/module.py", line 246 in execute
+  File "/pbs/home/e/ebarroso/mambaforge-pypy3/envs/firecrown_developer_new/lib/python3.12/site-packages/cosmosis/runtime/pipeline.py", line 633 in run
+  File "/pbs/home/e/ebarroso/mambaforge-pypy3/envs/firecrown_developer_new/lib/python3.12/site-packages/cosmosis/runtime/pipeline.py", line 1107 in run_parameters
+  File "/pbs/home/e/ebarroso/mambaforge-pypy3/envs/firecrown_developer_new/lib/python3.12/site-packages/cosmosis/runtime/pipeline.py", line 1332 in likelihood
+  File "/pbs/home/e/ebarroso/mambaforge-pypy3/envs/firecrown_developer_new/lib/python3.12/site-packages/cosmosis/runtime/pipeline.py", line 1200 in run_results
+  File "/pbs/home/e/ebarroso/mambaforge-pypy3/envs/firecrown_developer_new/lib/python3.12/site-packages/cosmosis/samplers/emcee/emcee_sampler.py", line 8 in log_probability_function
+  File "/pbs/home/e/ebarroso/mambaforge-pypy3/envs/firecrown_developer_new/lib/python3.12/site-packages/emcee/ensemble.py", line 640 in __call__
+  File "/pbs/home/e/ebarroso/mambaforge-pypy3/envs/firecrown_developer_new/lib/python3.12/site-packages/emcee/ensemble.py", line 496 in compute_log_prob
+  File "/pbs/home/e/ebarroso/mambaforge-pypy3/envs/firecrown_developer_new/lib/python3.12/site-packages/emcee/moves/red_blue.py", line 93 in propose
+  File "/pbs/home/e/ebarroso/mambaforge-pypy3/envs/firecrown_developer_new/lib/python3.12/site-packages/emcee/ensemble.py", line 409 in sample
+  File "/pbs/home/e/ebarroso/mambaforge-pypy3/envs/firecrown_developer_new/lib/python3.12/site-packages/cosmosis/samplers/emcee/emcee_sampler.py", line 153 in execute
+  File "/pbs/home/e/ebarroso/mambaforge-pypy3/envs/firecrown_developer_new/lib/python3.12/site-packages/cosmosis/main.py", line 72 in sampler_main_loop
+  File "/pbs/home/e/ebarroso/mambaforge-pypy3/envs/firecrown_developer_new/lib/python3.12/site-packages/cosmosis/main.py", line 417 in run_cosmosis
+  File "/pbs/home/e/ebarroso/mambaforge-pypy3/envs/firecrown_developer_new/lib/python3.12/site-packages/cosmosis/main.py", line 549 in main
+  File "/pbs/home/e/ebarroso/mambaforge-pypy3/envs/firecrown_developer_new/bin/cosmosis", line 4 in <module>
+
+Extension modules: numpy.core._multiarray_umath, numpy.core._multiarray_tests, numpy.linalg._umath_linalg, numpy.fft._pocketfft_internal, numpy.random._common, numpy.random.bit_generator, numpy.random._bounded_integers, numpy.random._mt19937, numpy.random.mtrand, numpy.random._philox, numpy.random._pcg64, numpy.random._sfc64, numpy.random._generator, scipy._lib._ccallback_c, scipy.special._ufuncs_cxx, scipy.special._ufuncs, scipy.special._specfun, scipy.special._comb, scipy.linalg._fblas, scipy.linalg._flapack, scipy.linalg.cython_lapack, scipy.linalg._cythonized_array_utils, scipy.linalg._solve_toeplitz, scipy.linalg._decomp_lu_cython, scipy.linalg._matfuncs_sqrtm_triu, scipy.linalg.cython_blas, scipy.linalg._matfuncs_expm, scipy.linalg._decomp_update, scipy.sparse._sparsetools, _csparsetools, scipy.sparse._csparsetools, scipy.sparse.linalg._dsolve._superlu, scipy.sparse.linalg._eigen.arpack._arpack, scipy.sparse.linalg._propack._spropack, scipy.sparse.linalg._propack._dpropack, scipy.sparse.linalg._propack._cpropack, scipy.sparse.linalg._propack._zpropack, scipy.sparse.csgraph._tools, scipy.sparse.csgraph._shortest_path, scipy.sparse.csgraph._traversal, scipy.sparse.csgraph._min_spanning_tree, scipy.sparse.csgraph._flow, scipy.sparse.csgraph._matching, scipy.sparse.csgraph._reordering, scipy.special._ellip_harm_2, scipy.interpolate._fitpack, scipy.interpolate._dfitpack, scipy.optimize._group_columns, scipy._lib.messagestream, scipy.optimize._trlib._trlib, scipy.optimize._lbfgsb, _moduleTNC, scipy.optimize._moduleTNC, scipy.optimize._cobyla, scipy.optimize._slsqp, scipy.optimize._minpack, scipy.optimize._lsq.givens_elimination, scipy.optimize._zeros, scipy.optimize._highs.cython.src._highs_wrapper, scipy.optimize._highs._highs_wrapper, scipy.optimize._highs.cython.src._highs_constants, scipy.optimize._highs._highs_constants, scipy.linalg._interpolative, scipy.optimize._bglu_dense, scipy.optimize._lsap, scipy.spatial._ckdtree, scipy.spatial._qhull, scipy.spatial._voronoi, scipy.spatial._distance_wrap, scipy.spatial._hausdorff, scipy.spatial.transform._rotation, scipy.optimize._direct, scipy.interpolate._bspl, scipy.interpolate._ppoly, scipy.interpolate.interpnd, scipy.interpolate._rbfinterp_pythran, scipy.interpolate._rgi_cython, yaml._yaml, fitsio._fitsio_wrap, scipy.integrate._odepack, scipy.integrate._quadpack, scipy.integrate._vode, scipy.integrate._dop, scipy.integrate._lsoda, pyccl._ccllib, astropy.io.fits._utils, astropy.io.fits.hdu.compressed._compression, erfa.ufunc, astropy.table._column_mixins, astropy.table._np_utils, astropy.io.ascii.cparser, astropy.utils.xml._iterparser, astropy.time._parse_times, astropy.io.votable.tablewriter, gi._gi, cairo._cairo, gi._gi_cairo, h5py._errors, h5py.defs, h5py._objects, h5py.h5, h5py.utils, h5py.h5t, h5py.h5s, h5py.h5ac, h5py.h5p, h5py.h5r, h5py._proxy, h5py._conv, h5py.h5z, h5py.h5a, h5py.h5d, h5py.h5ds, h5py.h5g, h5py.h5i, h5py.h5o, h5py.h5f, h5py.h5fd, h5py.h5pl, h5py.h5l, h5py._selector, scipy.special.cython_special, scipy.stats._stats, scipy.stats._biasedurn, scipy.stats._levy_stable.levyst, scipy.stats._stats_pythran, scipy._lib._uarray._uarray, scipy.stats._ansari_swilk_statistics, scipy.stats._sobol, scipy.stats._qmc_cy, scipy.stats._mvn, scipy.stats._rcont.rcont, scipy.stats._unuran.unuran_wrapper, scipy.ndimage._nd_image, _ni_label, scipy.ndimage._ni_label (total: 136)
+/var/spool/slurmd/job43584993/slurm_script: line 15: 897373 Aborted                 (core dumped) cosmosis cluster.ini
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+Date: Mon Feb  3 09:50:52 AM CET 2025
+Job informations can be found using these commands:
+Accounting:
+sacct -j 43584993
+Efficiency:
+seff 43584993
+****************************************************************
