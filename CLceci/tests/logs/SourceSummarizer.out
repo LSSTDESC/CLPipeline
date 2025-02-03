@@ -1,6 +1,0 @@
-Executing stage: SourceSummarizer @ 2025-01-23 07:39:39.942691
-    SourceSummarizer reading from ./tests/outputs/tomography_catalog.txt
-    SourceSummarizer reading from ./tests/outputs/photoz_pdfs.txt
-    SourceSummarizer reading from ./tests/outputs/diagnostic_maps.txt
-    SourceSummarizer writing to tests/outputs/inprogress_source_summary_data.txt
-Stage complete: SourceSummarizer @ 2025-01-23 07:39:39.942855 took 0.00 minutes

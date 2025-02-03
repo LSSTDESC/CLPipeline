@@ -1,0 +1,46 @@
+**********************************************************************
+*                         SLURM Batch System                         *
+*              IN2P3 Computing Centre, Villeurbanne FR               *
+**********************************************************************
+* Date:                 Fri Jan 31 10:33:49 AM CET 2025
+* Job name:             cluster.sh
+* Job id:               43117109
+* User:                 ebarroso
+* Account:              lsst
+* Submit host:          cca020
+* Partition:            lsst
+* Quality of service:   normal
+* Nodelist:             ccwslurm2011
+* Operating System:     Red Hat Enterprise Linux release 9.4 (Plow)
+* Architecture:         x86_64
+**********************************************************************
+Deprecated: The [pipeline] quiet option is deprecated.  Set [runtime] verbosity instead.
+Setting up pipeline from parameter file cluster.ini
+---------------------------------------------------
+
+Setting up module consistency
+------------------------------
+
+Setting up module camb
+-----------------------
+/pbs/home/e/ebarroso/mambaforge-pypy3/envs/firecrown_developer_new/cosmosis-standard-library/boltzmann/camb/camb_interface.py:183: UserWarning: Option kmin does not have an effect.
+  warnings.warn("Option kmin does not have an effect.")
+**** WARNING: Parameter 'kmin' in the [camb] section never used!
+
+
+Setting up module firecrown_likelihood
+---------------------------------------
+Setup all pipeline modules
+
+slurmstepd: error: *** JOB 43117109 ON ccwslurm2011 CANCELLED AT 2025-01-31T10:33:54 ***
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+Date: Fri Jan 31 10:33:54 AM CET 2025
+Job informations can be found using these commands:
+Accounting:
+sacct -j 43117109
+Efficiency:
+seff 43117109
+****************************************************************

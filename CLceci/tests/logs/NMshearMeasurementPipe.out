@@ -1,5 +1,0 @@
-Executing stage: NMshearMeasurementPipe @ 2025-01-22 17:44:04.232268
-Here is my configuration : {metacalibration:True,apply_flag:False,name:NMshearMeasurementPipe,stage_name:ceci_example_namespace.example_stages.NMshearMeasurementPipe,DM:./tests/inputs/dm.txt,shear_catalog:./tests/outputs/shear_catalog.txt,config:./tests/config_nm.yml,mpi:False,pdb:False,cprofile:,memmon:0,trace:False,}
-    shearMeasurementPipe reading from ./tests/inputs/dm.txt
-    shearMeasurementPipe writing to tests/outputs/inprogress_shear_catalog.txt
-Stage complete: NMshearMeasurementPipe @ 2025-01-22 17:44:04.232555 took 0.00 minutes
