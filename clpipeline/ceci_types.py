@@ -105,3 +105,30 @@ class YamlFile(DataFile):
 
     suffix = "yml"
     format = "http://edamontology.org/format_3750"
+
+class SACCFile(DataFile):
+    suffix = "sacc"
+
+    @classmethod
+    def open(cls, path, mode, **kwargs):
+        import sacc
+
+        if mode == "w":
+            raise ValueError(
+                "Do not use the open_output method to write sacc files.  Use sacc.write_fits"
+            )
+        return sacc.Sacc.load_fits(path)
+
+    def read_provenance(self):
+        meta = self.file.metadata
+        provenance = {
+            "uuid": meta.get("provenance/uuid", "UNKNOWN"),
+            "creation": meta.get("provenance/creation", "UNKNOWN"),
+            "domain": meta.get("provenance/domain", "UNKNOWN"),
+            "username": meta.get("provenance/username", "UNKNOWN"),
+        }
+
+        return provenance
+
+    def close(self):
+        pass
