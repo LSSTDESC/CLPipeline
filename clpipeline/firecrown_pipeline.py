@@ -6,7 +6,6 @@ from .ceci_types import (
 )
 from ceci import PipelineStage
 import sys
-import firecrown
 
 class FirecrownPipeline(PipelineStage):
     """

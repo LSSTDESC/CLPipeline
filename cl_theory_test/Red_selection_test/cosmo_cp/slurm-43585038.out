@@ -24368,3 +24368,975 @@ camb took: 1.048 seconds
 firecrown_likelihood took: 0.255 seconds
 Total pipeline time: 1.3 seconds
 Done 2925 iterations of emcee. Acceptance fraction 0.164
+consistency took: 0.000 seconds
+camb took: 1.048 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.060 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.052 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.000 seconds
+camb took: 1.043 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.022 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.019 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.033 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.28 seconds
+consistency took: 0.000 seconds
+camb took: 1.019 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.002 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.017 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 0.986 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.23 seconds
+consistency took: 0.000 seconds
+camb took: 1.057 seconds
+firecrown_likelihood took: 0.263 seconds
+Total pipeline time: 1.32 seconds
+consistency took: 0.000 seconds
+camb took: 0.998 seconds
+firecrown_likelihood took: 0.280 seconds
+Total pipeline time: 1.28 seconds
+consistency took: 0.000 seconds
+camb took: 1.019 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.018 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.035 seconds
+firecrown_likelihood took: 0.236 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.037 seconds
+firecrown_likelihood took: 0.262 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.000 seconds
+camb took: 1.054 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.000 seconds
+camb took: 1.059 seconds
+firecrown_likelihood took: 0.262 seconds
+Total pipeline time: 1.32 seconds
+consistency took: 0.000 seconds
+camb took: 1.050 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.014 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.017 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.028 seconds
+firecrown_likelihood took: 0.258 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.036 seconds
+firecrown_likelihood took: 0.262 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.000 seconds
+camb took: 1.015 seconds
+firecrown_likelihood took: 0.247 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.051 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.000 seconds
+camb took: 1.052 seconds
+firecrown_likelihood took: 0.294 seconds
+Total pipeline time: 1.35 seconds
+consistency took: 0.000 seconds
+camb took: 1.001 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.066 seconds
+firecrown_likelihood took: 0.256 seconds
+Total pipeline time: 1.32 seconds
+consistency took: 0.000 seconds
+camb took: 1.061 seconds
+firecrown_likelihood took: 0.294 seconds
+Total pipeline time: 1.36 seconds
+consistency took: 0.000 seconds
+camb took: 1.058 seconds
+firecrown_likelihood took: 0.248 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.020 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.018 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.021 seconds
+firecrown_likelihood took: 0.264 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.002 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.013 seconds
+firecrown_likelihood took: 0.257 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.017 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.025 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.019 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 0.988 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.23 seconds
+consistency took: 0.000 seconds
+camb took: 1.032 seconds
+firecrown_likelihood took: 0.346 seconds
+Total pipeline time: 1.38 seconds
+consistency took: 0.000 seconds
+camb took: 0.991 seconds
+firecrown_likelihood took: 0.278 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.011 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 0.994 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.24 seconds
+consistency took: 0.000 seconds
+camb took: 1.046 seconds
+firecrown_likelihood took: 0.299 seconds
+Total pipeline time: 1.34 seconds
+consistency took: 0.000 seconds
+camb took: 1.006 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.023 seconds
+firecrown_likelihood took: 0.247 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.046 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.048 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.063 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.060 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.052 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.000 seconds
+camb took: 1.058 seconds
+firecrown_likelihood took: 0.273 seconds
+Total pipeline time: 1.33 seconds
+consistency took: 0.000 seconds
+camb took: 1.018 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.057 seconds
+firecrown_likelihood took: 0.257 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.036 seconds
+firecrown_likelihood took: 0.263 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.000 seconds
+camb took: 1.042 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.064 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.064 seconds
+firecrown_likelihood took: 0.258 seconds
+Total pipeline time: 1.32 seconds
+consistency took: 0.000 seconds
+camb took: 1.018 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.044 seconds
+firecrown_likelihood took: 0.276 seconds
+Total pipeline time: 1.32 seconds
+Done 2928 iterations of emcee. Acceptance fraction 0.164
+consistency took: 0.000 seconds
+camb took: 1.018 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.063 seconds
+firecrown_likelihood took: 0.247 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.020 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.018 seconds
+firecrown_likelihood took: 0.281 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.001 seconds
+camb took: 1.029 seconds
+firecrown_likelihood took: 0.254 seconds
+Total pipeline time: 1.28 seconds
+consistency took: 0.000 seconds
+camb took: 1.017 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.028 seconds
+firecrown_likelihood took: 0.279 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.015 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.003 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.017 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.059 seconds
+firecrown_likelihood took: 0.261 seconds
+Total pipeline time: 1.32 seconds
+consistency took: 0.000 seconds
+camb took: 1.061 seconds
+firecrown_likelihood took: 0.247 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.008 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.000 seconds
+firecrown_likelihood took: 0.255 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.058 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.000 seconds
+camb took: 1.017 seconds
+firecrown_likelihood took: 0.262 seconds
+Total pipeline time: 1.28 seconds
+consistency took: 0.000 seconds
+camb took: 1.043 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.063 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.059 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.000 seconds
+camb took: 1.007 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.020 seconds
+firecrown_likelihood took: 0.276 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.000 seconds
+camb took: 1.034 seconds
+firecrown_likelihood took: 0.262 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.000 seconds
+camb took: 1.012 seconds
+firecrown_likelihood took: 0.248 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.027 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.029 seconds
+firecrown_likelihood took: 0.265 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.001 seconds
+camb took: 1.016 seconds
+firecrown_likelihood took: 0.295 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.063 seconds
+firecrown_likelihood took: 0.247 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.005 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.022 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.023 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.032 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.28 seconds
+consistency took: 0.000 seconds
+camb took: 1.049 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.033 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.28 seconds
+consistency took: 0.000 seconds
+camb took: 1.019 seconds
+firecrown_likelihood took: 0.237 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.032 seconds
+firecrown_likelihood took: 0.273 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.023 seconds
+firecrown_likelihood took: 0.262 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.043 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.026 seconds
+firecrown_likelihood took: 0.237 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.062 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.022 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.013 seconds
+firecrown_likelihood took: 0.279 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.001 seconds
+firecrown_likelihood took: 0.283 seconds
+Total pipeline time: 1.28 seconds
+consistency took: 0.000 seconds
+camb took: 1.016 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.006 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.019 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.061 seconds
+firecrown_likelihood took: 0.272 seconds
+Total pipeline time: 1.33 seconds
+consistency took: 0.000 seconds
+camb took: 1.021 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.058 seconds
+firecrown_likelihood took: 0.247 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.011 seconds
+firecrown_likelihood took: 0.258 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.065 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.004 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.027 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.001 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.043 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.064 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.046 seconds
+firecrown_likelihood took: 0.265 seconds
+Total pipeline time: 1.31 seconds
+Done 2931 iterations of emcee. Acceptance fraction 0.163
+consistency took: 0.000 seconds
+camb took: 1.061 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.064 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.030 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.060 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.000 seconds
+camb took: 1.023 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.031 seconds
+firecrown_likelihood took: 0.248 seconds
+Total pipeline time: 1.28 seconds
+consistency took: 0.000 seconds
+camb took: 1.045 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.052 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.000 seconds
+camb took: 1.060 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.061 seconds
+firecrown_likelihood took: 0.236 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.000 seconds
+camb took: 1.053 seconds
+firecrown_likelihood took: 0.255 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.014 seconds
+firecrown_likelihood took: 0.248 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.049 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.015 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.019 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.015 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.020 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.059 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.021 seconds
+firecrown_likelihood took: 0.264 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.051 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.000 seconds
+camb took: 1.022 seconds
+firecrown_likelihood took: 0.263 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.045 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.048 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.034 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.28 seconds
+consistency took: 0.000 seconds
+camb took: 1.007 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.052 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.000 seconds
+camb took: 1.032 seconds
+firecrown_likelihood took: 0.247 seconds
+Total pipeline time: 1.28 seconds
+consistency took: 0.000 seconds
+camb took: 1.045 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.058 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.000 seconds
+camb took: 1.044 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.036 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.28 seconds
+consistency took: 0.000 seconds
+camb took: 1.062 seconds
+firecrown_likelihood took: 0.263 seconds
+Total pipeline time: 1.33 seconds
+consistency took: 0.000 seconds
+camb took: 1.062 seconds
+firecrown_likelihood took: 0.297 seconds
+Total pipeline time: 1.36 seconds
+consistency took: 0.000 seconds
+camb took: 1.041 seconds
+firecrown_likelihood took: 0.284 seconds
+Total pipeline time: 1.32 seconds
+consistency took: 0.000 seconds
+camb took: 0.986 seconds
+firecrown_likelihood took: 0.279 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.013 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.013 seconds
+firecrown_likelihood took: 0.248 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.021 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.047 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.044 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.031 seconds
+firecrown_likelihood took: 0.248 seconds
+Total pipeline time: 1.28 seconds
+consistency took: 0.000 seconds
+camb took: 1.037 seconds
+firecrown_likelihood took: 0.297 seconds
+Total pipeline time: 1.33 seconds
+consistency took: 0.000 seconds
+camb took: 1.015 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 0.999 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.24 seconds
+consistency took: 0.000 seconds
+camb took: 0.995 seconds
+firecrown_likelihood took: 0.247 seconds
+Total pipeline time: 1.24 seconds
+consistency took: 0.000 seconds
+camb took: 1.006 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.034 seconds
+firecrown_likelihood took: 0.247 seconds
+Total pipeline time: 1.28 seconds
+consistency took: 0.000 seconds
+camb took: 1.044 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.027 seconds
+firecrown_likelihood took: 0.248 seconds
+Total pipeline time: 1.28 seconds
+consistency took: 0.000 seconds
+camb took: 1.045 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.015 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.015 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.003 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.032 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.28 seconds
+consistency took: 0.000 seconds
+camb took: 1.028 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.012 seconds
+firecrown_likelihood took: 0.247 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.050 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.022 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.044 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.004 seconds
+firecrown_likelihood took: 0.255 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.033 seconds
+firecrown_likelihood took: 0.237 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.045 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.016 seconds
+firecrown_likelihood took: 0.274 seconds
+Total pipeline time: 1.29 seconds
+Done 2934 iterations of emcee. Acceptance fraction 0.163
+consistency took: 0.000 seconds
+camb took: 1.022 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.059 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.060 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.000 seconds
+camb took: 1.062 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.062 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.049 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.062 seconds
+firecrown_likelihood took: 0.247 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.047 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.019 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.045 seconds
+firecrown_likelihood took: 0.247 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.048 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.023 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.058 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.000 seconds
+camb took: 1.059 seconds
+firecrown_likelihood took: 0.248 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.005 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.047 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.045 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.004 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.033 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.28 seconds
+consistency took: 0.000 seconds
+camb took: 1.064 seconds
+firecrown_likelihood took: 0.271 seconds
+Total pipeline time: 1.34 seconds
+consistency took: 0.000 seconds
+camb took: 1.005 seconds
+firecrown_likelihood took: 0.256 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.032 seconds
+firecrown_likelihood took: 0.236 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.051 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.000 seconds
+camb took: 1.022 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.059 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.017 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.022 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.016 seconds
+firecrown_likelihood took: 0.294 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.015 seconds
+firecrown_likelihood took: 0.313 seconds
+Total pipeline time: 1.33 seconds
+consistency took: 0.000 seconds
+camb took: 1.008 seconds
+firecrown_likelihood took: 0.237 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 0.990 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.23 seconds
+consistency took: 0.000 seconds
+camb took: 1.025 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.061 seconds
+firecrown_likelihood took: 0.247 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.029 seconds
+firecrown_likelihood took: 0.277 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.021 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.003 seconds
+firecrown_likelihood took: 0.264 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.018 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.008 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.002 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.067 seconds
+firecrown_likelihood took: 0.294 seconds
+Total pipeline time: 1.36 seconds
+consistency took: 0.000 seconds
+camb took: 1.053 seconds
+firecrown_likelihood took: 0.262 seconds
+Total pipeline time: 1.32 seconds
+consistency took: 0.000 seconds
+camb took: 1.042 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.043 seconds
+firecrown_likelihood took: 0.255 seconds
+Total pipeline time: 1.3 seconds
+consistency took: 0.000 seconds
+camb took: 1.003 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.019 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.26 seconds
+consistency took: 0.000 seconds
+camb took: 1.043 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.036 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.28 seconds
+consistency took: 0.000 seconds
+camb took: 1.001 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.012 seconds
+firecrown_likelihood took: 0.239 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.047 seconds
+firecrown_likelihood took: 0.263 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.024 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.27 seconds
+consistency took: 0.000 seconds
+camb took: 1.031 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.28 seconds
+consistency took: 0.000 seconds
+camb took: 1.002 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.044 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.29 seconds
+consistency took: 0.000 seconds
+camb took: 1.022 seconds
+firecrown_likelihood took: 0.262 seconds
+Total pipeline time: 1.28 seconds
+consistency took: 0.000 seconds
+camb took: 1.005 seconds
+firecrown_likelihood took: 0.246 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.001 seconds
+firecrown_likelihood took: 0.244 seconds
+Total pipeline time: 1.25 seconds
+consistency took: 0.000 seconds
+camb took: 1.036 seconds
+firecrown_likelihood took: 0.272 seconds
+Total pipeline time: 1.31 seconds
+consistency took: 0.000 seconds
+camb took: 1.018 seconds
+firecrown_likelihood took: 0.245 seconds
+Total pipeline time: 1.26 seconds
+Done 2937 iterations of emcee. Acceptance fraction 0.162
+slurmstepd: error: *** JOB 43585038 ON ccwslurm2004 CANCELLED AT 2025-02-03T11:54:18 ***
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+Date: Mon Feb  3 11:54:18 AM CET 2025
+Job informations can be found using these commands:
+Accounting:
+sacct -j 43585038
+Efficiency:
+seff 43585038
+****************************************************************
