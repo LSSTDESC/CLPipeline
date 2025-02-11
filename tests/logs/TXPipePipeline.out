@@ -1,0 +1,6 @@
+NOTE/WARNING: Expected output file ./tests/outputs/test.sacc.sacc was not generated.
+Executing stage: TXPipePipeline @ 2025-02-11 10:41:14.280331
+{txpipe_flag:True,firecrown_flag:False,name:TXPipePipeline,metacalibration:True,survey:cosmodc2_20deg2,stage_name:TXPipePipeline,clusters_sacc_file:./tests/inputs/dm.txt,test.sacc:./tests/outputs/test.sacc.sacc,config:./tests/config.yml,mpi:False,pdb:False,cprofile:,memmon:0,trace:False,}
+/pbs/home/e/ebarroso/CLPipeline/clpipeline
+SES - yaml config file :  None
+Stage complete: TXPipePipeline @ 2025-02-11 10:41:15.857233 took 0.03 minutes
