@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "CLPipeline"
+version = "0.0.1"
+authors = [
+  { name="Eduardo Barroso, Sabine Elles", email="eduardojsbarroso@gmail.com" },
+]
+description = "CLPipeline project"
+readme = "README.md"
+requires-python = ">=3.8"
+[tool.setuptools]
+py-modules = []
+[project.urls]
+Homepage = "https://github.com/eduardojsbarroso/CLPipeline"
+Issues = "https://github.com/eduardojsbarroso/CLPipeline/issues"

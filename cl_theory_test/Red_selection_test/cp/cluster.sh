@@ -3,6 +3,7 @@
 
 # SLURM options:
 
+# SBATCH --cpus-per-task=1
 # SBATCH --job-name=t08_r1    # Job name
 # SBATCH --partition=htc               # Partition choice
 # SBATCH --ntasks=3                    # Run a single task (by default tasks == CPU)

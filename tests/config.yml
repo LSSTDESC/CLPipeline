@@ -1,11 +1,130 @@
 global:
     metacalibration: True
-
-shearMeasurementPipe:
-    apply_flag: False
-
-WLGCSelector:
-    zbin_edges: [0.2, 0.3, 0.5]
-    ra_range: [-5, 5]
 FirecrownPipeline:
     config_mass : 'despali'
+TJPCovPipeline:
+  use_mpi: False
+  do_xi: False
+#   cov_type: [ClusterCountsGaussian]
+  #cov_type: [ClusterMass, ClusterCountsGaussian, ClusterCountsSSC]
+  cov_type: [ClusterCountsGaussian, ClusterCountsSSC]
+  # sacc input file 
+  sacc_file: /pbs/home/e/ebarroso/LSST_France/mock_data_run/counts_tjpcov/cluster_redshift_richness_deltasigma_sacc_data.sacc
+  # 'set' from parameters OR pass CCL cosmology object OR yaml file
+  cosmo: 'set' 
+  outdir: /pbs/home/e/ebarroso/LSST_France/mock_data_run/counts_tjpcov
+  fsky: 0.3
+  parameters:
+    # Not used for while (read by ccl.cosmo):
+    Omega_c: 0.22
+    Omega_b: 0.0448
+    h: 0.71
+    n_s: 0.963
+    sigma8: 0.8
+    w0: -1
+    wa: 0
+    transfer_function: 'boltzmann_camb'
+  photo-z:
+    sigma_0: 0.005
+  mor_parameters:
+    #richness-mass relation parameters (from Murata-Costanzi):
+    alpha: 3.19
+    beta:  0.8685889638 
+    sigma_zero:  0.33 
+    q: -0.034
+    m_pivot: 422535211267606
+TXPipePipeline:
+    survey: 'cosmodc2_20deg2'
+TXSourceSelectorMetadetect:
+    input_pz: false
+    bands: riz #used for selection
+    T_cut: 0.5
+    s2n_cut: 10.0
+    max_rows: 1000
+    delta_gamma: 0.02
+    source_zbin_edges: [0.1, 3.0]
+    chunk_rows: 100000
+    true_z: false
+    shear_prefix: ''
+
+BPZliteInformer:
+    zmin: 0.0
+    zmax: 3.0
+    nzbins: 301
+    columns_file: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe/data/bpz_riz.columns
+    data_path: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/example/rail-bpz-inputs
+    spectra_file: CWWSB4.list
+    prior_band: i
+    ref_band: i
+    # Not sure about this
+    prior_file: hdfn_gen
+    p_min: 0.005
+    gauss_kernel: 0.0
+    mag_err_min: 0.005
+    inform_options: {save_train: false, load_model: false, modelfile: BPZpriormodel.out}
+    madau_reddening: no
+    bands: riz
+    zp_errors: [0.01, 0.01, 0.01]
+    hdf5_groupname: photometry
+
+
+
+BPZliteEstimator:
+    zmin: 0.0
+    zmax: 3.0
+    dz: 0.01
+    nzbins: 301
+    data_path: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/example/rail-bpz-inputs
+    bands: [mag_r, mag_i, mag_z]
+    err_bands: [mag_err_r, mag_err_i, mag_err_z]
+    hdf5_groupname: shear/00
+    nondetect_val: .inf
+    columns_file: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/bpz_riz.columns
+    spectra_file: CWWSB4.list
+    ref_band: mag_i
+    prior_file: hdfn_gen
+    p_min: 0.005
+    gauss_kernel: 0.0
+    zp_errors: [0.01, 0.01, 0.01]
+    mag_err_min: 0.005
+    madau_reddening: false
+    mag_limits:
+        mag_r: 29.06
+        mag_i: 28.62
+        mag_z: 27.98
+
+CLClusterBinningRedshiftRichness:
+    zedge: [0.2, 0.4, 0.6, 0.8]
+    richedge: [5., 10., 20., 25., 50.]
+
+CLClusterShearCatalogs:
+    chunk_rows: 100_000  # rows to read at once from source cat
+    max_radius: 5   # Mpc
+    delta_z: 0.2   # redshift buffer
+    redshift_cut_criterion: zmode
+    redshift_weight_criterion: zmode
+    redshift_cut_criterion_pdf_fraction: 0.9
+    subtract_mean_shear: false
+    coordinate_system: celestial #euclidean or celestial
+    use_true_shear: true
+
+
+CLClusterEnsembleProfiles:
+    #radial bin definition
+    r_min: 0.2  #in Mpc
+    r_max: 5.0  #in Mpc
+    nbins: 10  # number of bins
+    #type of profile
+    delta_sigma_profile: true
+    shear_profile: false
+    magnification_profile: false
+    coordinate_system: celestial #euclidean or celestial
+
+
+
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-Executing stage: FirecrownPipeline @ 2025-02-03 13:45:09.291654
-Here is my configuration : {txpipe_flag:False,firecrown_flag:True,name:FirecrownPipeline,metacalibration:True,config_mass:despali,stage_name:FirecrownPipeline,clusters_sacc_file:./tests/inputs/dm.txt,test:./tests/outputs/test.sacc,config:./tests/config.yml,mpi:False,pdb:False,cprofile:,memmon:0,trace:False,}
 NOTE/WARNING: Expected output file ./tests/outputs/test.sacc was not generated.
-Stage complete: FirecrownPipeline @ 2025-02-03 13:45:11.708429 took 0.04 minutes
+Executing stage: FirecrownPipeline @ 2025-02-05 10:35:15.754696
+Here is my configuration : {txpipe_flag:False,firecrown_flag:True,name:FirecrownPipeline,metacalibration:True,config_mass:despali,stage_name:FirecrownPipeline,clusters_sacc_file:./tests/inputs/dm.txt,test:./tests/outputs/test.sacc,config:./tests/config.yml,mpi:False,pdb:False,cprofile:,memmon:0,trace:False,}
+Stage complete: FirecrownPipeline @ 2025-02-05 10:35:17.337737 took 0.03 minutes
