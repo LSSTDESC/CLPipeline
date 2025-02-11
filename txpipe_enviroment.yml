@@ -45,6 +45,8 @@ dependencies:
     - jaxlib==0.4.23
     - glass==2023.7
     - git+https://github.com/beckermr/hybrideb@a3198ea5bc8175542b058e5c1289d910f05fd99d
+    # we must specifically request versions of rail algorithms
+    # to ensure that we get the ceci v2 versions
     - pz-rail[algos] @ git+https://github.com/LSSTDESC/RAIL@v1.0.1
     - pz-rail-astro-tools==1.0.4
     - pz-rail-base==1.0.4
