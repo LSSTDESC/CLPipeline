@@ -1,40 +1,3 @@
-global:
-    metacalibration: True
-FirecrownPipeline:
-    config_mass : 'despali'
-TJPCovPipeline:
-  use_mpi: False
-  do_xi: False
-#   cov_type: [ClusterCountsGaussian]
-  #cov_type: [ClusterMass, ClusterCountsGaussian, ClusterCountsSSC]
-  cov_type: [ClusterCountsGaussian, ClusterCountsSSC]
-  # sacc input file 
-  sacc_file: /pbs/home/e/ebarroso/LSST_France/mock_data_run/counts_tjpcov/cluster_redshift_richness_deltasigma_sacc_data.sacc
-  # 'set' from parameters OR pass CCL cosmology object OR yaml file
-  cosmo: 'set' 
-  outdir: /pbs/home/e/ebarroso/LSST_France/mock_data_run/counts_tjpcov
-  fsky: 0.3
-  parameters:
-    # Not used for while (read by ccl.cosmo):
-    Omega_c: 0.22
-    Omega_b: 0.0448
-    h: 0.71
-    n_s: 0.963
-    sigma8: 0.8
-    w0: -1
-    wa: 0
-    transfer_function: 'boltzmann_camb'
-  photo-z:
-    sigma_0: 0.005
-  mor_parameters:
-    #richness-mass relation parameters (from Murata-Costanzi):
-    alpha: 3.19
-    beta:  0.8685889638 
-    sigma_zero:  0.33 
-    q: -0.034
-    m_pivot: 422535211267606
-TXPipePipeline:
-    survey: 'cosmodc2_20deg2'
 TXSourceSelectorMetadetect:
     input_pz: false
     bands: riz #used for selection
@@ -119,10 +82,6 @@ CLClusterEnsembleProfiles:
     shear_profile: false
     magnification_profile: false
     coordinate_system: celestial #euclidean or celestial
-
-
-
-
 
 
 

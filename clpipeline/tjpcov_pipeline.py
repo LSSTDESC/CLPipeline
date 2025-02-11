@@ -20,7 +20,7 @@ class TJPCovPipeline(PipelineStage):
     ]
 
     outputs = [
-        ("test", SACCFile),
+        ("test.sacc", SACCFile),
     ]
 
     config_options = {
@@ -36,17 +36,39 @@ class TJPCovPipeline(PipelineStage):
          - Choose the right recipe based on the file
          - Output firecrown likelihood python file
         """
-        import pyccl
+        import numpy as np
+        import matplotlib.pyplot as plt
         import sacc
-        import tjpcov
+        import pyccl as ccl
+        import time
+
+        # tjpcov packages
+        from tjpcov.covariance_calculator import CovarianceCalculator
+        from tjpcov.covariance_cluster_counts_ssc import ClusterCountsSSC
+
+        # compute covariance terms from the covariance class (and save results in a .sacc file)
+        st = time.time()
+        config_dict = self.config.to_dict()
+        combined_config = {'tjpcov': config_dict}
+        combined_config.update(config_dict)
+        cc = CovarianceCalculator(combined_config)
+        print(cc.config)
+        cc.config['tjpcov']['photo-z']['sigma_0'] = 0.05
+
+        cov_terms     = cc.get_covariance_terms()
+        sacc_with_cov = cc.create_sacc_cov(output="test_cov_new_05.sacc", save_terms=True)
+        print('Time: ', (time.time()-st), ' sec')
         ## Open the yaml configuration file
-        my_config = self.config
-        print("Here is my configuration :", my_config)
-        # with self.open_input("test_metadata_yml", wrapper=True) as f:
-        #     meta = f.content
-        # # check the units are what we are expecting
-        # assert meta["area_unit"] == "deg^2"
-        # assert meta["density_unit"] == "arcmin^{-2}"
-        # Run firecrown
-        # Here see how to generate the likelihood file with the counts example
-        # Save if it is not automatically by firecrown of if we need to save something about this run
+        print(f"My config : {self.config}")
+        for inp, _ in self.inputs:
+            filename = self.get_input(inp)
+            print(f"    TJPCov reading from {filename}")
+            open(filename)
+
+        for out, _ in self.outputs:
+            filename = self.get_output(out)
+            print(f"    shearMeasurementPipe writing to {filename}")
+            open(filename, "w").write("shearMeasurementPipe was here \n")
+
+
+
