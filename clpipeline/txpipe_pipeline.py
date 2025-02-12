@@ -52,9 +52,10 @@ class TXPipePipeline(PipelineStage):
         pipeline_config = None
         if self.config['survey'] == 'cosmodc2_20deg2':
             pipeline_file = os.path.join(CONFIG_DIR, "cosmodc2/pipeline-20deg2-CL-in2p3.yml")
-            flowchart_file = "CL2_pipeline.png"
+            flowchart_file = "CL_pipeline.png"
             pipeline_config = ceci.Pipeline.build_config(pipeline_file, flow_chart=flowchart_file, dry_run=False)
             print(pipeline_config)
+            ceci.prepare_for_pipeline(pipeline_config)
             ceci.run_pipeline(pipeline_config)
             #with open(pipeline_file, "r") as file:
             #    pipeline_content = yaml.safe_load(file)

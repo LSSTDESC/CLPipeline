@@ -1,16 +1,15 @@
 #this step depends on where you run
 #for CCin2p3
 site:
-    name: cc-parallel
-    mpi_command: mpirun -n
-#for NERSC
+    name: local
+    max_threads: 4
 #site:
 #    name: cori-batch
 #    image: ghcr.io/lsstdesc/txpipe-dev
 #all the following steps should not depend on where you run 
 launcher:
     name: mini
-    interval: 3.0
+    interval: 0.5
 modules: >
     txpipe
     rail.estimation.algos.bpz_lite
@@ -37,10 +36,10 @@ stages:
     nprocess: 10
 #    - name: CLClusterDataVector
 #      nprocess: 1
-output_dir: ./tests/outputs
+output_dir: ./tests/outputs/cosmodc2
 
 # Put the logs from the individual stages in this directory:
-log_dir: ./tests/logs
+log_dir: ./tests/logs/cosmodc2
 
 # Put the logs from the individual stages in this directory:
 config: ./inputs_config/cosmodc2/config-20deg2-CL.yml
