@@ -132,3 +132,17 @@ class SACCFile(DataFile):
 
     def close(self):
         pass
+
+class CosmosisFile(DataFile):
+    """
+    A data file in pain text format.
+    """
+
+    suffix = "ini"
+
+class PythonFile(DataFile):
+    """
+    A data file in plain text format.
+    """
+
+    suffix = "py"
