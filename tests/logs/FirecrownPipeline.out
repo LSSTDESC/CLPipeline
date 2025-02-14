@@ -1,4 +1,10 @@
-NOTE/WARNING: Expected output file ./tests/outputs/test.sacc was not generated.
-Executing stage: FirecrownPipeline @ 2025-02-05 10:35:15.754696
-Here is my configuration : {txpipe_flag:False,firecrown_flag:True,name:FirecrownPipeline,metacalibration:True,config_mass:despali,stage_name:FirecrownPipeline,clusters_sacc_file:./tests/inputs/dm.txt,test:./tests/outputs/test.sacc,config:./tests/config.yml,mpi:False,pdb:False,cprofile:,memmon:0,trace:False,}
-Stage complete: FirecrownPipeline @ 2025-02-05 10:35:17.337737 took 0.03 minutes
+NOTE/WARNING: Expected output file ./tests/outputs/cluster_counts_mean_mass_redshift_richness.ini was not generated.
+NOTE/WARNING: Expected output file ./tests/outputs/cluster_redshift_richness.py was not generated.
+NOTE/WARNING: Expected output file ./tests/outputs/cluster_richness_values.ini was not generated.
+Executing stage: FirecrownPipeline @ 2025-02-14 16:57:19.735509
+./tests/outputs/clusters_sacc_file_cov.sacc
+Copied cluster_counts_mean_mass_redshift_richness.ini to ./tests/outputs
+Copied cluster_redshift_richness.py to ./tests/outputs
+Copied cluster_richness_values.ini to ./tests/outputs
+Modified ./tests/outputs/cluster_redshift_richness.py: replaced 'file.sacc' with 'clusters_sacc_file_cov.sacc'
+Stage complete: FirecrownPipeline @ 2025-02-14 16:57:20.376950 took 0.01 minutes
