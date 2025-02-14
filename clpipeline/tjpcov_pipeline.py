@@ -20,7 +20,7 @@ class TJPCovPipeline(PipelineStage):
     ]
 
     outputs = [
-        ("test.sacc", SACCFile),
+        ("clusters_sacc_file_cov", SACCFile),
     ]
 
     config_options = {
@@ -41,6 +41,7 @@ class TJPCovPipeline(PipelineStage):
         import sacc
         import pyccl as ccl
         import time
+        import os
 
         # tjpcov packages
         from tjpcov.covariance_calculator import CovarianceCalculator
@@ -48,27 +49,19 @@ class TJPCovPipeline(PipelineStage):
 
         # compute covariance terms from the covariance class (and save results in a .sacc file)
         st = time.time()
+        tjpcov_out_sacc = self.get_output('clusters_sacc_file_cov', final_name=True) 
         config_dict = self.config.to_dict()
+        outdir = os.path.dirname(tjpcov_out_sacc)
+        filename = os.path.basename(tjpcov_out_sacc)
+        config_dict = self.config.to_dict()
+        config_dict['outdir'] = outdir
         combined_config = {'tjpcov': config_dict}
         combined_config.update(config_dict)
         cc = CovarianceCalculator(combined_config)
         print(cc.config)
         cc.config['tjpcov']['photo-z']['sigma_0'] = 0.05
-
+        
+        print(tjpcov_out_sacc)
         cov_terms     = cc.get_covariance_terms()
-        sacc_with_cov = cc.create_sacc_cov(output="test_cov_new_05.sacc", save_terms=True)
+        sacc_with_cov = cc.create_sacc_cov(output=filename, save_terms=True)
         print('Time: ', (time.time()-st), ' sec')
-        ## Open the yaml configuration file
-        print(f"My config : {self.config}")
-        for inp, _ in self.inputs:
-            filename = self.get_input(inp)
-            print(f"    TJPCov reading from {filename}")
-            open(filename)
-
-        for out, _ in self.outputs:
-            filename = self.get_output(out)
-            print(f"    shearMeasurementPipe writing to {filename}")
-            open(filename, "w").write("shearMeasurementPipe was here \n")
-
-
-

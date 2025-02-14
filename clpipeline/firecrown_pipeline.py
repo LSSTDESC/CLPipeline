@@ -10,6 +10,7 @@ from ceci import PipelineStage
 import sys
 import os
 import shutil
+import re
 class FirecrownPipeline(PipelineStage):
     """
     Firecrown Pipeline stage.
@@ -53,8 +54,10 @@ class FirecrownPipeline(PipelineStage):
         #print("Methods in class:", methods)
         ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
         FIRECROWN_INPUTS = ROOT_DIR.replace('clpipeline', 'firecrown_inputs')
+        print(self.get_input("clusters_sacc_file"))
         self.cosmosis_files(FIRECROWN_INPUTS)
     def cosmosis_files(self, firecrown_inputs):
+        new_sacc_path = self.get_input("clusters_sacc_file")
         input_dir = firecrown_inputs
         output_files = [self.get_output(out[0], final_name=True) for out in self.outputs_()]
         output_dir = os.path.dirname(output_files[0])
@@ -72,3 +75,25 @@ class FirecrownPipeline(PipelineStage):
                 print(f"Copied {file} to {output_dir}")
             else:
                 print(f"Warning: {file} not found in {input_dir}")
+        py_file_path = os.path.join(output_dir, "cluster_redshift_richness.py")
+
+        if os.path.exists(py_file_path):
+            with open(py_file_path, "r") as file:
+                content = file.read()
+            
+            # Search for a string containing '.sacc' and replace it
+            match = re.search(r'[\w/.\-]+\.sacc', content)
+
+            if match:
+                old_string = match.group()  # Extracts the matched full filename
+                new_string = os.path.basename(self.get_input('clusters_sacc_file'))  # Replace this with the actual new filename
+
+                modified_content = content.replace(old_string, new_string)
+
+                with open(py_file_path, "w") as file:
+                    file.write(modified_content)
+
+            print(f"Modified {py_file_path}: replaced '{old_string}' with '{new_string}'")
+
+        else:
+            print(f"Error: {py_file_path} not found!")
