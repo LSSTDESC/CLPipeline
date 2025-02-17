@@ -39,10 +39,11 @@ dependencies:
   - sphinx=7.1.2
   - types-pyyaml
   - urllib3
+  - firecrown
   - pip:
     - autoclasstoc
     - cobaya
     - isitgr
     - pygobject-stubs
-    - git+https://github.com/hellebore74/ceci
-    - firecrown 
+    - ceci
+#    - git+https://github.com/hellebore74/ceci

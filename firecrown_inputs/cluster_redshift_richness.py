@@ -45,7 +45,7 @@ def build_likelihood(
     )
 
     # Read in sacc data
-    sacc_path = 'file.sacc'
+    sacc_path = "file.sacc"
     sacc_data = sacc.Sacc.load_fits(sacc_path) 
     likelihood.read(sacc_data)
 
