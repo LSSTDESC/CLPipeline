@@ -2,6 +2,8 @@ global:
     metacalibration: True
 FirecrownPipeline:
     config_mass : 'despali'
+    survey_name : 'numcosmo_simulated_redshift_richness_deltasigma'
+    use_mean_log_mass : False
 TJPCovPipeline:
   use_mpi: False
   do_xi: False
