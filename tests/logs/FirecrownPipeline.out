@@ -1,10 +1,9 @@
 NOTE/WARNING: Expected output file ./tests/outputs/cluster_counts_mean_mass_redshift_richness.ini was not generated.
 NOTE/WARNING: Expected output file ./tests/outputs/cluster_redshift_richness.py was not generated.
 NOTE/WARNING: Expected output file ./tests/outputs/cluster_richness_values.ini was not generated.
-Executing stage: FirecrownPipeline @ 2025-02-14 16:57:19.735509
+Executing stage: FirecrownPipeline @ 2025-02-17 17:26:10.184597
 ./tests/outputs/clusters_sacc_file_cov.sacc
-Copied cluster_counts_mean_mass_redshift_richness.ini to ./tests/outputs
-Copied cluster_redshift_richness.py to ./tests/outputs
-Copied cluster_richness_values.ini to ./tests/outputs
-Modified ./tests/outputs/cluster_redshift_richness.py: replaced 'file.sacc' with 'clusters_sacc_file_cov.sacc'
-Stage complete: FirecrownPipeline @ 2025-02-14 16:57:20.376950 took 0.01 minutes
+Python file generated at ./tests/outputs/cluster_redshift_richness.py
+INI file written to ./tests/outputs/cluster_counts_mean_mass_redshift_richness.ini
+INI file generated at ./tests/outputs/cluster_counts_mean_mass_redshift_richness.ini
+Stage complete: FirecrownPipeline @ 2025-02-17 17:26:10.800225 took 0.01 minutes
