@@ -2,8 +2,25 @@ global:
     metacalibration: True
 FirecrownPipeline:
     config_mass : 'despali'
-    survey_name : 'numcosmo_simulated_redshift_richness_deltasigma'
-    use_mean_log_mass : False
+    cosmosis_config:
+        sampler: 'test'
+    cosmological_parameters:
+        omega_c: {'sample': True, 'values': [0.1552, 0.2052, 0.3552]}
+        sigma_8: {'sample': True, 'values': [0.7, 0.800, 0.9]}
+        omega_k: {'sample': False, 'values': 0.0}
+        omega_b: {'sample': False, 'values': 0.0448}
+        tau: {'sample': False, 'values': 0.08}
+        n_s: {'sample': False, 'values': 0.963}
+        h0: {'sample': False, 'values': 0.71}
+        w: {'sample': False, 'values': -1.0}
+        wa: {'sample': False, 'values': 0.0}
+    firecrown_parameters:
+        mu_p0: {'sample': True, 'values': [2.7, 3.0, 3.8]}
+        mu_p1: {'sample': True, 'values': [0.4, 0.8, 1.2]}
+        mu_p2: {'sample': True, 'values': [-0.6, -0.3, -0.02]}
+        sigma_p0: {'sample': True, 'values': [0.02, 0.3, 0.6]}
+        sigma_p1: {'sample': True, 'values': [-0.05, -0.03, -0.01]}
+        sigma_p2: {'sample': True, 'values': [-0.1, 0.06, 0.1]}
 TJPCovPipeline:
   use_mpi: False
   do_xi: False
@@ -14,7 +31,6 @@ TJPCovPipeline:
   sacc_file: /pbs/home/e/ebarroso/LSST_France/mock_data_run/counts_tjpcov/cluster_redshift_richness_deltasigma_sacc_data.sacc
   # 'set' from parameters OR pass CCL cosmology object OR yaml file
   cosmo: 'set' 
-  outdir: /pbs/home/e/ebarroso/LSST_France/mock_data_run/counts_tjpcov
   fsky: 0.3
   parameters:
     # Not used for while (read by ccl.cosmo):
@@ -35,8 +51,9 @@ TJPCovPipeline:
     sigma_zero:  0.33 
     q: -0.034
     m_pivot: 422535211267606
-TXPipePipeline:
-    survey: 'cosmodc2_20deg2'
+CLClusterSACC:
+    survey_name: 'cosmodc2-20deg2-CL'
+    area: 440.0
 TXSourceSelectorMetadetect:
     input_pz: false
     bands: riz #used for selection
