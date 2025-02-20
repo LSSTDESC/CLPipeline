@@ -1,6 +1,8 @@
 global:
     metacalibration: True
 FirecrownPipeline:
+    survey_name: 'cosmodc2-20deg2-CL'
+    use_mean_log_mass: False
     config_mass : 'despali'
     cosmosis_config:
         sampler: 'test'
@@ -28,7 +30,6 @@ TJPCovPipeline:
   #cov_type: [ClusterMass, ClusterCountsGaussian, ClusterCountsSSC]
   cov_type: [ClusterCountsGaussian, ClusterCountsSSC]
   # sacc input file 
-  sacc_file: /pbs/home/e/ebarroso/LSST_France/mock_data_run/counts_tjpcov/cluster_redshift_richness_deltasigma_sacc_data.sacc
   # 'set' from parameters OR pass CCL cosmology object OR yaml file
   cosmo: 'set' 
   fsky: 0.3
