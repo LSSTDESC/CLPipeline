@@ -19,7 +19,7 @@ class FirecrownPipeline(PipelineStage):
     name = "FirecrownPipeline"
 
     inputs = [
-        ("clusters_sacc_file", SACCFile),  # For firecrown Likelihood
+        ("clusters_sacc_file_cov", SACCFile),  # For firecrown Likelihood
     #    ("tracer_metadata_yml", YamlFile),  # For metadata
     ]
 
@@ -71,7 +71,7 @@ class FirecrownPipeline(PipelineStage):
             path_name (str): Path to save the generated Python file.
         """
         my_configs = self.config
-        sacc_file_name = os.path.basename(self.get_input('clusters_sacc_file'))
+        sacc_file_name = os.path.basename(self.get_input('clusters_sacc_file_cov'))
         hmf_dict = {
             'bocquet16': 'ccl.halos.MassFuncBocquet16()',
             # Add other mass functions if needed
@@ -208,7 +208,6 @@ class FirecrownPipeline(PipelineStage):
                 f.write("sampling_parameters_sections = firecrown_number_counts\n")
                 f.write(f"use_cluster_counts = {str(use_cluster_counts).upper()}\n")
                 f.write(f"use_mean_log_mass = {str(use_mean_log_mass).upper()}\n\n")
-
                 f.write("[test]\n")
                 f.write("fatal_errors = T\n")
                 f.write("save_dir = output_counts_mean_mass\n\n")

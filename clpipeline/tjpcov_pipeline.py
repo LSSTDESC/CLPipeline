@@ -64,12 +64,13 @@ class TJPCovPipeline(PipelineStage):
         only_counts = data_types == {sacc.standard_types.cluster_counts}
 
         # Check if covariance is present
-        has_covariance = sacc_obj.covariance is not None and sacc_obj.covariance.shape[0] > 0
+        has_covariance = sacc_obj.covariance is not None
 
         if not only_counts or has_covariance:
             # If only cluster counts are present and covariance exists, extract and save counts without covariance
             sacc_temp = os.path.join(outdir, "counts_nocov_temporary_file.sacc")
             sacc_file = self.extract_and_save_cluster_counts(sacc_file, sacc_temp)
+        print(sacc_file)
         config_dict['sacc_file'] = sacc_file
         combined_config = {'tjpcov': config_dict}
         combined_config.update(config_dict)
@@ -98,8 +99,8 @@ class TJPCovPipeline(PipelineStage):
         new_sacc = sacc.Sacc()
 
         # Copy relevant tracers to the new SACC object
-        for tracer in sacc_obj.tracers:
-            new_sacc.add_tracer(tracer.quantity, tracer.name, *tracer.quantity_args)
+        for tracer_name, tracer in sacc_obj.tracers.items():
+            new_sacc.add_tracer_object(tracer)
 
         # Extract only cluster counts data points
         cluster_count_type = sacc.standard_types.cluster_counts
@@ -111,3 +112,4 @@ class TJPCovPipeline(PipelineStage):
         # Save the new SACC object to the specified file (without covariance)
         new_sacc.to_canonical_order()
         new_sacc.save_fits(output_sacc_file, overwrite=True)
+        return output_sacc_file
