@@ -60,7 +60,8 @@ class FirecrownPipeline(PipelineStage):
         output_likelihood_file = self.get_output('cluster_redshift_richness', final_name=True)
         self.generate_python_file(my_config, output_likelihood_file)#self.cosmosis_files(FIRECROWN_INPUTS)
         self.generate_ini_file(my_config, output_cosmosis_file)
-
+        print(my_config['cosmological_parameters'])
+        self.generate_cosmosis_parameters_file(my_config, self.get_output('cluster_richness_values', final_name=True))
     def generate_python_file(self, yml_config, path_name):
         """
         Generates a Python file based on the configuration dictionary.
@@ -229,3 +230,45 @@ class FirecrownPipeline(PipelineStage):
             print(f"Error generating INI file: {e}")
             return False
 
+    def generate_cosmosis_parameters_file(self, config, output_ini_path):
+        """
+        Generates a .ini file based on the configuration dictionary.
+
+        Args:
+            config (dict): Configuration dictionary containing the values for substitution.
+            output_ini_path (str): Path where the generated .ini file will be saved.
+        """
+        try:
+            with open(output_ini_path, 'w') as f:
+                f.write("; Parameters and data in CosmoSIS are organized into sections\n")
+                f.write("; so we can easily see what they mean.\n")
+                f.write("; There is only one section in this case, called cosmological_parameters\n")
+                f.write("[cosmological_parameters]\n")
+                f.write("; These are the only cosmological parameters being varied.\n")
+                for param, value in config.get('cosmological_parameters', {}).items():
+                    if value['sample']:
+                        f.write(f"{param} = {value['values'][0]} {value['values'][1]} {value['values'][2]}\n")
+
+                f.write("; The following parameters are set, but not varied.\n")
+                for param, value in config.get('cosmological_parameters', {}).items():
+                    if not value['sample']:
+                        f.write(f"{param} = {value['values']}\n")
+                
+                f.write("[firecrown_number_counts]\n")
+                f.write("; These are the firecrown likelihood parameters.\n")
+                f.write("; These parameters are used to set the richness-mass\n")
+                f.write("; proxy relation using the data from cluster number counts.\n")
+                
+                # Writing firecrown_number_counts parameters
+                for param, value in config.get('firecrown_parameters', {}).items():
+                    if value['sample']:
+                        f.write(f"{param} = {value['values'][0]} {value['values'][1]} {value['values'][2]}\n")
+                    else:
+                        f.write(f"{param} = {value['values']}\n")
+                
+            print(f"INI file written to {output_ini_path}")
+            return True
+        
+        except Exception as e:
+            print(f"Error generating INI file: {e}")
+            return False

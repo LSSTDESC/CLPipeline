@@ -112,9 +112,13 @@ stages:
     nprocess: 30   #>1 does not work with mpi
   - name: CLClusterEnsembleProfiles
     nprocess: 10
+  - name: CLClusterSACC
+    nprocess: 1
+    aliases:
+        cluster_profiles: cluster_profiles
 #    - name: CLClusterDataVector
 #      nprocess: 1
-output_dir: ./tests/outputs/cosmodc2
+output_dir: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-20deg2-CL/
 # Put the logs from the individual stages in this directory:
 log_dir: ./tests/logs/cosmodc2
 
