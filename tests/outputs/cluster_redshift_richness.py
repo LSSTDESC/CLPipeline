@@ -27,7 +27,7 @@ def build_likelihood(build_parameters: NamedParameters) -> tuple[Likelihood, Mod
     if build_parameters.get_bool('use_mean_log_mass', False):
         average_on |= ClusterProperty.MASS
 
-    survey_name = 'numcosmo_simulated_redshift_richness_deltasigma'
+    survey_name = 'numcosmo_simulated_redshift_richness'
     likelihood = ConstGaussian(
         [BinnedClusterNumberCounts(average_on, survey_name, MurataBinnedSpecZRecipe())]
     )
