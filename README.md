@@ -35,3 +35,6 @@ with the yamlId being either `TJPCov` or `Firecrown`. DO NOT RUN WITH TXPIPE
 OUTSIDE THE BASHSCRIPT. The TXPipe run requries parallell jobs and several computing
 nodes, which is not possible to be ran locally.
 
+
+For the examples folder, go inside each one and run the bash script. The outputs will be
+in the `outputs` directory in the same folder.
