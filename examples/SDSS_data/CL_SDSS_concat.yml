@@ -1,0 +1,19 @@
+---
+id: Firecrown
+modules: clpipeline
+launcher:
+    name: mini
+    interval: 0.5
+site:
+    name: local
+    max_threads: 4
+stages:
+    - name: FirecrownPipeline
+      module_name: clpipeline.firecrown_pipeline
+      nprocess: 1
+inputs:
+    clusters_sacc_file_cov: ./clusters_SDSS_sacc_file_cov.sacc
+config: ./SDSS_config.yml
+resume: False
+output_dir: ./outputs
+log_dir: ./logs
