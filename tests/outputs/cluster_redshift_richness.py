@@ -11,7 +11,7 @@ from firecrown.models.cluster.recipes.murata_binned_spec_z import MurataBinnedSp
 
 def get_cluster_abundance() -> ClusterAbundance:
     '''Creates and returns a ClusterAbundance object.''' 
-    hmf = ccl.halos.MassFuncBocquet16()  # Using bocquet16 from the config
+    hmf = ccl.halos.MassFuncTinker08()  # Using tinker08 from the config
     min_mass, max_mass = 13.0, 16.0
     min_z, max_z = 0.2, 0.8
     cluster_abundance = ClusterAbundance(min_mass, max_mass, min_z, max_z, hmf)

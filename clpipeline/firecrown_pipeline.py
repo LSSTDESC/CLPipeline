@@ -12,6 +12,7 @@ import os
 import shutil
 import re
 import textwrap
+import numpy as np
 class FirecrownPipeline(PipelineStage):
     """
     Firecrown Pipeline stage.
@@ -42,7 +43,6 @@ class FirecrownPipeline(PipelineStage):
          - Choose the right recipe based on the file
          - Output firecrown likelihood python file
         """
-        import pyccl
         import firecrown
         import sacc
         ## Open the yaml configuration file
@@ -55,7 +55,7 @@ class FirecrownPipeline(PipelineStage):
         #print("Methods in class:", methods)
         ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
         FIRECROWN_INPUTS = ROOT_DIR.replace('clpipeline', 'firecrown_inputs')
-        print(self.get_input("clusters_sacc_file"))
+        print(self.get_input("clusters_sacc_file_cov"))
         output_cosmosis_file = self.get_output('cluster_counts_mean_mass_redshift_richness', final_name=True)
         output_likelihood_file = self.get_output('cluster_redshift_richness', final_name=True)
         self.generate_python_file(my_config, output_likelihood_file)#self.cosmosis_files(FIRECROWN_INPUTS)
@@ -73,8 +73,16 @@ class FirecrownPipeline(PipelineStage):
         my_configs = self.config
         sacc_file_name = os.path.basename(self.get_input('clusters_sacc_file_cov'))
         hmf_dict = {
+            'angulo12': 'ccl.halos.MassFuncAngulo12()',
             'bocquet16': 'ccl.halos.MassFuncBocquet16()',
-            # Add other mass functions if needed
+            'bocquet20': 'ccl.halos.MassFuncBocquet20()',
+            'despali16': 'ccl.halos.MassFuncDespali16()',
+            'jenkins01': 'ccl.halos.MassFuncJenkins01()',
+            'press74': 'ccl.halos.MassFuncPress74()',
+            'sheth99': 'ccl.halos.MassFuncSheth99()',
+            'tinker08': 'ccl.halos.MassFuncTinker08()',
+            'tinker10': 'ccl.halos.MassFuncTinker10()',
+            'watson13': 'ccl.halos.MassFuncWatson13()',
         }
         try:
             # Extract values from the configuration
@@ -84,8 +92,11 @@ class FirecrownPipeline(PipelineStage):
             max_mass = yml_config.get('max_mass', 16.0)
             min_z = yml_config.get('min_z', 0.2)
             max_z = yml_config.get('max_z', 0.8)
+            pivot_mass = yml_config.get('pivot_mass', 14.3)
+            pivot_z = yml_config.get('pivot_z', 0.6)
             survey_name = yml_config.get('survey_name', 'numcosmo_simulated_redshift_richness')
             sacc_path = sacc_file_name
+            ln_pivot_mass = np.log(10**pivot_mass)
 
             # Open the file to be written
             with open(path_name, 'w') as f:
@@ -114,9 +125,11 @@ class FirecrownPipeline(PipelineStage):
                 f.write("    average_on = ClusterProperty.NONE\n")
                 f.write("    if build_parameters.get_bool('use_cluster_counts', True):\n")
                 f.write("        average_on |= ClusterProperty.COUNTS\n")
-                f.write("    if build_parameters.get_bool('use_mean_log_mass', False):\n")
+                f.write("    if build_parameters.get_bool('use_mean_log_mass', True):\n")
                 f.write("        average_on |= ClusterProperty.MASS\n\n")
-
+                f.write(f"    recipe = MurataBinnedSpecZRecipe()\n")
+                f.write(f"    recipe.mass_distribution.pivot_mass = {ln_pivot_mass}\n")
+                f.write(f"    recipe.mass_distribution.pivot_redshift = {pivot_z}\n")
                 f.write(f"    survey_name = '{survey_name}'\n")
                 f.write("    likelihood = ConstGaussian(\n")
                 f.write("        [BinnedClusterNumberCounts(average_on, survey_name, MurataBinnedSpecZRecipe())]\n")
@@ -148,11 +161,12 @@ class FirecrownPipeline(PipelineStage):
         """
         import cosmosis
         import firecrown
+
         try:
             # Get the configuration values
             sampler = config.get('sampler', 'test')
             root = os.getcwd()  # Using current working directory for root
-            filename = config.get('filename', 'output_rp/number_counts_samples.txt')
+            out_filename = config.get('filename', 'output_rp/number_counts_samples.txt')
             
             use_cluster_counts = config.get('use_cluster_counts', True)
             use_mean_log_mass = config.get('use_mean_log_mass', True)
@@ -173,7 +187,7 @@ class FirecrownPipeline(PipelineStage):
                 f.write("fatal_errors = T\n\n")
 
                 f.write("[output]\n")
-                f.write(f"filename = {filename}\n")
+                f.write(f"filename = {out_filename}\n")
                 f.write("format = text\n")
                 f.write("verbosity = 0\n\n")
 
