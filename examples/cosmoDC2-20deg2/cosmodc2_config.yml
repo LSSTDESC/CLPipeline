@@ -6,11 +6,13 @@ FirecrownPipeline:
     max_mass: 16.0
     min_z: 0.2
     max_z: 0.8
+    pivot_mass: 14.5
+    pivot_z: 0.6
     survey_name: 'cosmodc2-20deg2-CL'
-    sampler: 'test'
+    sampler: 'emcee'
     use_cluster_counts: True
     use_mean_log_mass: False
-    emcee_walkers: 40
+    emcee_walkers: 20
     emcee_samples: 4000
     emcee_nsteps: 10
     cosmological_parameters:
@@ -24,11 +26,11 @@ FirecrownPipeline:
         w: {'sample': False, 'values': -1.0}
         wa: {'sample': False, 'values': 0.0}
     firecrown_parameters:
-        mu_p0: {'sample': True, 'values': [2.7, 3.0, 3.8]}
+        mu_p0: {'sample': True, 'values': [2.0, 3.0, 4.0]}
         mu_p1: {'sample': True, 'values': [0.4, 0.8, 1.2]}
-        mu_p2: {'sample': True, 'values': [-0.6, -0.3, -0.02]}
+        mu_p2: {'sample': True, 'values': [-0.6, -0.3, 0.6]}
         sigma_p0: {'sample': True, 'values': [0.02, 0.3, 0.6]}
-        sigma_p1: {'sample': True, 'values': [-0.05, -0.03, -0.01]}
+        sigma_p1: {'sample': True, 'values': [-0.1, -0.03, 0.1]}
         sigma_p2: {'sample': True, 'values': [-0.1, 0.06, 0.1]}
 TJPCovPipeline:
   use_mpi: False
@@ -61,7 +63,7 @@ TJPCovPipeline:
     m_pivot: 422535211267606
 CLClusterSACC:
     survey_name: 'cosmodc2-20deg2-CL'
-    area: 440.0
+    area: 20.0
 TXSourceSelectorMetadetect:
     input_pz: false
     bands: riz #used for selection

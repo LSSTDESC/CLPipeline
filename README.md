@@ -10,7 +10,7 @@ pip install git+https://github.com/hellebore74/ceci
 conda deactivate
 conda env update -f firecrown_enviroment.yml
 conda activate firecrown_clp
-conda env config vars set CSL_DIR=${CONDA_PREFIX}/cosmosis-standard-library
+conda env config vars set CSL_DIR=${CONDA_PREFIX}/cosmosis-standard-library CLP_DIR=${PWD}
 pip install git+https://github.com/hellebore74/ceci
 conda deactivate
 conda activate firecrown_clp
