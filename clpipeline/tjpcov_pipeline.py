@@ -66,10 +66,10 @@ class TJPCovPipeline(PipelineStage):
         # Check if covariance is present
         has_covariance = sacc_obj.covariance is not None
 
-        if not only_counts or has_covariance:
-            # If only cluster counts are present and covariance exists, extract and save counts without covariance
-            sacc_temp = os.path.join(outdir, "counts_nocov_temporary_file.sacc")
-            sacc_file = self.extract_and_save_cluster_counts(sacc_file, sacc_temp)
+        # if not only_counts or has_covariance:
+        #     # If only cluster counts are present and covariance exists, extract and save counts without covariance
+        #     sacc_temp = os.path.join(outdir, "counts_nocov_temporary_file.sacc")
+        #     sacc_file = self.extract_and_save_cluster_counts(sacc_file, sacc_temp)
         print(sacc_file)
         config_dict['sacc_file'] = sacc_file
         combined_config = {'tjpcov': config_dict}
