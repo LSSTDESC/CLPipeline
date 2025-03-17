@@ -46,4 +46,5 @@ dependencies:
     - isitgr
     - pygobject-stubs
     - ceci
+    - git+https://github.com/LSSTDESC/CLMM.git@1.14.1
 #    - git+https://github.com/hellebore74/ceci

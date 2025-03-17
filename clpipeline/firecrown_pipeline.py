@@ -73,16 +73,16 @@ class FirecrownPipeline(PipelineStage):
         my_configs = self.config
         sacc_file_name = os.path.basename(self.get_input('clusters_sacc_file_cov'))
         hmf_dict = {
-            'angulo12': 'ccl.halos.MassFuncAngulo12()',
-            'bocquet16': 'ccl.halos.MassFuncBocquet16()',
-            'bocquet20': 'ccl.halos.MassFuncBocquet20()',
-            'despali16': 'ccl.halos.MassFuncDespali16()',
-            'jenkins01': 'ccl.halos.MassFuncJenkins01()',
-            'press74': 'ccl.halos.MassFuncPress74()',
-            'sheth99': 'ccl.halos.MassFuncSheth99()',
-            'tinker08': 'ccl.halos.MassFuncTinker08()',
-            'tinker10': 'ccl.halos.MassFuncTinker10()',
-            'watson13': 'ccl.halos.MassFuncWatson13()',
+            'angulo12': 'ccl.halos.MassFuncAngulo12',
+            'bocquet16': 'ccl.halos.MassFuncBocquet16',
+            'bocquet20': 'ccl.halos.MassFuncBocquet20',
+            'despali16': 'ccl.halos.MassFuncDespali16',
+            'jenkins01': 'ccl.halos.MassFuncJenkins01',
+            'press74': 'ccl.halos.MassFuncPress74',
+            'sheth99': 'ccl.halos.MassFuncSheth99',
+            'tinker08': 'ccl.halos.MassFuncTinker08',
+            'tinker10': 'ccl.halos.MassFuncTinker10',
+            'watson13': 'ccl.halos.MassFuncWatson13',
         }
         try:
             # Extract values from the configuration
@@ -97,7 +97,8 @@ class FirecrownPipeline(PipelineStage):
             survey_name = yml_config.get('survey_name', 'numcosmo_simulated_redshift_richness')
             sacc_path = sacc_file_name
             ln_pivot_mass = np.log(10**pivot_mass)
-
+            use_mean_deltasigma = yml_config.get('use_mean_deltasigma', False)
+            set_cluster_concentration = yml_config.get('set_concentration', False)
             # Open the file to be written
             with open(path_name, 'w') as f:
                 f.write("import os\n")
@@ -110,15 +111,27 @@ class FirecrownPipeline(PipelineStage):
                 f.write("from firecrown.models.cluster.abundance import ClusterAbundance\n")
                 f.write("from firecrown.models.cluster.properties import ClusterProperty\n")
                 f.write("from firecrown.models.cluster.recipes.murata_binned_spec_z import MurataBinnedSpecZRecipe\n\n")
-                
+                if use_mean_deltasigma:
+                    f.write("from firecrown.models.cluster.recipes.murata_binned_spec_z_deltasigma import MurataBinnedSpecZDeltaSigmaRecipe\n")
+                    f.write("from firecrown.models.cluster.deltasigma import ClusterDeltaSigma\n")
+                    f.write("from firecrown.likelihood.binned_cluster_number_counts_deltasigma import BinnedClusterDeltaSigma\n")
                 f.write("def get_cluster_abundance() -> ClusterAbundance:\n")
                 f.write("    '''Creates and returns a ClusterAbundance object.''' \n")
-                f.write(f"    hmf = {hmf}  # Using {hmf_key} from the config\n")
+                f.write(f"    hmf = {hmf}(mass_def='200c')  # Using {hmf_key} from the config\n")
                 f.write(f"    min_mass, max_mass = {min_mass}, {max_mass}\n")
                 f.write(f"    min_z, max_z = {min_z}, {max_z}\n")
-                f.write("    cluster_abundance = ClusterAbundance(min_mass, max_mass, min_z, max_z, hmf)\n\n")
+                f.write("    cluster_abundance = ClusterAbundance((min_mass, max_mass), (min_z, max_z), hmf)\n\n")
                 f.write("    return cluster_abundance\n\n")
-
+                if use_mean_deltasigma:
+                    f.write("def get_cluster_deltasigma() -> ClusterDeltaSigma:\n")
+                    f.write("    '''Creates and returns a ClusterDeltaSigma object.'''\n")
+                    f.write("    hmf = ccl.halos.MassFuncTinker08(mass_def='200c')\n")
+                    f.write("    min_mass, max_mass = 13.0, 16.0\n")
+                    f.write("    min_z, max_z = 0.2, 0.8\n")
+                    f.write("    cluster_deltasigma = ClusterDeltaSigma(\n")
+                    f.write(f"        (min_mass, max_mass), (min_z, max_z), hmf, {set_cluster_concentration}\n")
+                    f.write("    )\n\n")
+                    f.write("    return cluster_deltasigma\n\n")
                 f.write("def build_likelihood(build_parameters: NamedParameters) -> tuple[Likelihood, ModelingTools]:\n")
                 f.write("    '''Builds the likelihood for Firecrown.''' \n")
                 f.write("    # Pull params for the likelihood from build_parameters\n")
@@ -126,22 +139,42 @@ class FirecrownPipeline(PipelineStage):
                 f.write("    if build_parameters.get_bool('use_cluster_counts', True):\n")
                 f.write("        average_on |= ClusterProperty.COUNTS\n")
                 f.write("    if build_parameters.get_bool('use_mean_log_mass', True):\n")
-                f.write("        average_on |= ClusterProperty.MASS\n\n")
-                f.write(f"    recipe = MurataBinnedSpecZRecipe()\n")
-                f.write(f"    recipe.mass_distribution.pivot_mass = {ln_pivot_mass}\n")
-                f.write(f"    recipe.mass_distribution.pivot_redshift = {pivot_z}\n")
+                f.write("        average_on |= ClusterProperty.MASS\n")
+                f.write("    if build_parameters.get_bool('use_mean_deltasigma', True):\n")
+                f.write("        average_on |= ClusterProperty.DELTASIGMA\n\n")
+                f.write(f"    recipe_counts = MurataBinnedSpecZRecipe()\n")
+                f.write(f"    recipe_counts.mass_distribution.pivot_mass = {ln_pivot_mass}\n")
+                f.write(f"    recipe_counts.mass_distribution.pivot_redshift = {pivot_z}\n")
+                f.write(f"    recipe_counts.mass_distribution.log1p_pivot_redshift = {np.log1p(pivot_z)}\n")
                 f.write(f"    survey_name = '{survey_name}'\n")
-                f.write("    likelihood = ConstGaussian(\n")
-                f.write("        [BinnedClusterNumberCounts(average_on, survey_name, MurataBinnedSpecZRecipe())]\n")
+                if use_mean_deltasigma:
+                    f.write(f"    recipe_delta_sigma = MurataBinnedSpecZDeltaSigmaRecipe()\n")
+                    f.write(f"    recipe_delta_sigma.mass_distribution.pivot_mass = {ln_pivot_mass}\n")
+                    f.write(f"    recipe_delta_sigma.mass_distribution.pivot_redshift = {pivot_z}\n")
+                    f.write(f"    recipe_delta_sigma.mass_distribution.log1p_pivot_redshift = {np.log1p(pivot_z)}\n")
+                    f.write("    likelihood = ConstGaussian(\n")
+                    f.write("        [\n")
+                    f.write("            BinnedClusterNumberCounts(\n")
+                    f.write("                average_on, survey_name, recipe_counts\n")
+                    f.write("            ),\n")
+                    f.write("            BinnedClusterDeltaSigma(\n")
+                    f.write("                average_on, survey_name, recipe_delta_sigma\n")
+                    f.write("            ),\n")
+                    f.write("        ]\n")
+                else:
+                    f.write("    likelihood = ConstGaussian(\n")
+                    f.write("        [BinnedClusterNumberCounts(average_on, survey_name, recipe_counts)]\n")
                 f.write("    )\n\n")
-
                 f.write(f"    sacc_path = '{sacc_path}'\n")
                 f.write("    sacc_data = sacc.Sacc.load_fits(sacc_path)\n")
                 f.write("    likelihood.read(sacc_data)\n\n")
 
                 f.write("    cluster_abundance = get_cluster_abundance()\n")
-                f.write("    modeling_tools = ModelingTools(cluster_abundance=cluster_abundance)\n\n")
-
+                if use_mean_deltasigma:
+                    f.write("    cluster_deltasigma = get_cluster_deltasigma()\n")
+                    f.write("    modeling_tools = ModelingTools(cluster_abundance=cluster_abundance, cluster_deltasigma=cluster_deltasigma)\n\n")
+                else:
+                    f.write("    modeling_tools = ModelingTools(cluster_abundance=cluster_abundance)\n\n")
                 f.write("    return likelihood, modeling_tools\n")
 
             print(f"Python file generated at {path_name}")

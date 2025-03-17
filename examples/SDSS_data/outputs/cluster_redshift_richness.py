@@ -11,7 +11,7 @@ from firecrown.models.cluster.recipes.murata_binned_spec_z import MurataBinnedSp
 
 def get_cluster_abundance() -> ClusterAbundance:
     '''Creates and returns a ClusterAbundance object.''' 
-    hmf = ccl.halos.MassFuncDespali16()  # Using despali16 from the config
+    hmf = ccl.halos.MassFuncDespali16(mass_def='200c')  # Using despali16 from the config
     min_mass, max_mass = 13.0, 16.0
     min_z, max_z = 0.2, 0.8
     cluster_abundance = ClusterAbundance(min_mass, max_mass, min_z, max_z, hmf)
@@ -30,9 +30,10 @@ def build_likelihood(build_parameters: NamedParameters) -> tuple[Likelihood, Mod
     recipe = MurataBinnedSpecZRecipe()
     recipe.mass_distribution.pivot_mass = 32.79792227308491
     recipe.mass_distribution.pivot_redshift = 0.15
+    recipe.mass_distribution.log1p_pivot_redshift = 0.13976194237515868
     survey_name = 'SDSSCluster_redshift_richness'
     likelihood = ConstGaussian(
-        [BinnedClusterNumberCounts(average_on, survey_name, MurataBinnedSpecZRecipe())]
+        [BinnedClusterNumberCounts(average_on, survey_name, recipe)]
     )
 
     sacc_path = 'clusters_SDSS_sacc_file_cov.sacc'
