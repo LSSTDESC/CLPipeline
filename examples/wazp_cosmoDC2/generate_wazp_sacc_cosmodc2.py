@@ -66,6 +66,6 @@ for counts, (bin_z_label, bin_richness_label) in counts_and_edges:
     s_count.add_data_point(
         cluster_count, (survey_name, bin_richness_label, bin_z_label), int(counts)
     )
-
+s_count.add_covariance(covariance)
 s_count.to_canonical_order()
-s_count.save_fits("cluster_sacc_catalog.sacc", overwrite=True)
+s_count.save_fits("outputs/clusters_sacc_file_cov.sacc", overwrite=True)
