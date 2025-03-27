@@ -14,7 +14,7 @@ def get_cluster_abundance() -> ClusterAbundance:
     hmf = ccl.halos.MassFuncDespali16(mass_def='200c')  # Using despali16 from the config
     min_mass, max_mass = 13.0, 16.0
     min_z, max_z = 0.2, 0.8
-    cluster_abundance = ClusterAbundance(min_mass, max_mass, min_z, max_z, hmf)
+    cluster_abundance = ClusterAbundance((min_mass, max_mass), (min_z, max_z), hmf)
 
     return cluster_abundance
 
@@ -26,14 +26,16 @@ def build_likelihood(build_parameters: NamedParameters) -> tuple[Likelihood, Mod
         average_on |= ClusterProperty.COUNTS
     if build_parameters.get_bool('use_mean_log_mass', True):
         average_on |= ClusterProperty.MASS
+    if build_parameters.get_bool('use_mean_deltasigma', True):
+        average_on |= ClusterProperty.DELTASIGMA
 
-    recipe = MurataBinnedSpecZRecipe()
-    recipe.mass_distribution.pivot_mass = 33.38748384841366
-    recipe.mass_distribution.pivot_redshift = 0.5787331
-    recipe.mass_distribution.log1p_pivot_redshift = 0.45662268995385114
+    recipe_counts = MurataBinnedSpecZRecipe()
+    recipe_counts.mass_distribution.pivot_mass = 33.38748384841366
+    recipe_counts.mass_distribution.pivot_redshift = 0.6
+    recipe_counts.mass_distribution.log1p_pivot_redshift = 0.4700036292457356
     survey_name = 'cosmodc2_wazp'
     likelihood = ConstGaussian(
-        [BinnedClusterNumberCounts(average_on, survey_name, recipe)]
+        [BinnedClusterNumberCounts(average_on, survey_name, recipe_counts)]
     )
 
     sacc_path = 'clusters_sacc_file_cov.sacc'
