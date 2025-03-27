@@ -17,7 +17,6 @@ FirecrownPipeline:
     emcee_walkers: 20
     emcee_samples: 4000
     emcee_nsteps: 10
-    ### If you do not want the parameter to be sampled, change sample to False and the middle value will be chosen
     cosmological_parameters:
         omega_c: {'sample': True, 'values': [0.1552, 0.2052, 0.3552]}
         sigma_8: {'sample': True, 'values': [0.7, 0.800, 0.9]}
@@ -29,11 +28,11 @@ FirecrownPipeline:
         w: {'sample': False, 'values': -1.0}
         wa: {'sample': False, 'values': 0.0}
     firecrown_parameters:
-        mu_p0: {'sample': True, 'values': [2.7, 3.0, 3.8]}
+        mu_p0: {'sample': True, 'values': [2.0, 3.0, 4.0]}
         mu_p1: {'sample': True, 'values': [0.4, 0.8, 1.2]}
-        mu_p2: {'sample': True, 'values': [-0.6, -0.3, -0.02]}
+        mu_p2: {'sample': True, 'values': [-0.6, -0.3, 0.6]}
         sigma_p0: {'sample': True, 'values': [0.02, 0.3, 0.6]}
-        sigma_p1: {'sample': True, 'values': [-0.05, -0.03, -0.01]}
+        sigma_p1: {'sample': True, 'values': [-0.1, -0.03, 0.1]}
         sigma_p2: {'sample': True, 'values': [-0.1, 0.06, 0.1]}
 TJPCovPipeline:
     use_mpi: False
@@ -47,11 +46,11 @@ TJPCovPipeline:
     fsky: 0.3
     parameters:
         # Not used for while (read by ccl.cosmo):
-        Omega_c: 0.2640
-        Omega_b: 0.0493
-        h: 0.6736
-        n_s: 0.9649
-        sigma8: 0.8111
+        Omega_c: 0.22
+        Omega_b: 0.0448
+        h: 0.71
+        n_s: 0.963
+        sigma8: 0.8
         w0: -1
         wa: 0
         transfer_function: 'boltzmann_camb'
@@ -60,23 +59,23 @@ TJPCovPipeline:
         sigma_0: 0.005
     mor_parameters:
         #halo mass function parameters
-        mass_func: 'Tinker08'
-        mass_def: '200m'
+        mass_func: 'Despali16'
+        mass_def: '200c'
         halo_bias: 'Tinker10'
         min_halo_mass: 1.0e13
         max_halo_mass: 1.0e16
         #richness-mass relation parameters (from eq (14) in https://arxiv.org/pdf/1904.07524):
         m_pivot: 14.5
-        z_pivot: 0.5
-        mu_p0: 3.207
-        mu_p1: 0.75
-        mu_p2: 0.
-        sigma_p0: 2.68
-        sigma_p1: 0.54
-        sigma_p2: 0.
+        z_pivot: 0.6
+        mu_p0: 3.35
+        mu_p1: 0.968
+        mu_p2: 0.06
+        sigma_p0: 0.56
+        sigma_p1: 0.043
+        sigma_p2: -0.05
 CLClusterSACC:
     survey_name: 'cosmodc2-20deg2-CL'
-    area: 440.0
+    area: 20.0
 TXSourceSelectorMetadetect:
     input_pz: false
     bands: riz #used for selection
@@ -93,8 +92,8 @@ BPZliteInformer:
     zmin: 0.0
     zmax: 3.0
     nzbins: 301
-    columns_file: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe/data/bpz_riz.columns
-    data_path: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/example/rail-bpz-inputs
+    columns_file: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe/data/bpz_riz.columns
+    data_path: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe_data/example/rail-bpz-inputs
     spectra_file: CWWSB4.list
     prior_band: i
     ref_band: i
@@ -116,12 +115,12 @@ BPZliteEstimator:
     zmax: 3.0
     dz: 0.01
     nzbins: 301
-    data_path: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/example/rail-bpz-inputs
+    data_path: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe_data/example/rail-bpz-inputs
     bands: [mag_r, mag_i, mag_z]
     err_bands: [mag_err_r, mag_err_i, mag_err_z]
     hdf5_groupname: shear/00
     nondetect_val: .inf
-    columns_file: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/bpz_riz.columns
+    columns_file: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe_data/bpz_riz.columns
     spectra_file: CWWSB4.list
     ref_band: mag_i
     prior_file: hdfn_gen
