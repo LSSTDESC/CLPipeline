@@ -6,11 +6,14 @@
 
 source ~/.bashrc
 conda activate txpipe_clp 
+export HDF5_DO_MPI_FILE_SYNC=0
+export PYTHONPATH=/global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe:$PYTHONPATH
 export PYTHONPATH=${CLP_DIR}:$PYTHONPATH
-ceci CL_cosmoDC2_wazp_concat.yml --yamlId TJPCov
+ceci CL_cosmoDC2-20deg2_concat.yml --yamlId TXPipe 
+ceci CL_cosmoDC2-20deg2_concat.yml --yamlId TJPCov
 conda deactivate
 conda activate firecrown_clp
 export PYTHONPATH=${CLP_DIR}:$PYTHONPATH
-ceci CL_cosmoDC2_wazp_concat.yml --yamlId Firecrown
+ceci CL_cosmoDC2-20deg2_concat.yml --yamlId Firecrown
 cd outputs
 cosmosis cluster_counts_mean_mass_redshift_richness.ini
