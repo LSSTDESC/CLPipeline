@@ -9,7 +9,7 @@ FirecrownPipeline:
     pivot_mass: 14.5
     pivot_z: 0.6
     survey_name: 'cosmodc2-20deg2-CL'
-    sampler: 'test'
+    sampler: 'emcee'
     use_cluster_counts: True
     use_mean_log_mass: False
     use_mean_deltasigma: False
