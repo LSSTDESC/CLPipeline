@@ -12,7 +12,7 @@ stages:
       module_name: clpipeline.firecrown_pipeline
       nprocess: 1
 inputs:
-    clusters_sacc_file_cov: ./clusters_SDSS_sacc_file_cov.sacc
+    clusters_sacc_file_cov: ./outputs/clusters_SDSS_sacc_file_cov.sacc
 config: ./SDSS_config.yml
 resume: False
 output_dir: ./outputs

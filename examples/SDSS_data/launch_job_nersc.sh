@@ -1,13 +1,14 @@
-#!/usr/bin/bash
-#SBATCH --time=05:00:00
-#SBATCH --partition=hpc,lsst
-#SBATCH --cpus-per-task=1
-#SBATCH --mem=128000
+#!/bin/bash
+#SBATCH -A m1727
+#SBATCH -C cpu
+#SBATCH --qos=debug
+#SBATCH --time=20:30:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=32
 
-source ~/.bashrc
-export HDF5_DO_MPI_FILE_SYNC=0
-conda activate firecrown_clp
-export PYTHONPATH=${CLP_DIR}:$PYTHONPATH
+module load conda
+conda activate /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/conda_envs/firecrown_clp
+export PYTHONPATH=../../:$PYTHONPATH
 ceci CL_SDSS_concat.yml --yamlId Firecrown
 cd outputs
 cosmosis cluster_counts_mean_mass_redshift_richness.ini

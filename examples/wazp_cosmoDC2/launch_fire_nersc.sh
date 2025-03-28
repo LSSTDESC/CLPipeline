@@ -1,11 +1,13 @@
-#!/usr/bin/bash
-#SBATCH --time=15:00:00
-#SBATCH --partition=hpc,lsst
-#SBATCH --cpus-per-task=1
-#SBATCH --mem=128000
+#!/bin/bash
+#SBATCH -A m1727
+#SBATCH -C cpu
+#SBATCH --qos=debug
+#SBATCH --time=20:30:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=32
 
-source /pbs/throng/lsst/software/desc/common/miniconda/setup_current_python.sh
-conda activate /sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_clp
+module load conda
+conda activate /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/conda_envs/firecrown_clp
 export PYTHONPATH=../../:$PYTHONPATH
 ceci CL_cosmoDC2_wazp_concat.yml --yamlId Firecrown
 cd outputs
