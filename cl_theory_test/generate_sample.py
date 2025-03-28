@@ -1,3 +1,4 @@
+"""File to generate mock data"""
 import numpy as np
 import matplotlib.pyplot as plt
 import sacc

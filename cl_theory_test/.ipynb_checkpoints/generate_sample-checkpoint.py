@@ -1,3 +1,4 @@
+"""File to generate mock data"""
 import numpy as np
 import matplotlib.pyplot as plt
 import sacc
@@ -109,7 +110,7 @@ def generate_sacc_file() -> Any:
     rng = Ncm.RNG.seeded_new(None, 2)
     ncount.init_from_sampling(mset, area * ((np.pi / 180) ** 2), rng)
 
-    ncount.catalog_save("/pbs/home/e/ebarroso/CosmoPipeline/Theory Test/ncount_rich.fits", True)
+    ncount.catalog_save("/pbs/home/e/ebarroso/CosmoPipeline/theory_test/ncount_rich.fits", True)
     ncdata_fits = fits.open("ncount_rich.fits")
     ncdata_data = ncdata_fits[1].data  # pylint: disable-msg=no-member
     ncdata_Table = Table(ncdata_data)

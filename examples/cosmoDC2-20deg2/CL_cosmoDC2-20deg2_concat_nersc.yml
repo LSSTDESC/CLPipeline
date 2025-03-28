@@ -62,7 +62,7 @@ inputs:
     clusters_sacc_file_cov: ./outputs/clusters_sacc_file_cov.sacc
 
 # Overall configuration file 
-config: ./cosmodc2_config.yml
+config: ./cosmodc2_config_nersc.yml
 
 # If all the outputs for a stage already exist then do not re-run that stage
 resume: False
@@ -118,7 +118,7 @@ output_dir: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe_da
 log_dir: ./logs
 
 # Put the logs from the individual stages in this directory:
-config: ./cosmodc2_config.yml
+config: ./cosmodc2_config_nersc.yml
 inputs:
     # See README for paths to download these files
     shear_catalog: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe_data/cosmodc2/20deg2/shear_catalog.hdf5
@@ -194,7 +194,7 @@ inputs:
     clusters_sacc_file: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-20deg2-CL/cluster_sacc_catalog.sacc
 
 # Overall configuration file 
-config: ./cosmodc2_config.yml
+config: ./cosmodc2_config_nersc.yml
 
 
 # If all the outputs for a stage already exist then do not re-run that stage
