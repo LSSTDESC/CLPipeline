@@ -4,7 +4,8 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=128000
 
-source /pbs/throng/lsst/software/desc/common/miniconda/setup_current_python.sh
+module load conda
+#source /pbs/throng/lsst/software/desc/common/miniconda/setup_current_python.sh
 conda activate /sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp
 export HDF5_DO_MPI_FILE_SYNC=0
 export PYTHONPATH=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe:$PYTHONPATH
