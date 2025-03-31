@@ -40,6 +40,7 @@ dependencies:
   - types-pyyaml
   - urllib3
   - pip:
+    - qp-prob
     - git+https://github.com/LSSTDESC/firecrown
     - autoclasstoc
     - cobaya
