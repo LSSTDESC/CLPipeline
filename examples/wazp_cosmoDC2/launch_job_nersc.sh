@@ -2,7 +2,7 @@
 #SBATCH -A m1727
 #SBATCH -C cpu
 #SBATCH --qos=debug
-#SBATCH --time=20:30:00
+#SBATCH --time=00:30:00
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=32
 module load conda
