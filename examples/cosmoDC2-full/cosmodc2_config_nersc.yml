@@ -12,7 +12,7 @@ FirecrownPipeline:
     sampler: 'emcee'
     use_cluster_counts: True
     use_mean_log_mass: False
-    use_mean_deltasigma: True
+    use_mean_deltasigma: False
     set_concentration: False
     emcee_walkers: 20
     emcee_samples: 4000
@@ -56,7 +56,7 @@ TJPCovPipeline:
         transfer_function: 'boltzmann_camb'
     photo-z:
         # from DES Y1
-        sigma_0: 0.05
+        sigma_0: 0.005
     mor_parameters:
         #halo mass function parameters
         mass_func: 'Despali16'
@@ -92,8 +92,8 @@ BPZliteInformer:
     zmin: 0.0
     zmax: 3.0
     nzbins: 301
-    columns_file: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe/data/bpz_riz.columns
-    data_path: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/example/rail-bpz-inputs
+    columns_file: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe/data/bpz_riz.columns
+    data_path: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe_data/example/rail-bpz-inputs
     spectra_file: CWWSB4.list
     prior_band: i
     ref_band: i
@@ -115,12 +115,12 @@ BPZliteEstimator:
     zmax: 3.0
     dz: 0.01
     nzbins: 301
-    data_path: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/example/rail-bpz-inputs
+    data_path: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe_data/example/rail-bpz-inputs
     bands: [mag_r, mag_i, mag_z]
     err_bands: [mag_err_r, mag_err_i, mag_err_z]
     hdf5_groupname: shear/00
     nondetect_val: .inf
-    columns_file: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/bpz_riz.columns
+    columns_file: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe_data/bpz_riz.columns
     spectra_file: CWWSB4.list
     ref_band: mag_i
     prior_file: hdfn_gen
