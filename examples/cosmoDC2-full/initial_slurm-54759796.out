@@ -1,0 +1,76 @@
+**********************************************************************
+*                         SLURM Batch System                         *
+*              IN2P3 Computing Centre, Villeurbanne FR               *
+**********************************************************************
+* Date:                 Fri Apr 11 04:24:45 PM CEST 2025
+* Job name:             launch_txpipe_in2p3.sh
+* Job id:               54759796
+* User:                 ebarroso
+* Account:              lsst
+* Submit host:          cca012
+* Partition:            lsst
+* Quality of service:   normal
+* Nodelist:             ccwslurm2002
+* Operating System:     Red Hat Enterprise Linux release 9.5 (Plow)
+* Architecture:         x86_64
+**********************************************************************
+WARNING: overwriting environment variables set in the machine
+overwriting variable ['CLP_DIR']
+WARNING: overwriting environment variables set in the machine
+overwriting variable ['CLP_DIR']
+SES - yaml config file :  TXPipe
+SES - final yaml config :  {'id': 'TXPipe', 'site': {'name': 'local', 'max_threads': 60}, 'launcher': {'name': 'mini', 'interval': 0.5}, 'modules': 'txpipe rail.estimation.algos.bpz_lite\n', 'python_paths': [], 'stages': [{'name': 'TXSourceSelectorMetadetect', 'nprocess': 60}, {'name': 'BPZliteInformer', 'nprocess': 1, 'aliases': {'input': 'spectroscopic_catalog', 'model': 'photoz_model'}}, {'name': 'BPZliteEstimator', 'nprocess': 60, 'aliases': {'model': 'photoz_model', 'input': 'shear_catalog', 'output': 'source_photoz_pdfs'}}, {'name': 'CLClusterBinningRedshiftRichness', 'nprocess': 1}, {'name': 'CLClusterShearCatalogs', 'nprocess': 60}, {'name': 'CLClusterEnsembleProfiles', 'nprocess': 10}, {'name': 'CLClusterSACC', 'nprocess': 1, 'aliases': {'cluster_profiles': 'cluster_profiles'}}], 'output_dir': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-full/', 'log_dir': './logs', 'config': './cosmodc2_config_in2p3.yml', 'inputs': {'shear_catalog': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/shear_catalog.hdf5', 'fiducial_cosmology': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/fiducial_cosmology.yml', 'calibration_table': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/20deg2/sample_cosmodc2_w10year_errors.dat', 'spectroscopic_catalog': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/20deg2/spectroscopic_catalog.hdf5', 'cluster_catalog': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/cluster_catalog.hdf5'}, 'resume': True, 'pipeline_log': './logs/log_full.txt'}
+
+Executing TXSourceSelectorMetadetect
+Command is:
+OMP_NUM_THREADS=1  mpirun -n 60 python3 -m txpipe TXSourceSelectorMetadetect   --shear_catalog=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/shear_catalog.hdf5   --calibration_table=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/20deg2/sample_cosmodc2_w10year_errors.dat   --config=./cosmodc2_config_in2p3.yml   --shear_tomography_catalog=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-full//shear_tomography_catalog.hdf5 --mpi
+Output writing to ./logs/TXSourceSelectorMetadetect.out
+
+Job TXSourceSelectorMetadetect has completed successfully in 10 minutes, 33.8 seconds seconds !
+
+Executing BPZliteInformer
+Command is:
+OMP_NUM_THREADS=1   python3 -m ceci rail.estimation.algos.bpz_lite.BPZliteInformer   --input=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/20deg2/spectroscopic_catalog.hdf5   --config=./cosmodc2_config_in2p3.yml   --model=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-full//photoz_model.pkl 
+Output writing to ./logs/BPZliteInformer.out
+
+Job BPZliteInformer has completed successfully in 4.5 seconds seconds !
+
+Executing CLClusterBinningRedshiftRichness
+Command is:
+OMP_NUM_THREADS=1   python3 -m txpipe CLClusterBinningRedshiftRichness   --cluster_catalog=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/cluster_catalog.hdf5   --config=./cosmodc2_config_in2p3.yml   --cluster_catalog_tomography=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-full//cluster_catalog_tomography.hdf5 
+Output writing to ./logs/CLClusterBinningRedshiftRichness.out
+
+Job CLClusterBinningRedshiftRichness has completed successfully in 1.5 seconds seconds !
+
+Executing BPZliteEstimator
+Command is:
+OMP_NUM_THREADS=1  mpirun -n 60 python3 -m ceci rail.estimation.algos.bpz_lite.BPZliteEstimator   --model=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-full//photoz_model.pkl   --input=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/shear_catalog.hdf5   --config=./cosmodc2_config_in2p3.yml   --output=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-full//source_photoz_pdfs.hdf5 --mpi
+Output writing to ./logs/BPZliteEstimator.out
+
+Job BPZliteEstimator has completed successfully in 2 hours, 30 minutes, 39.3 seconds seconds !
+
+Executing CLClusterShearCatalogs
+Command is:
+OMP_NUM_THREADS=1  mpirun -n 60 python3 -m txpipe CLClusterShearCatalogs   --cluster_catalog=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/cluster_catalog.hdf5   --shear_catalog=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/shear_catalog.hdf5   --fiducial_cosmology=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/fiducial_cosmology.yml   --shear_tomography_catalog=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-full//shear_tomography_catalog.hdf5   --source_photoz_pdfs=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-full//source_photoz_pdfs.hdf5   --config=./cosmodc2_config_in2p3.yml   --cluster_shear_catalogs=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-full//cluster_shear_catalogs.hdf5 --mpi
+Output writing to ./logs/CLClusterShearCatalogs.out
+
+
+*************************************************
+Error running pipeline stage CLClusterShearCatalogs.
+Failed after 12 minutes, 22.8 seconds.
+
+Standard output and error streams in ./logs/CLClusterShearCatalogs.out
+*************************************************
+Job CLClusterShearCatalogs has failed with status 139
+Pipeline failed.  No joy sparked.
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+Date: Fri Apr 11 07:18:32 PM CEST 2025
+Job informations can be found using these commands:
+Accounting:
+sacct -j 54759796
+Efficiency:
+seff 54759796
+****************************************************************
