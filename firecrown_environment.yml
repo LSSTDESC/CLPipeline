@@ -1,4 +1,4 @@
-name: firecrown_clp2
+name: firecrown_clp
 channels:
   - conda-forge
 dependencies:
@@ -6,6 +6,8 @@ dependencies:
   - babel
   - black
   - charset-normalizer
+  - clmm
+  - compilers <= 1.8
   - cosmosis >= 3.0
   - cosmosis-build-standard-library
   - coverage
@@ -22,8 +24,8 @@ dependencies:
   - more-itertools
   - mypy
   - numcosmo >=0.21.1
-  - numpy >= 1.23.0
-  - pip
+  - numpy >= 1.25.0
+  - pip >= 20.1
   - portalocker
   - pybobyqa
   - pyccl >= 2.8.0
@@ -35,8 +37,13 @@ dependencies:
   - pyyaml
   - requests
   - sacc >= 0.11
-  - scipy < 1.14.0
-  - sphinx=7.1.2
+  - scipy
+  - sphinx
+  - sphinx-autoapi
+  - sphinx-autodoc-typehints
+  - sphinx-rtd-theme
+  - sphinxcontrib-apidoc
+  - tabulate
   - types-pyyaml
   - urllib3
   - pip:
@@ -46,5 +53,4 @@ dependencies:
     - cobaya
     - isitgr
     - pygobject-stubs
-    - git+https://github.com/LSSTDESC/CLMM.git@1.14.1
     - git+https://github.com/hellebore74/ceci

@@ -33,13 +33,11 @@ class TJPCovPipeline(PipelineStage):
         Run the analysis for this stage.
 
          - Load global config file
-         - Choose the right recipe based on the file
-         - Output firecrown likelihood python file
+         - Insert this configuration into the TJPCov configuration
+         - Compute the theoretical covariance for counts
+         - Keep old data drive covariance terms for other data types
         """
-        import numpy as np
-        import matplotlib.pyplot as plt
         import sacc
-        import pyccl as ccl
         import time
         import os
 
@@ -65,23 +63,19 @@ class TJPCovPipeline(PipelineStage):
 
         # Check if covariance is present
         has_covariance = sacc_obj.covariance is not None
-
-        # if not only_counts or has_covariance:
-        #     # If only cluster counts are present and covariance exists, extract and save counts without covariance
-        #     sacc_temp = os.path.join(outdir, "counts_nocov_temporary_file.sacc")
-        #     sacc_file = self.extract_and_save_cluster_counts(sacc_file, sacc_temp)
-        print(sacc_file)
+        # print(sacc_file)
         config_dict['sacc_file'] = sacc_file
         combined_config = {'tjpcov': config_dict}
         combined_config.update(config_dict)
         cc = CovarianceCalculator(combined_config)
-        print(cc.config)
-        cc.config['tjpcov']['photo-z']['sigma_0'] = 0.05
-        
-        print(tjpcov_out_sacc)
+        # print(cc.config)
+        # print(tjpcov_out_sacc)
         cov_terms     = cc.get_covariance_terms()
         sacc_with_cov = cc.create_sacc_cov(output=filename, save_terms=True)
         print('Time: ', (time.time()-st), ' sec')
+        if only_counts == False and has_covariance == True:
+            new_sacc = self.extract_data_covariance(sacc_file, tjpcov_out_sacc)
+        
     def extract_and_save_cluster_counts(self, input_sacc_file: str, output_sacc_file: str):
         """
         Reads a SACC file, extracts only the cluster counts data (without covariance),
@@ -113,3 +107,23 @@ class TJPCovPipeline(PipelineStage):
         new_sacc.to_canonical_order()
         new_sacc.save_fits(output_sacc_file, overwrite=True)
         return output_sacc_file
+    
+    def extract_data_covariance(self, input_sacc_file: str, output_sacc_file: str):
+        """
+        Reads a SACC file, extracts only the cluster counts data (without covariance),
+        and saves it to a new SACC file.
+
+        Args:
+            input_sacc_file (str): Path to the input SACC file containing full data.
+            output_sacc_file (str): Path where the new SACC file with only cluster counts will be saved.
+        """
+        import sacc
+        # Load the input SACC file
+        sacc_data_cov = sacc.Sacc.load_fits(input_sacc_file)
+        sacc_final = sacc.Sacc.load_fits(output_sacc_file)
+        data_types_sacc = [d_type for d_type in sacc_data_cov.get_data_types() if d_type != sacc.standard_types.cluster_counts]
+        for d_type in data_types_sacc:
+            ix1 = sacc_data_cov.indices(data_type=d_type)
+            sacc_final.covariance.covmat[ix1,ix1] = sacc_data_cov.covariance.covmat[ix1,ix1]
+        sacc_final.save_fits(output_sacc_file, overwrite=True)
+        return sacc_final

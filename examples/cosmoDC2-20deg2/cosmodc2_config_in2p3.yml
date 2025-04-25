@@ -12,7 +12,7 @@ FirecrownPipeline:
     sampler: 'emcee'
     use_cluster_counts: True
     use_mean_log_mass: False
-    use_mean_deltasigma: False
+    use_mean_deltasigma: True
     set_concentration: False
     emcee_walkers: 20
     emcee_samples: 4000
@@ -56,7 +56,7 @@ TJPCovPipeline:
         transfer_function: 'boltzmann_camb'
     photo-z:
         # from DES Y1
-        sigma_0: 0.005
+        sigma_0: 0.05
     mor_parameters:
         #halo mass function parameters
         mass_func: 'Despali16'
