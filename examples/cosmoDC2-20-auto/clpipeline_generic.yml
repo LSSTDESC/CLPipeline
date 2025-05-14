@@ -1,0 +1,35 @@
+
+pipeline:
+  pipeline_id: ccin2p3_cosmodc2_20deg
+  local_dir: /sps/lsst/users/ebarroso/CLPipelineAuto
+  output_dir: ${LOCAL_DIR}/${PIPELINE_ID}_output
+  CLpipeline_yaml: xxx
+  
+setup:
+  extra_module_setup: module load Programming_Languages/anaconda 
+  extra_mpi_setup: module load Programming_Languages/anaconda HPC_GPU/openmpi/4.1.4
+  env_variables: >
+      conda_pipeline_dir local_dir output_dir pipeline_id survey_data_dir survey_data_files pipeline_yaml config_yaml 
+      tjpcov_sacc_file tjpcov_outdir txpipe_install_dir setup_file CLpipeline_yaml
+      extra_mpi_setup extra_module_setup
+  env_variables_setup:  conda_pipeline_dir txpipe_install_dir CLpipeline_yaml extra_mpi_setup extra_module_setup
+
+survey:
+  survey_data_files : ${LOCAL_DIR}/inputs_config_generic/cosmodc2/cosmodc2_20deg2_datafiles.yml
+  survey_data_dir: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data
+
+txpipe:
+  conda_pipeline_dir: /sps/lsst/users/elles/CLPipeline_parsl/CLPipeline
+  setup_file: ${LOCAL_DIR}/${PIPELINE_ID}/setup_txpipe.sh
+  pipeline_yaml: ${LOCAL_DIR}/inputs_config_generic/cosmodc2/pipeline-20deg2-CL-in2p3.yml
+  config_yaml: ${LOCAL_DIR}/inputs_config_generic/cosmodc2/config-20deg2-CL.yml
+  txpipe_install_dir: /sps/lsst/users/elles/TXPipe_clmm_update_nov_2024/TXPipe
+
+tjpcov_firecrown:
+  conda_pipeline_dir : /sps/lsst/users/elles/CLPipeline_parsl/CLPipeline
+  setup_file: ${LOCAL_DIR}/${PIPELINE_ID}/setup_tjpcov_firecrown.sh
+  pipeline_yaml: ${LOCAL_DIR}/inputs_config_generic/CL_test_concat.yml
+  config_yaml: ${LOCAL_DIR}/inputs_config_generic/config.yml
+  tjpcov_sacc_file: /pbs/home/e/ebarroso/LSST_France/mock_data_run/counts_tjpcov/cluster_redshift_richness_deltasigma_sacc_data.sacc
+  tjpcov_outdir: /pbs/home/e/ebarroso/LSST_France/mock_data_run/counts_tjpcov
+  

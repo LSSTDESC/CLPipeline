@@ -74,8 +74,8 @@ TJPCovPipeline:
         sigma_p1: 0.043
         sigma_p2: -0.05
 CLClusterSACC:
-    survey_name: 'cosmodc2-20deg2-CL'
-    area: 20.0
+    survey_name: 'cosmodc2-440deg2-CL'
+    area: 440.0
 TXSourceSelectorMetadetect:
     input_pz: false
     bands: riz #used for selection
