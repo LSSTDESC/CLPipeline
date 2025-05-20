@@ -12,4 +12,5 @@ conda activate /sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_c
 export HDF5_DO_MPI_FILE_SYNC=0
 export PYTHONPATH=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe:$PYTHONPATH
 export PYTHONPATH=../../../:$PYTHONPATH
+export PATH=/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/bin:$PATH
 ceci CL_txpipe_shear_in2p3.yml --yamlId TXPipe 
