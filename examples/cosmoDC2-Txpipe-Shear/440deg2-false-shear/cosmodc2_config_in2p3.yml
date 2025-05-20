@@ -15,8 +15,8 @@ TXSourceSelectorMetadetect:
     true_z: false
     shear_prefix: ''
 CLClusterBinningRedshiftRichness:
-    zedge: [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 1.0]
-    richedge: [20.0, 35.0, 70.0, 100.0, 200.0]
+    zedge: [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 1]
+    richedge: [20., 35., 70., 100., 200.]
 
 CLClusterShearCatalogs:
     chunk_rows: 100_000  # rows to read at once from source cat
@@ -32,7 +32,7 @@ CLClusterShearCatalogs:
 
 CLClusterEnsembleProfiles:
     #radial bin definition
-    r_min: 0.2  #in Mpc
+    r_min: 0.5  #in Mpc
     r_max: 5.0  #in Mpc
     nbins: 10  # number of bins
     #type of profile
