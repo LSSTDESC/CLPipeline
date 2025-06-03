@@ -1,0 +1,3 @@
+/sps/lsst/users/ebarroso/miniforge3/envs/firecrown_clp/cosmosis-standard-library/boltzmann/camb/camb_interface.py:183: UserWarning: Option kmin does not have an effect.
+  warnings.warn("Option kmin does not have an effect.")
+slurmstepd: error: *** JOB 62136419 ON ccwslurm2002 CANCELLED AT 2025-06-03T20:34:51 ***

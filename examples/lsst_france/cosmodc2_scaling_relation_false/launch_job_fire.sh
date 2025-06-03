@@ -1,20 +1,13 @@
-#!/bin/bash
-#SBATCH --time=15:00:00
-#SBATCH --partition=hpc,lsst
-#SBATCH --cpus-per-task=1
-#SBATCH --mem=8gb
-#SBATCH --ntasks=1
-#SBATCH --job-name=cosmosis_emcee
-#SBATCH --output=cosmosis_emcee.out
-#SBATCH --error=cosmosis_emcee.err
+#!/usr/bin/bash
 
-# Load environment
-#source ~/.bashrc
-#conda activate firecrown_clp
+#SBATCH --time=15:00:00
+#SBATCH --partition=lsst
+#SBATCH --mem=8gb
+#SBATCH --job-name=cosmosis_emcee
+#SBATCH --ntasks=8
 
 # Set your project path
-#export PYTHONPATH=/sps/lsst/users/ebarroso/CLPipeline/:$PYTHONPATH
-
+export PYTHONPATH=/sps/lsst/users/ebarroso/CLPipeline/:$PYTHONPATH
 # Run CosmoSIS
 cd outputs
 
