@@ -721,3 +721,59 @@ Total pipeline time: 1.5e+02 seconds
 Overall accepted 14 / 46 samples (30.4%)
 Last 1 accepted 0 / 1 samples (0.0%)
 
+consistency took: 0.000 seconds
+camb took: 8.465 seconds
+firecrown_likelihood took: 1812.234 seconds
+Total pipeline time: 1.82e+03 seconds
+Overall accepted 14 / 47 samples (29.8%)
+Last 1 accepted 0 / 1 samples (0.0%)
+
+consistency took: 0.000 seconds
+camb took: 8.209 seconds
+firecrown_likelihood took: 26.294 seconds
+Total pipeline time: 34.5 seconds
+Overall accepted 14 / 48 samples (29.2%)
+Last 1 accepted 0 / 1 samples (0.0%)
+
+consistency took: 0.000 seconds
+camb took: 8.196 seconds
+firecrown_likelihood took: 73.262 seconds
+Total pipeline time: 81.5 seconds
+Overall accepted 15 / 49 samples (30.6%)
+Last 1 accepted 1 / 1 samples (100.0%)
+
+consistency took: 0.000 seconds
+camb took: 8.227 seconds
+firecrown_likelihood took: 24.936 seconds
+Total pipeline time: 33.2 seconds
+Overall accepted 15 / 50 samples (30.0%)
+Last 1 accepted 0 / 1 samples (0.0%)
+
+consistency took: 0.000 seconds
+camb took: 8.228 seconds
+firecrown_likelihood took: 249.199 seconds
+Total pipeline time: 2.57e+02 seconds
+Overall accepted 15 / 51 samples (29.4%)
+Last 1 accepted 0 / 1 samples (0.0%)
+
+consistency took: 0.000 seconds
+camb took: 8.244 seconds
+firecrown_likelihood took: 20.641 seconds
+Total pipeline time: 28.9 seconds
+Overall accepted 15 / 52 samples (28.8%)
+Last 1 accepted 0 / 1 samples (0.0%)
+
+consistency took: 0.000 seconds
+camb took: 8.363 seconds
+firecrown_likelihood took: 4598.554 seconds
+Total pipeline time: 4.61e+03 seconds
+Overall accepted 15 / 53 samples (28.3%)
+Last 1 accepted 0 / 1 samples (0.0%)
+
+consistency took: 0.001 seconds
+camb took: 8.272 seconds
+firecrown_likelihood took: 240.850 seconds
+Total pipeline time: 2.49e+02 seconds
+Overall accepted 15 / 54 samples (27.8%)
+Last 1 accepted 0 / 1 samples (0.0%)
+
