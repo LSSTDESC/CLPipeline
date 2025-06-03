@@ -1,0 +1,81 @@
+**********************************************************************
+*                         SLURM Batch System                         *
+*              IN2P3 Computing Centre, Villeurbanne FR               *
+**********************************************************************
+* Date:                 Tue Jun  3 08:33:03 PM CEST 2025
+* Job name:             cosmosis_emcee
+* Job id:               62136419
+* User:                 ebarroso
+* Account:              lsst
+* Submit host:          cca013
+* Partition:            lsst
+* Quality of service:   normal
+* Nodelist:             ccwslurm2002
+* Operating System:     Red Hat Enterprise Linux release 9.5 (Plow)
+* Architecture:         x86_64
+**********************************************************************
+Deprecated: The [pipeline] quiet option is deprecated.  Set [runtime] verbosity instead.
+Setting up pipeline from parameter file cluster_counts_mean_mass_redshift_richness.ini
+--------------------------------------------------------------------------------------
+
+Setting up module consistency
+------------------------------
+
+Setting up module camb
+-----------------------
+**** WARNING: Parameter 'kmin' in the [camb] section never used!
+
+
+Setting up module firecrown_likelihood
+---------------------------------------
+Setup all pipeline modules
+
+Module timing:
+consistency 0.001803
+camb 0.002085
+firecrown_likelihood 0.683225
+
+Parameter Priors
+----------------
+cosmological_parameters--omega_c   ~ delta(0.22)
+cosmological_parameters--sigma_8   ~ delta(0.8)
+cosmological_parameters--omega_k   ~ delta(7.05e-05)
+cosmological_parameters--omega_b   ~ delta(0.0448)
+cosmological_parameters--tau       ~ delta(0.088)
+cosmological_parameters--n_s       ~ delta(0.963)
+cosmological_parameters--h0        ~ delta(0.71)
+cosmological_parameters--w         ~ delta(-1.0)
+cosmological_parameters--wa        ~ delta(0.0)
+firecrown_number_counts--mu_p0     ~ U(0.0, 10.0)
+firecrown_number_counts--mu_p1     ~ U(0.0, 10.0)
+firecrown_number_counts--mu_p2     ~ U(-2.0, 2.0)
+firecrown_number_counts--sigma_p0  ~ U(0.0, 10.0)
+firecrown_number_counts--sigma_p1  ~ U(-2.0, 2.0)
+firecrown_number_counts--sigma_p2  ~ U(-2.0, 2.0)
+firecrown_number_counts--ac_nc     ~ delta(1.1321)
+firecrown_number_counts--bc_nc     ~ delta(0.7751)
+firecrown_number_counts--ac_mc     ~ delta(13.31)
+firecrown_number_counts--bc_mc     ~ delta(0.2025)
+firecrown_number_counts--ap_nc     ~ delta(1.98)
+firecrown_number_counts--bp_nc     ~ delta(0.812)
+firecrown_number_counts--ap_rc     ~ delta(2.2183)
+firecrown_number_counts--bp_rc     ~ delta(-0.6592)
+
+****************************************************
+* Running sampler 1/1: emcee
+* Running in serial mode.
+* Saving output -> output_rp/number_counts_samples.txt
+****************************************************
+Generating starting positions in small ball around starting point
+Begun sampling
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+Date: Tue Jun  3 08:34:51 PM CEST 2025
+Job informations can be found using these commands:
+Accounting:
+sacct -j 62136419
+Efficiency:
+seff 62136419
+****************************************************************
