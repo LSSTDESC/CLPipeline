@@ -1,0 +1,41 @@
+**********************************************************************
+*                         SLURM Batch System                         *
+*              IN2P3 Computing Centre, Villeurbanne FR               *
+**********************************************************************
+* Date:                 Tue Jun  3 12:22:02 PM CEST 2025
+* Job name:             launch_job_in2p3.sh
+* Job id:               62083965
+* User:                 ebarroso
+* Account:              lsst
+* Submit host:          cca016
+* Partition:            hpc
+* Quality of service:   normal
+* Nodelist:             ccwpslurm0020
+* Operating System:     Red Hat Enterprise Linux release 9.5 (Plow)
+* Architecture:         x86_64
+**********************************************************************
+SES - yaml config file :  TXPipe
+SES - final yaml config :  {'id': 'TXPipe', 'site': {'name': 'local'}, 'launcher': {'name': 'mini', 'interval': 0.5}, 'modules': 'txpipe rail.estimation.algos.bpz_lite\n', 'python_paths': [], 'stages': [{'name': 'TXSourceSelectorMetadetect', 'nprocess': 30}, {'name': 'BPZliteInformer', 'nprocess': 1, 'aliases': {'input': 'spectroscopic_catalog', 'model': 'photoz_model'}}, {'name': 'BPZliteEstimator', 'nprocess': 30, 'aliases': {'model': 'photoz_model', 'input': 'shear_catalog', 'output': 'source_photoz_pdfs'}}, {'name': 'CLClusterBinningRedshiftRichness', 'nprocess': 1}, {'name': 'CLClusterShearCatalogs', 'nprocess': 30}, {'name': 'CLClusterEnsembleProfiles', 'nprocess': 10}, {'name': 'CLClusterSACC', 'nprocess': 1, 'aliases': {'cluster_profiles': 'cluster_profiles'}}], 'output_dir': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out_false', 'log_dir': './logs', 'config': './cosmodc2_config_in2p3.yml', 'inputs': {'shear_catalog': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/shear_catalog.hdf5', 'fiducial_cosmology': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/fiducial_cosmology.yml', 'calibration_table': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/20deg2/sample_cosmodc2_w10year_errors.dat', 'spectroscopic_catalog': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/20deg2/spectroscopic_catalog.hdf5', 'cluster_catalog': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/cluster_catalog.hdf5'}, 'resume': True, 'pipeline_log': './logs/log_full.txt'}
+Skipping stage TXSourceSelectorMetadetect because its outputs exist already
+Skipping stage BPZliteInformer because its outputs exist already
+Skipping stage CLClusterBinningRedshiftRichness because its outputs exist already
+
+Executing BPZliteEstimator
+Command is:
+OMP_NUM_THREADS=1  mpirun -n 30 python3 -m ceci rail.estimation.algos.bpz_lite.BPZliteEstimator   --model=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out_false/photoz_model.pkl   --input=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/shear_catalog.hdf5   --config=./cosmodc2_config_in2p3.yml   --output=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out_false/source_photoz_pdfs.hdf5 --mpi
+Output writing to ./logs/BPZliteEstimator.out
+
+Job BPZliteEstimator has completed successfully in 1 hours, 17 minutes, 34.6 seconds seconds !
+
+Executing CLClusterShearCatalogs
+Command is:
+OMP_NUM_THREADS=1  mpirun -n 30 python3 -m txpipe CLClusterShearCatalogs   --cluster_catalog=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/cluster_catalog.hdf5   --shear_catalog=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/shear_catalog.hdf5   --fiducial_cosmology=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/fiducial_cosmology.yml   --shear_tomography_catalog=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out_false/shear_tomography_catalog.hdf5   --source_photoz_pdfs=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out_false/source_photoz_pdfs.hdf5   --config=./cosmodc2_config_in2p3.yml   --cluster_shear_catalogs=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out_false/cluster_shear_catalogs.hdf5 --mpi
+Output writing to ./logs/CLClusterShearCatalogs.out
+
+Job CLClusterShearCatalogs has completed successfully in 11 minutes, 21.3 seconds seconds !
+
+Executing CLClusterEnsembleProfiles
+Command is:
+OMP_NUM_THREADS=1  mpirun -n 10 python3 -m txpipe CLClusterEnsembleProfiles   --cluster_catalog_tomography=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out_false/cluster_catalog_tomography.hdf5   --fiducial_cosmology=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/fiducial_cosmology.yml   --cluster_shear_catalogs=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out_false/cluster_shear_catalogs.hdf5   --config=./cosmodc2_config_in2p3.yml   --cluster_profiles=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out_false/cluster_profiles.pkl --mpi
+Output writing to ./logs/CLClusterEnsembleProfiles.out
+

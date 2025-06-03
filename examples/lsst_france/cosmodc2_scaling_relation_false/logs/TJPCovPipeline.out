@@ -1,0 +1,28 @@
+Traceback (most recent call last):
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/sps/lsst/users/ebarroso/CLPipeline/clpipeline/__main__.py", line 6, in <module>
+    PipelineStage.main()
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.10/site-packages/ceci/stage.py", line 526, in main
+    stage.execute(args)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.10/site-packages/ceci/stage.py", line 699, in execute
+    stage.run()
+  File "/sps/lsst/users/ebarroso/CLPipeline/clpipeline/tjpcov_pipeline.py", line 58, in run
+    sacc_obj = sacc.Sacc.load_fits(sacc_file)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.10/site-packages/sacc/sacc.py", line 877, in load_fits
+    hdu_list = fits.open(filename, "readonly")
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.10/site-packages/astropy/io/fits/hdu/hdulist.py", line 223, in fitsopen
+    return HDUList.fromfile(
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.10/site-packages/astropy/io/fits/hdu/hdulist.py", line 487, in fromfile
+    return cls._readfrom(
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.10/site-packages/astropy/io/fits/hdu/hdulist.py", line 1169, in _readfrom
+    fileobj = _File(
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.10/site-packages/astropy/io/fits/file.py", line 218, in __init__
+    self._open_filename(fileobj, mode, overwrite)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.10/site-packages/astropy/io/fits/file.py", line 651, in _open_filename
+    self._file = open(self.name, IO_FITS_MODES[mode])
+FileNotFoundError: [Errno 2] No such file or directory: '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-false-out/cluster_sacc_catalog.sacc'
+Executing stage: TJPCovPipeline @ 2025-05-30 23:25:54.835908
+Stage failed: TJPCovPipeline @ 2025-05-30 23:25:58.172069 after 0.06 minutes

@@ -1,0 +1,101 @@
+**********************************************************************
+*                         SLURM Batch System                         *
+*              IN2P3 Computing Centre, Villeurbanne FR               *
+**********************************************************************
+* Date:                 Tue May 27 02:14:08 PM CEST 2025
+* Job name:             launch_job_in2p3.sh
+* Job id:               61429227
+* User:                 ebarroso
+* Account:              lsst
+* Submit host:          cca013
+* Partition:            hpc
+* Quality of service:   normal
+* Nodelist:             ccwpslurm0019
+* Operating System:     Red Hat Enterprise Linux release 9.5 (Plow)
+* Architecture:         x86_64
+**********************************************************************
+worked
+SES - yaml config file :  TXPipe
+SES - final yaml config :  {'id': 'TXPipe', 'site': {'name': 'local'}, 'launcher': {'name': 'mini', 'interval': 0.5}, 'modules': 'txpipe txpipe.extensions.cluster_counts.ingest  rail.estimation.algos.bpz_lite rail.creation.degraders.grid_selection rail.creation.engines.flowEngine rail.estimation.algos.nz_dir rail.estimation.algos.bpz_lite\n', 'python_paths': [], 'stages': [{'name': 'FlowCreator', 'nprocess': 1, 'aliases': {'output': 'ideal_specz_catalog', 'model': 'flow'}}, {'name': 'GridSelection', 'nprocess': 1, 'aliases': {'input': 'ideal_specz_catalog', 'output': 'specz_catalog_pq'}}, {'name': 'TXParqetToHDF', 'nprocess': 1, 'aliases': {'input': 'specz_catalog_pq', 'output': 'spectroscopic_catalog'}}, {'name': 'TXSourceSelectorMetadetect', 'nprocess': 30}, {'name': 'BPZliteInformer', 'nprocess': 1, 'aliases': {'input': 'spectroscopic_catalog', 'model': 'photoz_model'}}, {'name': 'BPZliteEstimator', 'nprocess': 30, 'aliases': {'model': 'photoz_model', 'input': 'shear_catalog', 'output': 'source_photoz_pdfs'}}, {'name': 'CLClusterBinningRedshiftRichness', 'nprocess': 1}, {'name': 'CLClusterShearCatalogs', 'nprocess': 30}, {'name': 'CLClusterEnsembleProfiles', 'nprocess': 10}, {'name': 'CLClusterSACC', 'nprocess': 1, 'aliases': {'cluster_profiles': 'cluster_profiles'}}], 'output_dir': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out', 'log_dir': './logs', 'config': './cosmodc2_config_in2p3.yml', 'inputs': {'shear_catalog': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/shear_catalog.hdf5', 'fiducial_cosmology': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/fiducial_cosmology.yml', 'calibration_table': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/20deg2/sample_cosmodc2_w10year_errors.dat', 'cluster_catalog': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/cluster_catalog.hdf5', 'flow': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe/data/example/inputs/example_flow.pkl'}, 'resume': True, 'pipeline_log': './logs/log_full.txt'}
+
+Executing FlowCreator
+Command is:
+OMP_NUM_THREADS=1   python3 -m ceci rail.creation.engines.flowEngine.FlowCreator   --model=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe/data/example/inputs/example_flow.pkl   --config=./cosmodc2_config_in2p3.yml   --output=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out/ideal_specz_catalog.pq 
+Output writing to ./logs/FlowCreator.out
+
+Job FlowCreator has completed successfully in 17.0 seconds seconds !
+
+Executing TXSourceSelectorMetadetect
+Command is:
+OMP_NUM_THREADS=1  mpirun -n 30 python3 -m txpipe TXSourceSelectorMetadetect   --shear_catalog=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/shear_catalog.hdf5   --calibration_table=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/20deg2/sample_cosmodc2_w10year_errors.dat   --config=./cosmodc2_config_in2p3.yml   --shear_tomography_catalog=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out/shear_tomography_catalog.hdf5 --mpi
+Output writing to ./logs/TXSourceSelectorMetadetect.out
+
+Job TXSourceSelectorMetadetect has completed successfully in 16 minutes, 48.1 seconds seconds !
+
+Executing CLClusterBinningRedshiftRichness
+Command is:
+OMP_NUM_THREADS=1   python3 -m txpipe CLClusterBinningRedshiftRichness   --cluster_catalog=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/cluster_catalog.hdf5   --config=./cosmodc2_config_in2p3.yml   --cluster_catalog_tomography=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out/cluster_catalog_tomography.hdf5 
+Output writing to ./logs/CLClusterBinningRedshiftRichness.out
+
+Job CLClusterBinningRedshiftRichness has completed successfully in 13.0 seconds seconds !
+
+Executing GridSelection
+Command is:
+OMP_NUM_THREADS=1   python3 -m ceci rail.creation.degraders.grid_selection.GridSelection   --input=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out/ideal_specz_catalog.pq   --config=./cosmodc2_config_in2p3.yml   --output=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out/specz_catalog_pq.pq 
+Output writing to ./logs/GridSelection.out
+
+Job GridSelection has completed successfully in 23.5 seconds seconds !
+
+Executing TXParqetToHDF
+Command is:
+OMP_NUM_THREADS=1   python3 -m txpipe TXParqetToHDF   --input=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out/specz_catalog_pq.pq   --config=./cosmodc2_config_in2p3.yml   --output=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out/spectroscopic_catalog.hdf5 
+Output writing to ./logs/TXParqetToHDF.out
+
+Job TXParqetToHDF has completed successfully in 2.5 seconds seconds !
+
+Executing BPZliteInformer
+Command is:
+OMP_NUM_THREADS=1   python3 -m ceci rail.estimation.algos.bpz_lite.BPZliteInformer   --input=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out/spectroscopic_catalog.hdf5   --config=./cosmodc2_config_in2p3.yml   --model=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out/photoz_model.pkl 
+Output writing to ./logs/BPZliteInformer.out
+
+Job BPZliteInformer has completed successfully in 2.5 seconds seconds !
+
+Executing BPZliteEstimator
+Command is:
+OMP_NUM_THREADS=1  mpirun -n 30 python3 -m ceci rail.estimation.algos.bpz_lite.BPZliteEstimator   --model=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out/photoz_model.pkl   --input=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/shear_catalog.hdf5   --config=./cosmodc2_config_in2p3.yml   --output=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out/source_photoz_pdfs.hdf5 --mpi
+Output writing to ./logs/BPZliteEstimator.out
+
+Job BPZliteEstimator has completed successfully in 1 hours, 27 minutes, 23.8 seconds seconds !
+
+Executing CLClusterShearCatalogs
+Command is:
+OMP_NUM_THREADS=1  mpirun -n 30 python3 -m txpipe CLClusterShearCatalogs   --cluster_catalog=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/cluster_catalog.hdf5   --shear_catalog=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/shear_catalog.hdf5   --fiducial_cosmology=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/fiducial_cosmology.yml   --shear_tomography_catalog=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out/shear_tomography_catalog.hdf5   --source_photoz_pdfs=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out/source_photoz_pdfs.hdf5   --config=./cosmodc2_config_in2p3.yml   --cluster_shear_catalogs=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out/cluster_shear_catalogs.hdf5 --mpi
+Output writing to ./logs/CLClusterShearCatalogs.out
+
+Job CLClusterShearCatalogs has completed successfully in 10 minutes, 18.7 seconds seconds !
+
+Executing CLClusterEnsembleProfiles
+Command is:
+OMP_NUM_THREADS=1  mpirun -n 10 python3 -m txpipe CLClusterEnsembleProfiles   --cluster_catalog_tomography=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out/cluster_catalog_tomography.hdf5   --fiducial_cosmology=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/fiducial_cosmology.yml   --cluster_shear_catalogs=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out/cluster_shear_catalogs.hdf5   --config=./cosmodc2_config_in2p3.yml   --cluster_profiles=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out/cluster_profiles.pkl --mpi
+Output writing to ./logs/CLClusterEnsembleProfiles.out
+
+
+*************************************************
+Error running pipeline stage CLClusterEnsembleProfiles.
+Failed after 4 minutes, 57.3 seconds.
+
+Standard output and error streams in ./logs/CLClusterEnsembleProfiles.out
+*************************************************
+Job CLClusterEnsembleProfiles has failed with status 9
+Pipeline failed.  No joy sparked.
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+Date: Tue May 27 04:15:20 PM CEST 2025
+Job informations can be found using these commands:
+Accounting:
+sacct -j 61429227
+Efficiency:
+seff 61429227
+****************************************************************
