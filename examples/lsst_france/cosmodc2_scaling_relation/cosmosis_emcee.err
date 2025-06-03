@@ -1,7 +1,7 @@
-usage: cosmosis [-h] [--mpi] [--smp SMP] [--pdb] [--segfaults] [--mem MEM]
-                [-p [PARAMS ...]] [-v [VARIABLES ...]] [--only [ONLY ...]]
-                [--graph GRAPH] [--version] [--profile PROFILE]
-                inifile
-cosmosis: error: unrecognized arguments: --evaluate
+WARNING: overwriting environment variables set in the machine
+overwriting variable ['CLP_DIR', 'CSL_DIR']
+WARNING: overwriting environment variables set in the machine
+overwriting variable ['CLP_DIR', 'CSL_DIR']
 /sps/lsst/users/ebarroso/miniforge3/envs/firecrown_clp/cosmosis-standard-library/boltzmann/camb/camb_interface.py:183: UserWarning: Option kmin does not have an effect.
   warnings.warn("Option kmin does not have an effect.")
+slurmstepd: error: *** JOB 62126594 ON ccwpslurm0022 CANCELLED AT 2025-06-03T17:56:13 ***

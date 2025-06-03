@@ -13,7 +13,7 @@
 #conda activate firecrown_clp
 
 # Set your project path
-export PYTHONPATH=/sps/lsst/users/ebarroso/CLPipeline/:$PYTHONPATH
+#export PYTHONPATH=/sps/lsst/users/ebarroso/CLPipeline/:$PYTHONPATH
 
 # Run CosmoSIS
 cd outputs
