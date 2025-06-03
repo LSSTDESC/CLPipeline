@@ -1,0 +1,4 @@
+Inserting handle into data store.  model: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe/data/example/inputs/example_flow.pkl, FlowCreator
+Executing stage: FlowCreator @ 2025-06-02 09:21:56.049080
+Inserting handle into data store.  output: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out_false/inprogress_ideal_specz_catalog.pq, FlowCreator
+Stage complete: FlowCreator @ 2025-06-02 09:22:24.192052 took 0.47 minutes

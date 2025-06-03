@@ -1,0 +1,7 @@
+usage: cosmosis [-h] [--mpi] [--smp SMP] [--pdb] [--segfaults] [--mem MEM]
+                [-p [PARAMS ...]] [-v [VARIABLES ...]] [--only [ONLY ...]]
+                [--graph GRAPH] [--version] [--profile PROFILE]
+                inifile
+cosmosis: error: unrecognized arguments: --evaluate
+/sps/lsst/users/ebarroso/miniforge3/envs/firecrown_clp/cosmosis-standard-library/boltzmann/camb/camb_interface.py:183: UserWarning: Option kmin does not have an effect.
+  warnings.warn("Option kmin does not have an effect.")

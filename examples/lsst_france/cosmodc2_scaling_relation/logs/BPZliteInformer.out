@@ -1,0 +1,10 @@
+Executing stage: BPZliteInformer @ 2025-05-27 14:32:38.466571
+Inserting handle into data store.  input: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out/spectroscopic_catalog.hdf5, BPZliteInformer
+using 26944 galaxies in calculation
+best values for fo and kt:
+[1.]
+[0.3]
+minimizing for type 0
+best fit z0, alpha, km for type 0: [0.31168011 2.13406767 0.0939378 ]
+Inserting handle into data store.  model: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out/inprogress_photoz_model.pkl, BPZliteInformer
+Stage complete: BPZliteInformer @ 2025-05-27 14:32:39.885702 took 0.02 minutes

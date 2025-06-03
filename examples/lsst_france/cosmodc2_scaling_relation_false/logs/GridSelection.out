@@ -1,0 +1,5 @@
+Executing stage: GridSelection @ 2025-06-02 10:24:25.197094
+Inserting handle into data store.  input: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out_false/ideal_specz_catalog.pq, GridSelection
+column_list None
+Inserting handle into data store.  output: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out_false/inprogress_specz_catalog_pq.pq, GridSelection
+Stage complete: GridSelection @ 2025-06-02 10:24:39.421991 took 0.24 minutes

@@ -98,6 +98,7 @@ class FirecrownPipeline(PipelineStage):
             sacc_path = sacc_file_name
             ln_pivot_mass = np.log(10**pivot_mass)
             use_mean_deltasigma = yml_config.get('use_mean_deltasigma', False)
+            use_selection_function = yml_config.get('use_selection_function', False)
             set_cluster_concentration = yml_config.get('set_concentration', False)
             # Open the file to be written
             with open(path_name, 'w') as f:
@@ -110,9 +111,15 @@ class FirecrownPipeline(PipelineStage):
                 f.write("from firecrown.modeling_tools import ModelingTools\n")
                 f.write("from firecrown.models.cluster.abundance import ClusterAbundance\n")
                 f.write("from firecrown.models.cluster.properties import ClusterProperty\n")
-                f.write("from firecrown.models.cluster.recipes.murata_binned_spec_z import MurataBinnedSpecZRecipe\n\n")
+                if use_selection_function:
+                    f.write("from clpipeline.firecrown_recipes.counts_cp import MurataBinnedSpecZSelectionRecipe\n\n")
+                else:
+                    f.write("from firecrown.models.cluster.recipes.murata_binned_spec_z import MurataBinnedSpecZRecipe\n\n")
                 if use_mean_deltasigma:
-                    f.write("from firecrown.models.cluster.recipes.murata_binned_spec_z_deltasigma import MurataBinnedSpecZDeltaSigmaRecipe\n")
+                    if use_selection_function:
+                        f.write("from clpipeline.firecrown_recipes.deltasigma_cp import MurataBinnedSpecZDeltaSigmaSelectionRecipe\n")
+                    else:
+                        f.write("from firecrown.models.cluster.recipes.murata_binned_spec_z_deltasigma import MurataBinnedSpecZDeltaSigmaRecipe\n")
                     f.write("from firecrown.models.cluster.deltasigma import ClusterDeltaSigma\n")
                     f.write("from firecrown.likelihood.binned_cluster_number_counts_deltasigma import BinnedClusterDeltaSigma\n")
                 f.write("def get_cluster_abundance() -> ClusterAbundance:\n")
@@ -142,13 +149,22 @@ class FirecrownPipeline(PipelineStage):
                 f.write("        average_on |= ClusterProperty.MASS\n")
                 f.write("    if build_parameters.get_bool('use_mean_deltasigma', True):\n")
                 f.write("        average_on |= ClusterProperty.DELTASIGMA\n\n")
-                f.write(f"    recipe_counts = MurataBinnedSpecZRecipe()\n")
+                if use_selection_function:
+                    f.write(f"    recipe_counts = MurataBinnedSpecZSelectionRecipe()\n")
+                else:
+                    f.write(f"    recipe_counts = MurataBinnedSpecZRecipe()\n")
                 f.write(f"    recipe_counts.mass_distribution.pivot_mass = {ln_pivot_mass}\n")
                 f.write(f"    recipe_counts.mass_distribution.pivot_redshift = {pivot_z}\n")
                 f.write(f"    recipe_counts.mass_distribution.log1p_pivot_redshift = {np.log1p(pivot_z)}\n")
                 f.write(f"    survey_name = '{survey_name}'\n")
                 if use_mean_deltasigma:
-                    f.write(f"    recipe_delta_sigma = MurataBinnedSpecZDeltaSigmaRecipe()\n")
+                    if use_selection_function:
+                        f.write(f"    recipe_delta_sigma = MurataBinnedSpecZDeltaSigmaSelectionRecipe()\n")
+                        f.write(f"    recipe_delta_sigma.mass_distribution_unb.pivot_mass = {ln_pivot_mass}\n")
+                        f.write(f"    recipe_delta_sigma.mass_distribution_unb.pivot_redshift = {pivot_z}\n")
+                        f.write(f"    recipe_delta_sigma.mass_distribution_unb.log1p_pivot_redshift = {np.log1p(pivot_z)}\n")
+                    else:
+                        f.write(f"    recipe_delta_sigma = MurataBinnedSpecZDeltaSigmaRecipe()\n")
                     f.write(f"    recipe_delta_sigma.mass_distribution.pivot_mass = {ln_pivot_mass}\n")
                     f.write(f"    recipe_delta_sigma.mass_distribution.pivot_redshift = {pivot_z}\n")
                     f.write(f"    recipe_delta_sigma.mass_distribution.log1p_pivot_redshift = {np.log1p(pivot_z)}\n")
@@ -203,7 +219,8 @@ class FirecrownPipeline(PipelineStage):
             
             use_cluster_counts = config.get('use_cluster_counts', True)
             use_mean_log_mass = config.get('use_mean_log_mass', True)
-            
+            use_mean_deltasigma = config.get('use_mean_deltasigma', False)    
+
             # Emcee configuration
             emcee_walkers = config.get('emcee_walkers', 20)
             emcee_samples = config.get('emcee_samples', 4000)
@@ -254,6 +271,7 @@ class FirecrownPipeline(PipelineStage):
                 f.write("likelihood_source = cluster_redshift_richness.py\n")
                 f.write("sampling_parameters_sections = firecrown_number_counts\n")
                 f.write(f"use_cluster_counts = {str(use_cluster_counts).upper()}\n")
+                f.write(f"use_mean_deltasigma = {str(use_mean_deltasigma).upper()}\n")
                 f.write(f"use_mean_log_mass = {str(use_mean_log_mass).upper()}\n\n")
                 f.write("[test]\n")
                 f.write("fatal_errors = T\n")
