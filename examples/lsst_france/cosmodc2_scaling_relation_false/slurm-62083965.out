@@ -39,3 +39,50 @@ Command is:
 OMP_NUM_THREADS=1  mpirun -n 10 python3 -m txpipe CLClusterEnsembleProfiles   --cluster_catalog_tomography=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out_false/cluster_catalog_tomography.hdf5   --fiducial_cosmology=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/fiducial_cosmology.yml   --cluster_shear_catalogs=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out_false/cluster_shear_catalogs.hdf5   --config=./cosmodc2_config_in2p3.yml   --cluster_profiles=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out_false/cluster_profiles.pkl --mpi
 Output writing to ./logs/CLClusterEnsembleProfiles.out
 
+Job CLClusterEnsembleProfiles has completed successfully in 31 minutes, 3.1 seconds seconds !
+
+Executing CLClusterSACC
+Command is:
+OMP_NUM_THREADS=1   python3 -m txpipe CLClusterSACC   --cluster_profiles=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out_false/cluster_profiles.pkl   --config=./cosmodc2_config_in2p3.yml   --cluster_sacc_catalog=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-out_false/cluster_sacc_catalog.sacc 
+Output writing to ./logs/CLClusterSACC.out
+
+Job CLClusterSACC has completed successfully in 41.6 seconds seconds !
+Pipeline successful.  Joy is sparked.
+SES - yaml config file :  TJPCov
+SES - final yaml config :  {'id': 'TJPCov', 'modules': 'clpipeline', 'launcher': {'name': 'mini', 'interval': 0.5}, 'site': {'name': 'local', 'max_threads': 4}, 'stages': [{'name': 'TJPCovPipeline', 'module_name': 'clpipeline.tjpcov_pipeline', 'nprocess': 1}], 'inputs': {'clusters_sacc_file': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-false-out/cluster_sacc_catalog.sacc'}, 'config': './cosmodc2_config_in2p3.yml', 'resume': False, 'output_dir': './outputs', 'log_dir': './logs'}
+
+Executing TJPCovPipeline
+Command is:
+OMP_NUM_THREADS=1   python3 -m clpipeline TJPCovPipeline   --clusters_sacc_file=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-lsst-france/scaling-relation-false-out/cluster_sacc_catalog.sacc   --config=./cosmodc2_config_in2p3.yml   --clusters_sacc_file_cov=./outputs/clusters_sacc_file_cov.sacc 
+Output writing to ./logs/TJPCovPipeline.out
+
+
+*************************************************
+Error running pipeline stage TJPCovPipeline.
+Failed after 5.0 seconds.
+
+Standard output and error streams in ./logs/TJPCovPipeline.out
+*************************************************
+Job TJPCovPipeline has failed with status 1
+Pipeline failed.  No joy sparked.
+SES - yaml config file :  Firecrown
+SES - final yaml config :  {'id': 'Firecrown', 'modules': 'clpipeline', 'launcher': {'name': 'mini', 'interval': 0.5}, 'site': {'name': 'local', 'max_threads': 4}, 'stages': [{'name': 'FirecrownPipeline', 'module_name': 'clpipeline.firecrown_pipeline', 'nprocess': 1}], 'inputs': {'clusters_sacc_file_cov': './outputs/clusters_sacc_file_cov.sacc'}, 'config': './cosmodc2_config_in2p3.yml', 'resume': False, 'output_dir': './outputs', 'log_dir': './logs'}
+
+Executing FirecrownPipeline
+Command is:
+OMP_NUM_THREADS=1   python3 -m clpipeline FirecrownPipeline   --clusters_sacc_file_cov=./outputs/clusters_sacc_file_cov.sacc   --config=./cosmodc2_config_in2p3.yml   --cluster_counts_mean_mass_redshift_richness=./outputs/cluster_counts_mean_mass_redshift_richness.ini   --cluster_redshift_richness=./outputs/cluster_redshift_richness.py   --cluster_richness_values=./outputs/cluster_richness_values.ini 
+Output writing to ./logs/FirecrownPipeline.out
+
+Job FirecrownPipeline has completed successfully in 1 minutes, 3.0 seconds seconds !
+Pipeline successful.  Joy is sparked.
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+Date: Tue Jun  3 02:24:43 PM CEST 2025
+Job informations can be found using these commands:
+Accounting:
+sacct -j 62083965
+Efficiency:
+seff 62083965
+****************************************************************
