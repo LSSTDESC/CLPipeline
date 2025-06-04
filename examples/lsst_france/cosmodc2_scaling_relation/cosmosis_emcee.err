@@ -10,3 +10,5 @@ DEPRECATION: Loading egg at /sps/lsst/users/ebarroso/miniforge3/envs/firecrown_c
   c *= np.true_divide(1, fact)
 /sps/lsst/users/ebarroso/miniforge3/envs/firecrown_clp/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:2894: RuntimeWarning: invalid value encountered in multiply
   c *= np.true_divide(1, fact)
+/var/spool/slurmd/job62131402/slurm_script: line 21: 540558 Killed                  cosmosis cluster_counts_mean_mass_redshift_richness.ini
+slurmstepd: error: Detected 1 oom_kill event in StepId=62131402.batch. Some of the step tasks have been OOM Killed.
