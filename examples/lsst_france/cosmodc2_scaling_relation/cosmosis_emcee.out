@@ -777,3 +777,14 @@ Total pipeline time: 2.49e+02 seconds
 Overall accepted 15 / 54 samples (27.8%)
 Last 1 accepted 0 / 1 samples (0.0%)
 
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+Date: Wed Jun  4 03:08:16 AM CEST 2025
+Job informations can be found using these commands:
+Accounting:
+sacct -j 62131402
+Efficiency:
+seff 62131402
+****************************************************************
