@@ -12,7 +12,7 @@ export PYTHONPATH=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe:$PYTHONPA
 export PYTHONPATH=../../../:$PYTHONPATH
 export PATH=/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/bin:$PATH
 export PYTHONPATH=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe/txpipe/extensions/cluster_counts/:$PYTHONPATH
-#ceci CL_cosmoDC2-full_concat_in2p3.yml --yamlId TXPipe
+ceci CL_cosmoDC2-full_concat_in2p3.yml --yamlId TXPipe
 ceci CL_cosmoDC2-full_concat_in2p3.yml --yamlId TJPCov
 conda deactivate
 conda activate /sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_clp
