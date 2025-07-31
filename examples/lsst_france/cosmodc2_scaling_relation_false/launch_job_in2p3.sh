@@ -3,7 +3,7 @@
 #SBATCH --partition=hpc,lsst
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=600gb   
-#SBATCH --ntasks=60
+#SBATCH --ntasks=30
 
 source /pbs/throng/lsst/software/desc/common/miniconda/setup_current_python.sh
 conda activate /sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp
