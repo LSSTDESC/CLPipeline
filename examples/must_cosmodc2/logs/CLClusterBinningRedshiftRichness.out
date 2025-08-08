@@ -1,0 +1,4 @@
+/mustfs/CONTAINERS/conda/lsst/txpipe_clp/lib/python3.10/site-packages/ceci/__init__.py:12: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound
+Executing stage: CLClusterBinningRedshiftRichness @ 2025-08-08 13:55:11.047449
+Stage complete: CLClusterBinningRedshiftRichness @ 2025-08-08 13:55:11.266684 took 0.00 minutes

@@ -1,0 +1,31 @@
+# To specify the name of the script to run
+executable=txpipe_must.sh
+
+# The following line is mandatory and all the local jobs (except MPI jobs) should be part of the vanilla universe. 
+# For MPI jobs, please refer to https://doc.must-datacentre.fr/batch/hpc/.
+universe=vanilla
+
+# To add parameters
+arguments=Example.$(Cluster).$(Process) 100
+output=results.output.$(Process)
+error=results.error.$(Process)
+log=results.log
+
+# ressources requests
+request_cpus = 8
+request_memory = 100GB
+request_disk = 0
+
+# To receive a notification e-mail
+#notification=never
+notification=complete
+notify_user=<your_e-mail>
+
+# To use your environment in the job
+getenv = True
+
+# To give some environment variables to the job
+#environment = one=1;two=2;three="quotes have no 'special' meaning"
+
+# To specify queue NUMBER with the number of jobs to be launched simultaneously
+queue
