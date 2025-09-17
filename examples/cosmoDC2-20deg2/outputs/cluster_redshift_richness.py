@@ -46,12 +46,12 @@ def build_likelihood(build_parameters: NamedParameters) -> tuple[Likelihood, Mod
     recipe_counts = MurataBinnedSpecZRecipe()
     recipe_counts.mass_distribution.pivot_mass = 33.38748384841366
     recipe_counts.mass_distribution.pivot_redshift = 0.6
-    recipe_counts.mass_distribution.log1p_pivot_redshift = 0.4700036292457355
+    recipe_counts.mass_distribution.log1p_pivot_redshift = 0.4700036292457356
     survey_name = 'cosmodc2-20deg2-CL'
     recipe_delta_sigma = MurataBinnedSpecZDeltaSigmaRecipe()
     recipe_delta_sigma.mass_distribution.pivot_mass = 33.38748384841366
     recipe_delta_sigma.mass_distribution.pivot_redshift = 0.6
-    recipe_delta_sigma.mass_distribution.log1p_pivot_redshift = 0.4700036292457355
+    recipe_delta_sigma.mass_distribution.log1p_pivot_redshift = 0.4700036292457356
     likelihood = ConstGaussian(
         [
             BinnedClusterNumberCounts(
