@@ -1,0 +1,12 @@
+/mustfs/CONTAINERS/conda/lsst/txpipe_clp/lib/python3.10/site-packages/ceci/__init__.py:12: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound
+Executing stage: BPZliteInformer @ 2025-08-08 13:55:05.725814
+Inserting handle into data store.  input: /lapp_data/lsst/ebarroso/TXPipe/data/spectroscopic_catalog.hdf5, BPZliteInformer
+using 26956 galaxies in calculation
+best values for fo and kt:
+[1.]
+[0.3]
+minimizing for type 0
+best fit z0, alpha, km for type 0: [0.31268209 2.14094047 0.09448287]
+Inserting handle into data store.  model: /lapp_data/lsst/ebarroso/pipeline_test/must_1_deg/inprogress_photoz_model.pkl, BPZliteInformer
+Stage complete: BPZliteInformer @ 2025-08-08 13:55:08.912295 took 0.05 minutes
