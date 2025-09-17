@@ -176,7 +176,7 @@ CLClusterShearCatalogs:
 CLClusterEnsembleProfiles:
     #radial bin definition
     r_min: 0.5  #in Mpc
-    r_max: 4.49840619  #in Mpc
+    r_max: 10.0  #in Mpc
     nbins: 11  # number of bins
     #type of profile
     delta_sigma_profile: true
