@@ -6,3 +6,9 @@ cp -r /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/jupyter_kernels
 cp -r /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/jupyter_kernels/txpipe_clp/ ${HOME}/.local/share/jupyter/kernels/txpipe_clp
 ```
 With these files, one can check that the `Txpipe_clp` and `Firecrown_clp` kernels are available in the jupyter platform at https://jupyter.nersc.gov/.
+
+
+# CCIN2P3 Jupyter Platform
+```
+cp -r /sps/lsst/groups/clusters/cl_pipeline_project/jupyter_kernel/txpipe_clp ${HOME}/.local/share/jupyter/kernels/
+```
