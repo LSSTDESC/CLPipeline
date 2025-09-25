@@ -1,0 +1,13 @@
+#!/usr/bin/bash
+#SBATCH --time=01:00:00
+#SBATCH --partition=hpc
+#SBATCH --ntasks=30
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=128000
+
+#source ./conda/bin/activate
+
+module load conda
+conda activate /sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp
+export HDF5_DO_MPI_FILE_SYNC=0
+ceci /pbs/home/m/mricci/throng_mricci/desc/CLPipeline/examples/txpipe_marina/cosmoDC2
