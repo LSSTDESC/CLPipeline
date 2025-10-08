@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 #SBATCH --time=15:00:00
-#SBATCH --partition=hpc,lsst
+#SBATCH --partition=hpc
+#SBATCH --ntasks=30
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=64gb
 
