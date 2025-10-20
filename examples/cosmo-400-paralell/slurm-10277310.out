@@ -1,0 +1,36 @@
+**********************************************************************
+*                         SLURM Batch System                         *
+*              IN2P3 Computing Centre, Villeurbanne FR               *
+**********************************************************************
+* Date:                 Mon Oct 20 10:10:36 AM CEST 2025
+* Job name:             launch_txpipe_in2p3.sh
+* Job id:               10277310
+* User:                 ebarroso
+* Account:              lsst
+* Submit host:          cca012
+* Partition:            lsst
+* Quality of service:   normal
+* Nodelist:             ccwslurm2001
+* Operating System:     Red Hat Enterprise Linux release 9.6 (Plow)
+* Architecture:         x86_64
+**********************************************************************
+SES - yaml config file :  TXPipe
+SES - final yaml config :  {'id': 'TXPipe', 'site': {'name': 'local', 'max_threads': 20}, 'launcher': {'name': 'mini', 'interval': 0.5}, 'modules': 'txpipe rail.estimation.algos.bpz_lite txpipe.extensions\n', 'python_paths': [], 'stages': [{'name': 'CLClusterEnsembleProfiles', 'nprocess': 20}, {'name': 'CLClusterSACC', 'nprocess': 1, 'aliases': {'cluster_profiles': 'cluster_profiles'}}], 'output_dir': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-paralell/', 'log_dir': './logs', 'config': './cosmodc2_config_in2p3.yml', 'inputs': {'fiducial_cosmology': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/fiducial_cosmology.yml', 'cluster_catalog_tomography': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-full/cluster_catalog_tomography.hdf5', 'cluster_shear_catalogs': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-full/cluster_shear_catalogs.hdf5'}, 'resume': True, 'pipeline_log': './logs/log_full.txt'}
+
+Executing CLClusterEnsembleProfiles
+Command is:
+OMP_NUM_THREADS=1  mpirun -n 20 python3 -m txpipe CLClusterEnsembleProfiles   --cluster_catalog_tomography=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-full/cluster_catalog_tomography.hdf5   --fiducial_cosmology=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/fiducial_cosmology.yml   --cluster_shear_catalogs=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-full/cluster_shear_catalogs.hdf5   --config=./cosmodc2_config_in2p3.yml   --cluster_profiles=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-paralell//cluster_profiles.pkl --mpi
+Output writing to ./logs/CLClusterEnsembleProfiles.out
+
+[2025-10-20T10:13:19.203] error: *** JOB 10277310 ON ccwslurm2001 CANCELLED AT 2025-10-20T10:13:19 DUE to SIGNAL Terminated ***
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+Date: Mon Oct 20 10:13:19 AM CEST 2025
+Job informations can be found using these commands:
+Accounting:
+sacct -j 10277310
+Efficiency:
+seff 10277310
+****************************************************************
