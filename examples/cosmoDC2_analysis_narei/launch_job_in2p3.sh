@@ -3,7 +3,7 @@
 #SBATCH --partition=hpc,lsst
 #SBATCH --ntasks=60
 #SBATCH --cpus-per-task=1
-#SBATCH --mem=64gb
+#SBATCH --mem=640gb
 
 module load conda
 conda activate /sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp
