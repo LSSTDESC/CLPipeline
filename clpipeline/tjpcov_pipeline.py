@@ -118,6 +118,9 @@ class TJPCovPipeline(PipelineStage):
             output_sacc_file (str): Path where the new SACC file with only cluster counts will be saved.
         """
         import sacc
+        import numpy as np
+        if not hasattr(np, 'bool'):
+            np.bool = bool  # add alias if missing
         # Load the input SACC file
         sacc_data_cov = sacc.Sacc.load_fits(input_sacc_file)
         sacc_final = sacc.Sacc.load_fits(output_sacc_file)
