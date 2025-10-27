@@ -5,14 +5,14 @@ from typing import Callable
 import numpy as np
 import numpy.typing as npt
 
-from firecrown.models.cluster.abundance import ClusterAbundance
-from firecrown.models.cluster.binning import NDimensionalBin
-from firecrown.models.cluster.integrator.numcosmo_integrator import NumCosmoIntegrator
-from firecrown.models.cluster.kernel import SpectroscopicRedshift
-from firecrown.models.cluster.mass_proxy import MurataUnbinned
-from firecrown.models.cluster.properties import ClusterProperty
-from firecrown.models.cluster.recipes.cluster_recipe import ClusterRecipe
-from firecrown.models.cluster.kernel import Completeness, Purity
+from firecrown.models.cluster import ClusterAbundance
+from firecrown.models.cluster import NDimensionalBin
+from firecrown.models.cluster import NumCosmoIntegrator
+from firecrown.models.cluster import SpectroscopicRedshift
+from firecrown.models.cluster import MurataUnbinned
+from firecrown.models.cluster import ClusterProperty
+from firecrown.models.cluster import ClusterRecipe
+from firecrown.models.cluster import Completeness, Purity
 
 
 class MurataBinnedSpecZSelectionRecipe(ClusterRecipe):
