@@ -90,6 +90,7 @@ launcher:
     interval: 0.5
 modules: >
     txpipe
+    txpipe.extensions
     rail.estimation.algos.bpz_lite
 python_paths: []
 stages:
