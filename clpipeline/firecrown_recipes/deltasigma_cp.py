@@ -6,14 +6,14 @@ from typing import Callable
 import numpy as np
 import numpy.typing as npt
 
-from firecrown.models.cluster.binning import NDimensionalBin
-from firecrown.models.cluster.integrator.numcosmo_integrator import NumCosmoIntegrator
-from firecrown.models.cluster.kernel import SpectroscopicRedshift
-from firecrown.models.cluster.mass_proxy import MurataUnbinned, MurataBinned
-from firecrown.models.cluster.properties import ClusterProperty
-from firecrown.models.cluster.recipes.cluster_recipe import ClusterRecipe
-from firecrown.models.cluster.kernel import Completeness, Purity
-from firecrown.models.cluster.deltasigma import ClusterDeltaSigma
+from firecrown.models.cluster import NDimensionalBin
+from firecrown.models.cluster import NumCosmoIntegrator
+from firecrown.models.cluster import SpectroscopicRedshift
+from firecrown.models.cluster import MurataUnbinned, MurataBinned
+from firecrown.models.cluster import ClusterProperty
+from firecrown.models.cluster import ClusterRecipe
+from firecrown.models.cluster import Completeness, Purity
+from firecrown.models.cluster import ClusterDeltaSigma
 
 
 class MurataBinnedSpecZDeltaSigmaSelectionRecipe(ClusterRecipe):
