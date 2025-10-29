@@ -109,18 +109,18 @@ class FirecrownPipeline(PipelineStage):
                 f.write("from firecrown.likelihood.binned_cluster_number_counts import BinnedClusterNumberCounts\n")
                 f.write("from firecrown.likelihood.likelihood import Likelihood, NamedParameters\n")
                 f.write("from firecrown.modeling_tools import ModelingTools\n")
-                f.write("from firecrown.models.cluster.abundance import ClusterAbundance\n")
-                f.write("from firecrown.models.cluster.properties import ClusterProperty\n")
+                f.write("from firecrown.models.cluster import ClusterAbundance\n")
+                f.write("from firecrown.models.cluster import ClusterProperty\n")
                 if use_selection_function:
                     f.write("from clpipeline.firecrown_recipes.counts_cp import MurataBinnedSpecZSelectionRecipe\n\n")
                 else:
-                    f.write("from firecrown.models.cluster.recipes.murata_binned_spec_z import MurataBinnedSpecZRecipe\n\n")
+                    f.write("from firecrown.models.cluster import MurataBinnedSpecZRecipe\n\n")
                 if use_mean_deltasigma:
                     if use_selection_function:
                         f.write("from clpipeline.firecrown_recipes.deltasigma_cp import MurataBinnedSpecZDeltaSigmaSelectionRecipe\n")
                     else:
-                        f.write("from firecrown.models.cluster.recipes.murata_binned_spec_z_deltasigma import MurataBinnedSpecZDeltaSigmaRecipe\n")
-                    f.write("from firecrown.models.cluster.deltasigma import ClusterDeltaSigma\n")
+                        f.write("from firecrown.models.cluster import MurataBinnedSpecZDeltaSigmaRecipe\n")
+                    f.write("from firecrown.models.cluster import ClusterDeltaSigma\n")
                     f.write("from firecrown.likelihood.binned_cluster_number_counts_deltasigma import BinnedClusterDeltaSigma\n")
                 f.write("def get_cluster_abundance() -> ClusterAbundance:\n")
                 f.write("    '''Creates and returns a ClusterAbundance object.''' \n")
