@@ -1,0 +1,60 @@
+**********************************************************************
+*                         SLURM Batch System                         *
+*              IN2P3 Computing Centre, Villeurbanne FR               *
+**********************************************************************
+* Date:                 Fri Oct 10 11:30:06 AM CEST 2025
+* Job name:             lauch_txpipe_in2p3.sh
+* Job id:               8721452
+* User:                 ebarroso
+* Account:              lsst
+* Submit host:          jns-ebarroso.cc.in2p3.fr
+* Partition:            lsst
+* Quality of service:   normal
+* Nodelist:             ccwslurm2003
+* Operating System:     Red Hat Enterprise Linux release 9.6 (Plow)
+* Architecture:         x86_64
+**********************************************************************
+SES - yaml config file :  None
+Skipping stage TXSourceSelectorSimple because its outputs exist already
+Skipping stage BPZliteInformer because its outputs exist already
+Skipping stage CLClusterBinningRedshiftRichness because its outputs exist already
+
+Executing BPZliteEstimator
+Command is:
+OMP_NUM_THREADS=1  mpirun -n 30 python3 -m ceci rail.estimation.algos.bpz_lite.BPZliteEstimator   --model=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/dc2/outputs//photoz_model.pkl   --input=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/dc2/photometry_catalog.hdf5   --config=./cosmodc2_config_in2p3.yml   --output=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/dc2/outputs//source_photoz_pdfs.hdf5 --mpi
+Output writing to ./logs/BPZliteEstimator.out
+
+Job BPZliteEstimator has completed successfully in 1 hours, 27 minutes, 58.3 seconds seconds !
+
+Executing CLClusterShearCatalogs
+Command is:
+OMP_NUM_THREADS=1  mpirun -n 30 python3 -m txpipe CLClusterShearCatalogs   --cluster_catalog=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/dc2/wazp_dc2_cluster_catalog.hdf5   --shear_catalog=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/dc2/shear_catalog.hdf5   --fiducial_cosmology=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/fiducial_cosmology.yml   --shear_tomography_catalog=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/dc2/outputs//shear_tomography_catalog.hdf5   --source_photoz_pdfs=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/dc2/outputs//source_photoz_pdfs.hdf5   --config=./cosmodc2_config_in2p3.yml   --cluster_shear_catalogs=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/dc2/outputs//cluster_shear_catalogs.hdf5 --mpi
+Output writing to ./logs/CLClusterShearCatalogs.out
+
+Job CLClusterShearCatalogs has completed successfully in 4 hours, 45 minutes, 1.2 seconds seconds !
+
+Executing CLClusterEnsembleProfiles
+Command is:
+OMP_NUM_THREADS=1  mpirun -n 10 python3 -m txpipe CLClusterEnsembleProfiles   --cluster_catalog_tomography=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/dc2/outputs//cluster_catalog_tomography.hdf5   --fiducial_cosmology=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/fiducial_cosmology.yml   --cluster_shear_catalogs=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/dc2/outputs//cluster_shear_catalogs.hdf5   --config=./cosmodc2_config_in2p3.yml   --cluster_profiles=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/dc2/outputs//cluster_profiles.pkl --mpi
+Output writing to ./logs/CLClusterEnsembleProfiles.out
+
+
+*************************************************
+Error running pipeline stage CLClusterEnsembleProfiles.
+Failed after 8 minutes, 48.2 seconds.
+
+Standard output and error streams in ./logs/CLClusterEnsembleProfiles.out
+*************************************************
+Job CLClusterEnsembleProfiles has failed with status 255
+Pipeline failed.  No joy sparked.
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+Date: Fri Oct 10 05:52:00 PM CEST 2025
+Job informations can be found using these commands:
+Accounting:
+sacct -j 8721452
+Efficiency:
+seff 8721452
+****************************************************************

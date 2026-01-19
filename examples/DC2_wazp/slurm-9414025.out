@@ -1,0 +1,48 @@
+**********************************************************************
+*                         SLURM Batch System                         *
+*              IN2P3 Computing Centre, Villeurbanne FR               *
+**********************************************************************
+* Date:                 Wed Oct 15 04:13:37 PM CEST 2025
+* Job name:             lauch_txpipe_in2p3.sh
+* Job id:               9414025
+* User:                 ebarroso
+* Account:              lsst
+* Submit host:          jns-ebarroso.cc.in2p3.fr
+* Partition:            hpc
+* Quality of service:   normal
+* Nodelist:             ccwpslurm0019
+* Operating System:     Red Hat Enterprise Linux release 9.6 (Plow)
+* Architecture:         x86_64
+**********************************************************************
+SES - yaml config file :  None
+Skipping stage TXSourceSelectorSimple because its outputs exist already
+Skipping stage BPZliteInformer because its outputs exist already
+Skipping stage CLClusterBinningRedshiftRichness because its outputs exist already
+Skipping stage BPZliteEstimator because its outputs exist already
+Skipping stage CLClusterShearCatalogs because its outputs exist already
+
+Executing CLClusterEnsembleProfiles
+Command is:
+OMP_NUM_THREADS=1  mpirun -n 3 python3 -m txpipe CLClusterEnsembleProfiles   --cluster_catalog_tomography=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/dc2/outputs//cluster_catalog_tomography.hdf5   --fiducial_cosmology=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/fiducial_cosmology.yml   --cluster_shear_catalogs=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/dc2/outputs//cluster_shear_catalogs.hdf5   --config=./cosmodc2_config_in2p3.yml   --cluster_profiles=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/dc2/outputs//cluster_profiles.pkl --mpi
+Output writing to ./logs/CLClusterEnsembleProfiles.out
+
+Job CLClusterEnsembleProfiles has completed successfully in 5 hours, 36 minutes, 2.7 seconds seconds !
+
+Executing CLClusterSACC
+Command is:
+OMP_NUM_THREADS=1   python3 -m txpipe CLClusterSACC   --cluster_profiles=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/dc2/outputs//cluster_profiles.pkl   --config=./cosmodc2_config_in2p3.yml   --cluster_sacc_catalog=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/dc2/outputs//cluster_sacc_catalog.sacc 
+Output writing to ./logs/CLClusterSACC.out
+
+Job CLClusterSACC has completed successfully in 44.5 seconds seconds !
+Pipeline successful.  Joy is sparked.
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+Date: Wed Oct 15 09:50:27 PM CEST 2025
+Job informations can be found using these commands:
+Accounting:
+sacct -j 9414025
+Efficiency:
+seff 9414025
+****************************************************************

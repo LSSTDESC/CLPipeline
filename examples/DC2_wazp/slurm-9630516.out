@@ -1,0 +1,41 @@
+**********************************************************************
+*                         SLURM Batch System                         *
+*              IN2P3 Computing Centre, Villeurbanne FR               *
+**********************************************************************
+* Date:                 Thu Oct 16 02:29:03 PM CEST 2025
+* Job name:             lauch_ensemble.sh
+* Job id:               9630516
+* User:                 ebarroso
+* Account:              lsst
+* Submit host:          jns-ebarroso.cc.in2p3.fr
+* Partition:            hpc
+* Quality of service:   normal
+* Nodelist:             ccwpslurm0024
+* Operating System:     Red Hat Enterprise Linux release 9.6 (Plow)
+* Architecture:         x86_64
+**********************************************************************
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   PID 3068745 RUNNING AT ccwpslurm0024
+=   EXIT CODE: 9
+=   CLEANING UP REMAINING PROCESSES
+=   YOU CAN IGNORE THE BELOW CLEANUP MESSAGES
+===================================================================================
+[2025-10-16T14:30:27.639] error: Detected 1 oom_kill event in StepId=9630516.0. Some of the step tasks have been OOM Killed.
+srun: error: ccwpslurm0024: task 0: Out Of Memory
+[mpiexec@ccwpslurm0024] HYDT_bscu_wait_for_completion (lib/tools/bootstrap/utils/bscu_wait.c:109): one of the processes terminated badly; aborting
+[mpiexec@ccwpslurm0024] HYDT_bsci_wait_for_completion (lib/tools/bootstrap/src/bsci_wait.c:21): launcher returned error waiting for completion
+[mpiexec@ccwpslurm0024] HYD_pmci_wait_for_completion (mpiexec/pmiserv_pmci.c:189): launcher returned error waiting for completion
+[mpiexec@ccwpslurm0024] main (mpiexec/mpiexec.c:260): process manager error waiting for completion
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+Date: Thu Oct 16 02:30:27 PM CEST 2025
+Job informations can be found using these commands:
+Accounting:
+sacct -j 9630516
+Efficiency:
+seff 9630516
+****************************************************************
