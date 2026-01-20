@@ -43,16 +43,8 @@ class FirecrownPipeline(PipelineStage):
          - Choose the right recipe based on the file
          - Output firecrown likelihood python file
         """
-        import firecrown
         import sacc
-        ## Open the yaml configuration file
         my_config = self.config
-        #print("Here is my configuration :", my_config)
-        #print(self.outputs)
-        #print(self.__dict__)
-        #print(self.__dict__['_configs'])
-        #methods = [func for func in dir(self) if callable(getattr(self, func)) and not func.startswith("__")]
-        #print("Methods in class:", methods)
         ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
         FIRECROWN_INPUTS = ROOT_DIR.replace('clpipeline', 'firecrown_inputs')
         print(self.get_input("clusters_sacc_file_cov"))
@@ -62,6 +54,7 @@ class FirecrownPipeline(PipelineStage):
         self.generate_ini_file(my_config, output_cosmosis_file)
         print(my_config['cosmological_parameters'])
         self.generate_cosmosis_parameters_file(my_config, self.get_output('cluster_richness_values', final_name=True))
+    
     def generate_python_file(self, yml_config, path_name):
         """
         Generates a Python file based on the configuration dictionary.
@@ -88,6 +81,7 @@ class FirecrownPipeline(PipelineStage):
             # Extract values from the configuration
             hmf_key = yml_config.get('hmf', 'bocquet16')  # Default to 'bocquet16' if not specified
             hmf = hmf_dict.get(hmf_key, 'ccl.halos.MassFuncBocquet16()')  # Default to MassFuncBocquet16 if not found
+            mass_def = str(yml_config.get('mass_def', '200c'))
             min_mass = yml_config.get('min_mass', 13.0)
             max_mass = yml_config.get('max_mass', 16.0)
             min_z = yml_config.get('min_z', 0.2)
@@ -97,48 +91,115 @@ class FirecrownPipeline(PipelineStage):
             survey_name = yml_config.get('survey_name', 'numcosmo_simulated_redshift_richness')
             sacc_path = sacc_file_name
             ln_pivot_mass = np.log(10**pivot_mass)
-            use_mean_deltasigma = yml_config.get('use_mean_deltasigma', False)
-            use_selection_function = yml_config.get('use_selection_function', False)
-            set_cluster_concentration = yml_config.get('set_concentration', False)
+            use_shear_profile = yml_config.get('use_shear_profile', False)
+            use_completeness = yml_config.get('use_completeness', None)
+            use_purity = yml_config.get('use_purity', None)
+            cluster_concentration = yml_config.get('cluster_concentration', None)
+            use_grid = yml_config.get('use_grid', True)
+            is_deltasigma = yml_config.get('is_deltasigma', False)
+            use_beta_interp = yml_config.get('use_beta_interp', False)
+            redshift_grid_size = yml_config.get('redshift_grid_size', 20)
+            mass_grid_size = yml_config.get('mass_grid_size', 60)
+            proxy_grid_size = yml_config.get('proxy_grid_size', 20)
+            beta_parameters = yml_config.get('beta_parameters', (10.0, 5.0))
             # Open the file to be written
-            with open(path_name, 'w') as f:
-                f.write("import os\n")
+            with open(path_name, "w") as f:
+                f.write("import os\n\n")
+
                 f.write("import pyccl as ccl\n")
-                f.write("import sacc\n")
-                f.write("from firecrown.likelihood.gaussian import ConstGaussian\n")
-                f.write("from firecrown.likelihood.binned_cluster_number_counts import BinnedClusterNumberCounts\n")
-                f.write("from firecrown.likelihood.likelihood import Likelihood, NamedParameters\n")
-                f.write("from firecrown.modeling_tools import ModelingTools\n")
-                f.write("from firecrown.models.cluster import ClusterAbundance\n")
-                f.write("from firecrown.models.cluster import ClusterProperty\n")
-                if use_selection_function:
-                    f.write("from clpipeline.firecrown_recipes.counts_cp import MurataBinnedSpecZSelectionRecipe\n\n")
-                else:
-                    f.write("from firecrown.models.cluster import MurataBinnedSpecZRecipe\n\n")
-                if use_mean_deltasigma:
-                    if use_selection_function:
-                        f.write("from clpipeline.firecrown_recipes.deltasigma_cp import MurataBinnedSpecZDeltaSigmaSelectionRecipe\n")
-                    else:
-                        f.write("from firecrown.models.cluster import MurataBinnedSpecZDeltaSigmaRecipe\n")
-                    f.write("from firecrown.models.cluster import ClusterDeltaSigma\n")
-                    f.write("from firecrown.likelihood.binned_cluster_number_counts_deltasigma import BinnedClusterDeltaSigma\n")
+                f.write("import sacc\n\n")
+
+                # Core CROW imports
+                f.write("from crow import ClusterAbundance, ClusterShearProfile, kernel, mass_proxy\n")
+                f.write("from crow.properties import ClusterProperty\n")
+                f.write("from crow.recipes.binned_grid import GridBinnedClusterRecipe\n\n")
+                f.write(
+                "from crow import purity_models, completeness_models,\n"
+                )
+                # Firecrown likelihoods
+                f.write(
+                    "from firecrown.likelihood import (\n"
+                    "    ConstGaussian,\n"
+                    "    BinnedClusterShearProfile,\n"
+                    "    BinnedClusterNumberCounts,\n"
+                    "    Likelihood,\n"
+                    "    NamedParameters,\n"
+                    ")\n\n"
+                )
                 f.write("def get_cluster_abundance() -> ClusterAbundance:\n")
-                f.write("    '''Creates and returns a ClusterAbundance object.''' \n")
-                f.write(f"    hmf = {hmf}(mass_def='200c')  # Using {hmf_key} from the config\n")
-                f.write(f"    min_mass, max_mass = {min_mass}, {max_mass}\n")
-                f.write(f"    min_z, max_z = {min_z}, {max_z}\n")
-                f.write("    cluster_abundance = ClusterAbundance((min_mass, max_mass), (min_z, max_z), hmf)\n\n")
-                f.write("    return cluster_abundance\n\n")
-                if use_mean_deltasigma:
-                    f.write("def get_cluster_deltasigma() -> ClusterDeltaSigma:\n")
-                    f.write("    '''Creates and returns a ClusterDeltaSigma object.'''\n")
-                    f.write("    hmf = ccl.halos.MassFuncTinker08(mass_def='200c')\n")
-                    f.write("    min_mass, max_mass = 13.0, 16.0\n")
-                    f.write("    min_z, max_z = 0.2, 0.8\n")
-                    f.write("    cluster_deltasigma = ClusterDeltaSigma(\n")
-                    f.write(f"        (min_mass, max_mass), (min_z, max_z), hmf, {set_cluster_concentration}\n")
+                f.write("    \"\"\"Creates and returns a ClusterAbundance object.\"\"\" \n")
+                f.write("    cluster_theory = ClusterAbundance(\n")
+                f.write(f"    halo_mass_function = {hmf}(mass_def=\"{mass_def}\")\n")
+                f.write("    cosmo = pyccl.CosmologyVanillaLCDM()\n")
+                f.write("    )\n\n")
+                f.write("    return cluster_theory\n\n")
+                if use_shear_profile:
+                    f.write("\n")
+                    f.write("def get_cluster_shear_profile() -> ClusterShearProfile:\n")
+                    f.write("    \"\"\"Creates and returns a ClusterShearProfile object.\"\"\"\n")
+                    f.write("    cluster_theory = ClusterShearProfile(\n")
+                    f.write("    cosmo=pyccl.CosmologyVanillaLCDM(),\n")
+                    f.write(f"    halo_mass_function = {hmf}(mass_def=\"{mass_def}\"),\n")
+                    f.write(f"    cluster_concentration={cluster_concentration},\n")
+                    f.write(f"    is_delta_sigma={is_deltasigma},\n")
+                    f.write(f"    use_beta_s_interp={use_beta_interp},\n")
                     f.write("    )\n\n")
-                    f.write("    return cluster_deltasigma\n\n")
+                    f.write("    return cluster_theory\n\n")
+                f.write("def get_cluster_recipe(\n")
+                f.write("    cluster_theory,\n")
+                f.write(f"    pivot_mass: float = {pivot_mass},\n")
+                f.write(f"    pivot_redshift: float = {pivot_z},\n")
+                f.write(f"    mass_interval=({min_mass}, {max_mass}),\n")
+                f.write(f"    true_z_interval=({min_z}, {max_z}),\n")
+                f.write(f"    is_reduced_shear = True,\n")
+                f.write("):\n")
+                f.write("    \"\"\"Creates and returns a ClusterRecipe.\n\n")
+                f.write("    Parameters\n")
+                f.write("    ----------\n")
+                f.write("    cluster_theory : ClusterShearProfile or ClusterAbundance\n")
+                f.write("    \"\"\"\n")
+                f.write("    redshift_distribution = kernel.SpectroscopicRedshift()\n")
+                if use_completeness:
+                    f.write(f"    completeness = completeness_models.CompletenessAguena16()\n")
+                else:
+                    f.write(f"    completeness = None\n")
+                if use_purity:
+                    f.write(f"    purity = purity_models.PurityAguena16()\n")
+                else:
+                    f.write(f"    purity = None\n")
+                f.write("    if is_reduced_shear:\n")
+                f.write(f"        cluster_theory.set_beta_parameters({beta_parameters[0]}, {beta_parameters[1]})\n")
+                if use_beta_interp:
+                    f.write(f"        cluster_theory.set_beta_s_interp(true_z_interval[0], true_z_interval[1])\n")
+                if use_grid:
+                    f.write(
+                        "         mass_distribution = mass_proxy.MurataUnbinned(\n"
+                        f"        pivot_mass={pivot_mass},\n"
+                        f"        pivot_redshift={pivot_z},\n"
+                        "    )\n\n"
+                    )
+                    f.write("    recipe = GridBinnedClusterRecipe(\n")
+                    f.write(f"        redshift_grid_size = {redshift_grid_size}\n")
+                    f.write(f"        mass_grid_size = {mass_grid_size}\n")
+                    f.write(f"        proxy_grid_size = {proxy_grid_size}\n")
+                else:
+                    f.write(
+                        "    mass_distribution = mass_proxy.MurataBinned(\n"
+                        f"        pivot_mass={pivot_mass},\n"
+                        f"        pivot_redshift={pivot_z},\n"
+                        "    )\n\n"
+                    )
+                    f.write("    recipe = ExactBinnedClusterRecipe(\n")
+                f.write("        cluster_theory=cluster_theory,\n")
+                f.write("        redshift_distribution=redshift_distribution,\n")
+                f.write("        mass_distribution=mass_distribution,\n")
+                f.write(f"        completeness=completeness,\n")
+                f.write(f"        purity=purity,\n")
+                f.write(f"        mass_interval=({min_mass}, {max_mass}),\n")
+                f.write(f"        true_z_interval=({min_z}, {max_z}),\n")
+                f.write("    )\n\n")
+
+                f.write("    return recipe\n\n")
                 f.write("def build_likelihood(build_parameters: NamedParameters) -> tuple[Likelihood, ModelingTools]:\n")
                 f.write("    '''Builds the likelihood for Firecrown.''' \n")
                 f.write("    # Pull params for the likelihood from build_parameters\n")
@@ -149,32 +210,19 @@ class FirecrownPipeline(PipelineStage):
                 f.write("        average_on |= ClusterProperty.MASS\n")
                 f.write("    if build_parameters.get_bool('use_mean_deltasigma', True):\n")
                 f.write("        average_on |= ClusterProperty.DELTASIGMA\n\n")
-                if use_selection_function:
-                    f.write(f"    recipe_counts = MurataBinnedSpecZSelectionRecipe()\n")
-                else:
-                    f.write(f"    recipe_counts = MurataBinnedSpecZRecipe()\n")
-                f.write(f"    recipe_counts.mass_distribution.pivot_mass = {ln_pivot_mass}\n")
-                f.write(f"    recipe_counts.mass_distribution.pivot_redshift = {pivot_z}\n")
-                f.write(f"    recipe_counts.mass_distribution.log1p_pivot_redshift = {np.log1p(pivot_z)}\n")
+                f.write("    if build_parameters.get_bool('use_mean_reduced_shear', True):\n")
+                f.write("        average_on |= ClusterProperty.SHEAR\n\n")
                 f.write(f"    survey_name = '{survey_name}'\n")
-                if use_mean_deltasigma:
-                    if use_selection_function:
-                        f.write(f"    recipe_delta_sigma = MurataBinnedSpecZDeltaSigmaSelectionRecipe()\n")
-                        f.write(f"    recipe_delta_sigma.mass_distribution_unb.pivot_mass = {ln_pivot_mass}\n")
-                        f.write(f"    recipe_delta_sigma.mass_distribution_unb.pivot_redshift = {pivot_z}\n")
-                        f.write(f"    recipe_delta_sigma.mass_distribution_unb.log1p_pivot_redshift = {np.log1p(pivot_z)}\n")
-                    else:
-                        f.write(f"    recipe_delta_sigma = MurataBinnedSpecZDeltaSigmaRecipe()\n")
-                    f.write(f"    recipe_delta_sigma.mass_distribution.pivot_mass = {ln_pivot_mass}\n")
-                    f.write(f"    recipe_delta_sigma.mass_distribution.pivot_redshift = {pivot_z}\n")
-                    f.write(f"    recipe_delta_sigma.mass_distribution.log1p_pivot_redshift = {np.log1p(pivot_z)}\n")
+                f.write("    recipe_counts = get_cluster_recipe(get_cluster_abundance())\n")
+                if use_shear_profile:
+                    f.write(f"    recipe_shear = get_cluster_recipe(get_cluster_shear(), is_reduced_shear = {is_deltasigma})\n")
                     f.write("    likelihood = ConstGaussian(\n")
                     f.write("        [\n")
                     f.write("            BinnedClusterNumberCounts(\n")
-                    f.write("                average_on, survey_name, recipe_counts\n")
+                    f.write("                average_on, survey_name, \n")
                     f.write("            ),\n")
-                    f.write("            BinnedClusterDeltaSigma(\n")
-                    f.write("                average_on, survey_name, recipe_delta_sigma\n")
+                    f.write("            BinnedClusterShearProfile(\n")
+                    f.write("                average_on, survey_name, recipe_shear\n")
                     f.write("            ),\n")
                     f.write("        ]\n")
                 else:
@@ -184,13 +232,7 @@ class FirecrownPipeline(PipelineStage):
                 f.write(f"    sacc_path = '{sacc_path}'\n")
                 f.write("    sacc_data = sacc.Sacc.load_fits(sacc_path)\n")
                 f.write("    likelihood.read(sacc_data)\n\n")
-
-                f.write("    cluster_abundance = get_cluster_abundance()\n")
-                if use_mean_deltasigma:
-                    f.write("    cluster_deltasigma = get_cluster_deltasigma()\n")
-                    f.write("    modeling_tools = ModelingTools(cluster_abundance=cluster_abundance, cluster_deltasigma=cluster_deltasigma)\n\n")
-                else:
-                    f.write("    modeling_tools = ModelingTools(cluster_abundance=cluster_abundance)\n\n")
+                f.write("    modeling_tools = ModelingTools()\n\n")
                 f.write("    return likelihood, modeling_tools\n")
 
             print(f"Python file generated at {path_name}")
@@ -226,6 +268,7 @@ class FirecrownPipeline(PipelineStage):
             emcee_samples = config.get('emcee_samples', 4000)
             emcee_nsteps = config.get('emcee_nsteps', 10)
 
+            beta_parameters = config.get('beta_parameters', (10.0, 5.0))
             FIRECROWN_DIR = os.path.dirname(firecrown.__file__)
 
             with open(output_ini_path, 'w') as f:
@@ -258,7 +301,7 @@ class FirecrownPipeline(PipelineStage):
                 f.write("lmax = 2500\n")
                 f.write("feedback = 0\n")
                 f.write("zmin = 0.0\n")
-                f.write("zmax = 1.0\n")
+                f.write(f"zmax = {beta_parameters[0]}\n")
                 f.write("nz = 100\n")
                 f.write("kmin = 1e-4\n")
                 f.write("kmax = 50.0\n")
@@ -272,6 +315,7 @@ class FirecrownPipeline(PipelineStage):
                 f.write("sampling_parameters_sections = firecrown_number_counts\n")
                 f.write(f"use_cluster_counts = {str(use_cluster_counts).upper()}\n")
                 f.write(f"use_mean_deltasigma = {str(use_mean_deltasigma).upper()}\n")
+                f.write(f"use_mean_shear = {str(not use_mean_deltasigma).upper()}\n")
                 f.write(f"use_mean_log_mass = {str(use_mean_log_mass).upper()}\n\n")
                 f.write("[test]\n")
                 f.write("fatal_errors = T\n")

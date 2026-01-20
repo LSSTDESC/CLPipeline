@@ -6,13 +6,21 @@ FirecrownPipeline:
     max_mass: 16.0
     min_z: 0.2
     max_z: 0.8
+    mass_def: '200c'
+    use_shear_profile: True
+    use_completeness: True
+    use_purity: True
+    use_grid: True
+    is_deltasigma: False
+    use_beta_interp: True
+    beta_parameters: [10.0, 5.0]
     pivot_mass: 14.5
     pivot_z: 0.6
     survey_name: 'cosmodc2-20deg2-CL'
     sampler: 'emcee'
     use_cluster_counts: True
     use_mean_log_mass: False
-    use_mean_deltasigma: True
+    use_mean_deltasigma: False
     set_concentration: False
     emcee_walkers: 20
     emcee_samples: 4000
@@ -28,12 +36,21 @@ FirecrownPipeline:
         w: {'sample': False, 'values': -1.0}
         wa: {'sample': False, 'values': 0.0}
     firecrown_parameters:
-        mu_p0: {'sample': True, 'values': [2.0, 3.0, 4.0]}
-        mu_p1: {'sample': True, 'values': [0.4, 0.8, 1.2]}
-        mu_p2: {'sample': True, 'values': [-0.6, -0.3, 0.6]}
-        sigma_p0: {'sample': True, 'values': [0.02, 0.3, 0.6]}
-        sigma_p1: {'sample': True, 'values': [-0.1, -0.03, 0.1]}
-        sigma_p2: {'sample': True, 'values': [-0.1, 0.06, 0.1]}
+        mass_distribution_mu0: {'sample': True, 'values': [2.0, 3.0, 4.0]}
+        mass_distribution_mu1: {'sample': True, 'values': [0.4, 0.8, 1.2]}
+        mass_distribution_mu2: {'sample': True, 'values': [-0.6, -0.3, 0.6]}
+        mass_distribution_sigma0: {'sample': True, 'values': [0.02, 0.3, 0.6]}
+        mass_distribution_sigma1: {'sample': True, 'values': [-0.1, -0.03, 0.1]}
+        mass_distribution_sigma2: {'sample': True, 'values': [-0.1, 0.06, 0.1]}
+        completeness_a_n: {'sample': False, 'values': 0.38}
+        completeness_b_n: {'sample': False, 'values': 1.2634}
+        completeness_a_logm_piv: {'sample': False, 'values': 13.31}
+        completeness_b_logm_piv: {'sample': False, 'values': 0.2025}
+        purity_a_n: {'sample': False, 'values': 3.9193}
+        purity_b_n: {'sample': False, 'values': -0.3323}
+        purity_a_logm_piv: {'sample': False, 'values': 1.1839}
+        purity_b_logm_piv: {'sample': False, 'values': -0.4077}
+        cluster_theory_cluster_concentration: -1.
 TJPCovPipeline:
     use_mpi: False
     do_xi: False
