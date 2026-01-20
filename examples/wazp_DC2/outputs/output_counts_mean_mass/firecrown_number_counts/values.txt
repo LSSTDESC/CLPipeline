@@ -1,0 +1,10 @@
+ac_mc = 14.16
+ac_nc = 1.87
+bc_mc = -0.3
+bc_nc = 0.1431
+mu_p0 = 3.0
+mu_p1 = 0.8
+mu_p2 = -0.3
+sigma_p0 = 0.3
+sigma_p1 = -0.03
+sigma_p2 = 0.06

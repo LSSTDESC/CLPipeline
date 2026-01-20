@@ -1,0 +1,24 @@
+**********************************************************************
+*                         SLURM Batch System                         *
+*              IN2P3 Computing Centre, Villeurbanne FR               *
+**********************************************************************
+* Date:                 Thu Oct  9 04:30:20 PM CEST 2025
+* Job name:             lauch_txpipe_in2p3.sh
+* Job id:               8549634
+* User:                 ebarroso
+* Account:              lsst
+* Submit host:          jns-ebarroso.cc.in2p3.fr
+* Partition:            lsst
+* Quality of service:   normal
+* Nodelist:             ccwslurm2002
+* Operating System:     Red Hat Enterprise Linux release 9.6 (Plow)
+* Architecture:         x86_64
+**********************************************************************
+SES - yaml config file :  None
+Skipping stage TXSourceSelectorSimple because its outputs exist already
+
+Executing BPZliteInformer
+Command is:
+OMP_NUM_THREADS=1   python3 -m ceci rail.estimation.algos.bpz_lite.BPZliteInformer   --input=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/20deg2/spectroscopic_catalog.hdf5   --config=./cosmodc2_config_in2p3.yml   --model=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/dc2/outputs/photoz_model.pkl 
+Output writing to ./logs/BPZliteInformer.out
+

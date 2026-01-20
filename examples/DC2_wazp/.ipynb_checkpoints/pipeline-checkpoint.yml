@@ -1,0 +1,44 @@
+# Stages to run
+stages:
+  #- name: TXIngestDataPreview02IN2P3
+  - name: TXIngestDataPreview02
+    nprocess: 1
+
+
+# Where to put outputs
+output_dir: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/dc2/
+
+site:
+    name: local
+    max_threads: 1
+#site:
+#    name: cori-batch
+#    image: ghcr.io/lsstdesc/txpipe-dev
+#all the following steps should not depend on where you run
+launcher:
+    name: mini
+    interval: 0.5
+
+# modules and packages to import that have pipeline
+# stages defined in them
+modules: txpipe
+
+# where to find any modules that are not in this repo,
+# and any other code we need.
+python_paths: []
+
+# configuration settings
+config: config.yml
+
+
+inputs:
+    # See README for paths to download these files
+    spectroscopic_catalog: /sps/lsst/users/ebarroso/TXPipe/data/example/inputs/mock_spectroscopic_catalog.hdf5
+
+# if supported by the launcher, restart the pipeline where it left off
+# if interrupted
+resume: true
+# where to put output logs for individual stages
+log_dir: data/dp0.2/logs
+# where to put an overall parsl pipeline log
+pipeline_log: data/dp0.2/log.txt

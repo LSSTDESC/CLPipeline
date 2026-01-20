@@ -1,0 +1,35 @@
+Executing stage: TJPCovPipeline @ 2025-03-28 14:54:24.913102
+./cluster_sacc_catalog.sacc
+{'tjpcov': {'txpipe_flag': True, 'firecrown_flag': False, 'name': 'TJPCovPipeline', 'metacalibration': True, 'use_mpi': False, 'do_xi': False, 'cov_type': ['ClusterCountsGaussian', 'ClusterCountsSSC'], 'cosmo': 'set', 'fsky': 0.3, 'parameters': {'Omega_c': 0.22, 'Omega_b': 0.0448, 'h': 0.71, 'n_s': 0.963, 'sigma8': 0.8, 'w0': -1, 'wa': 0, 'transfer_function': 'boltzmann_camb'}, 'photo-z': {'sigma_0': 0.005}, 'mor_parameters': {'mass_func': 'Despali16', 'mass_def': '200c', 'halo_bias': 'Tinker10', 'min_halo_mass': '1.0e13', 'max_halo_mass': '1.0e16', 'm_pivot': 14.5, 'z_pivot': 0.6, 'mu_p0': 3.35, 'mu_p1': 0.968, 'mu_p2': 0.06, 'sigma_p0': 0.56, 'sigma_p1': 0.043, 'sigma_p2': -0.05}, 'stage_name': 'TJPCovPipeline', 'clusters_sacc_file': './cluster_sacc_catalog.sacc', 'clusters_sacc_file_cov': './outputs/clusters_sacc_file_cov.sacc', 'config': './cosmodc2_config.yml', 'mpi': False, 'pdb': False, 'cprofile': '', 'memmon': 0, 'trace': False, 'outdir': './outputs', 'sacc_file': './cluster_sacc_catalog.sacc'}, 'txpipe_flag': True, 'firecrown_flag': False, 'name': 'TJPCovPipeline', 'metacalibration': True, 'use_mpi': False, 'do_xi': False, 'cov_type': ['ClusterCountsGaussian', 'ClusterCountsSSC'], 'cosmo': 'set', 'fsky': 0.3, 'parameters': {'Omega_c': 0.22, 'Omega_b': 0.0448, 'h': 0.71, 'n_s': 0.963, 'sigma8': 0.8, 'w0': -1, 'wa': 0, 'transfer_function': 'boltzmann_camb'}, 'photo-z': {'sigma_0': 0.005}, 'mor_parameters': {'mass_func': 'Despali16', 'mass_def': '200c', 'halo_bias': 'Tinker10', 'min_halo_mass': '1.0e13', 'max_halo_mass': '1.0e16', 'm_pivot': 14.5, 'z_pivot': 0.6, 'mu_p0': 3.35, 'mu_p1': 0.968, 'mu_p2': 0.06, 'sigma_p0': 0.56, 'sigma_p1': 0.043, 'sigma_p2': -0.05}, 'stage_name': 'TJPCovPipeline', 'clusters_sacc_file': './cluster_sacc_catalog.sacc', 'clusters_sacc_file_cov': './outputs/clusters_sacc_file_cov.sacc', 'config': './cosmodc2_config.yml', 'mpi': False, 'pdb': False, 'cprofile': '', 'memmon': 0, 'trace': False, 'outdir': './outputs', 'sacc_file': './cluster_sacc_catalog.sacc'}
+./outputs/clusters_sacc_file_cov.sacc
+Computing independent covariance blocks
+Rank None: ('cosmodc2_wazp', 'rich_0', 'bin_z_0'), ('cosmodc2_wazp', 'rich_0', 'bin_z_0')
+Traceback (most recent call last):
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/sps/lsst/users/ebarroso/CLPipeline/clpipeline/__main__.py", line 6, in <module>
+    PipelineStage.main()
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.10/site-packages/ceci/stage.py", line 526, in main
+    stage.execute(args)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.10/site-packages/ceci/stage.py", line 699, in execute
+    stage.run()
+  File "/sps/lsst/users/ebarroso/CLPipeline/clpipeline/tjpcov_pipeline.py", line 82, in run
+    cov_terms     = cc.get_covariance_terms()
+  File "/sps/lsst/users/ebarroso/TJPCov/tjpcov/covariance_calculator.py", line 134, in get_covariance_terms
+    cov.append(cmat.get_covariance())
+  File "/sps/lsst/users/ebarroso/TJPCov/tjpcov/covariance_builder.py", line 377, in get_covariance
+    blocks, tracers_cov = self._compute_all_blocks(**kwargs)
+  File "/sps/lsst/users/ebarroso/TJPCov/tjpcov/covariance_builder.py", line 220, in _compute_all_blocks
+    cov = self.get_covariance_block_for_sacc(
+  File "/sps/lsst/users/ebarroso/TJPCov/tjpcov/covariance_builder.py", line 363, in get_covariance_block_for_sacc
+    return self._get_covariance_block_for_sacc(
+  File "/sps/lsst/users/ebarroso/TJPCov/tjpcov/covariance_cluster_counts_gaussian.py", line 39, in _get_covariance_block_for_sacc
+    return self._get_covariance_gaussian(tracer_comb1, tracer_comb2)
+  File "/sps/lsst/users/ebarroso/TJPCov/tjpcov/covariance_cluster_counts_gaussian.py", line 54, in _get_covariance_gaussian
+    richness_i, z_i = extract_indices_rich_z(tracer_comb1)
+  File "/sps/lsst/users/ebarroso/TJPCov/tjpcov/clusters_helpers.py", line 135, in extract_indices_rich_z
+    raise ValueError(
+ValueError: Could not extract richness or z from tracer combination: ('cosmodc2_wazp', 'rich_0', 'bin_z_0')
+Stage failed: TJPCovPipeline @ 2025-03-28 14:55:37.078579 after 1.20 minutes

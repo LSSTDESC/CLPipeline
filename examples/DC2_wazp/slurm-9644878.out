@@ -1,0 +1,29 @@
+**********************************************************************
+*                         SLURM Batch System                         *
+*              IN2P3 Computing Centre, Villeurbanne FR               *
+**********************************************************************
+* Date:                 Thu Oct 16 04:33:51 PM CEST 2025
+* Job name:             lauch_ensemble.sh
+* Job id:               9644878
+* User:                 ebarroso
+* Account:              lsst
+* Submit host:          cca017
+* Partition:            hpc
+* Quality of service:   normal
+* Nodelist:             ccwpslurm0022
+* Operating System:     Red Hat Enterprise Linux release 9.6 (Plow)
+* Architecture:         x86_64
+**********************************************************************
+[2025-10-16T16:38:34.078] error: *** STEP 9644878.0 ON ccwpslurm0022 CANCELLED AT 2025-10-16T16:38:34 DUE to SIGNAL Terminated ***
+[2025-10-16T16:38:34.079] error: *** JOB 9644878 ON ccwpslurm0022 CANCELLED AT 2025-10-16T16:38:34 DUE to SIGNAL Terminated ***
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+Date: Thu Oct 16 04:38:34 PM CEST 2025
+Job informations can be found using these commands:
+Accounting:
+sacct -j 9644878
+Efficiency:
+seff 9644878
+****************************************************************
