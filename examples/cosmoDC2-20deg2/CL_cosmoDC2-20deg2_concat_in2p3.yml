@@ -90,6 +90,7 @@ launcher:
     interval: 0.5
 modules: >
     txpipe
+    txpipe.extensions
     rail.estimation.algos.bpz_lite
 python_paths: []
 stages:
@@ -118,7 +119,7 @@ stages:
         cluster_profiles: cluster_profiles
 #    - name: CLClusterDataVector
 #      nprocess: 1
-output_dir: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-20-test-new/
+output_dir: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-20-test-crow/
 # Put the logs from the individual stages in this directory:
 log_dir: ./logs
 
