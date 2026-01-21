@@ -114,7 +114,7 @@ class FirecrownPipeline(PipelineStage):
                 f.write("from crow.properties import ClusterProperty\n")
                 f.write("from crow.recipes.binned_grid import GridBinnedClusterRecipe\n\n")
                 f.write(
-                "from crow import purity_models, completeness_models,\n"
+                "from crow import purity_models, completeness_models\n"
                 )
                 # Firecrown likelihoods
                 f.write(
@@ -124,13 +124,14 @@ class FirecrownPipeline(PipelineStage):
                     "    BinnedClusterNumberCounts,\n"
                     "    Likelihood,\n"
                     "    NamedParameters,\n"
-                    ")\n\n"
+                    ")\n"
                 )
+                f.write("from firecrown.modeling_tools import ModelingTools\n\n")
                 f.write("def get_cluster_abundance() -> ClusterAbundance:\n")
                 f.write("    \"\"\"Creates and returns a ClusterAbundance object.\"\"\" \n")
                 f.write("    cluster_theory = ClusterAbundance(\n")
-                f.write(f"    halo_mass_function = {hmf}(mass_def=\"{mass_def}\")\n")
-                f.write("    cosmo = pyccl.CosmologyVanillaLCDM()\n")
+                f.write(f"    halo_mass_function = {hmf}(mass_def=\"{mass_def}\"),\n")
+                f.write("    cosmo = ccl.CosmologyVanillaLCDM()\n")
                 f.write("    )\n\n")
                 f.write("    return cluster_theory\n\n")
                 if use_shear_profile:
@@ -138,7 +139,7 @@ class FirecrownPipeline(PipelineStage):
                     f.write("def get_cluster_shear_profile() -> ClusterShearProfile:\n")
                     f.write("    \"\"\"Creates and returns a ClusterShearProfile object.\"\"\"\n")
                     f.write("    cluster_theory = ClusterShearProfile(\n")
-                    f.write("    cosmo=pyccl.CosmologyVanillaLCDM(),\n")
+                    f.write("    cosmo=ccl.CosmologyVanillaLCDM(),\n")
                     f.write(f"    halo_mass_function = {hmf}(mass_def=\"{mass_def}\"),\n")
                     f.write(f"    cluster_concentration={cluster_concentration},\n")
                     f.write(f"    is_delta_sigma={is_deltasigma},\n")
@@ -151,7 +152,7 @@ class FirecrownPipeline(PipelineStage):
                 f.write(f"    pivot_redshift: float = {pivot_z},\n")
                 f.write(f"    mass_interval=({min_mass}, {max_mass}),\n")
                 f.write(f"    true_z_interval=({min_z}, {max_z}),\n")
-                f.write(f"    is_reduced_shear = True,\n")
+                f.write(f"    is_reduced_shear = False,\n")
                 f.write("):\n")
                 f.write("    \"\"\"Creates and returns a ClusterRecipe.\n\n")
                 f.write("    Parameters\n")
@@ -173,19 +174,19 @@ class FirecrownPipeline(PipelineStage):
                     f.write(f"        cluster_theory.set_beta_s_interp(true_z_interval[0], true_z_interval[1])\n")
                 if use_grid:
                     f.write(
-                        "         mass_distribution = mass_proxy.MurataUnbinned(\n"
-                        f"        pivot_mass={pivot_mass},\n"
+                        "    mass_distribution = mass_proxy.MurataUnbinned(\n"
+                        f"        pivot_log_mass={pivot_mass},\n"
                         f"        pivot_redshift={pivot_z},\n"
                         "    )\n\n"
                     )
                     f.write("    recipe = GridBinnedClusterRecipe(\n")
-                    f.write(f"        redshift_grid_size = {redshift_grid_size}\n")
-                    f.write(f"        mass_grid_size = {mass_grid_size}\n")
-                    f.write(f"        proxy_grid_size = {proxy_grid_size}\n")
+                    f.write(f"        redshift_grid_size = {redshift_grid_size},\n")
+                    f.write(f"        mass_grid_size = {mass_grid_size},\n")
+                    f.write(f"        proxy_grid_size = {proxy_grid_size},\n")
                 else:
                     f.write(
                         "    mass_distribution = mass_proxy.MurataBinned(\n"
-                        f"        pivot_mass={pivot_mass},\n"
+                        f"        pivot_log_mass={pivot_mass},\n"
                         f"        pivot_redshift={pivot_z},\n"
                         "    )\n\n"
                     )
@@ -215,11 +216,11 @@ class FirecrownPipeline(PipelineStage):
                 f.write(f"    survey_name = '{survey_name}'\n")
                 f.write("    recipe_counts = get_cluster_recipe(get_cluster_abundance())\n")
                 if use_shear_profile:
-                    f.write(f"    recipe_shear = get_cluster_recipe(get_cluster_shear(), is_reduced_shear = {is_deltasigma})\n")
+                    f.write(f"    recipe_shear = get_cluster_recipe(get_cluster_shear_profile(), is_reduced_shear = {not is_deltasigma})\n")
                     f.write("    likelihood = ConstGaussian(\n")
                     f.write("        [\n")
                     f.write("            BinnedClusterNumberCounts(\n")
-                    f.write("                average_on, survey_name, \n")
+                    f.write("                average_on, survey_name, recipe_counts\n")
                     f.write("            ),\n")
                     f.write("            BinnedClusterShearProfile(\n")
                     f.write("                average_on, survey_name, recipe_shear\n")
