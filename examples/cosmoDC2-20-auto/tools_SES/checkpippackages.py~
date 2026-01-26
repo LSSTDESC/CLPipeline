@@ -1,0 +1,75 @@
+
+import sys
+import subprocess
+import pkgutil
+import importlib
+
+def RunSubprocessCmd(cmd):
+
+    print(cmd)
+    p=subprocess.Popen(cmd, shell=True,stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    res,err=p.communicate()
+    exitcode1 = p.returncode
+
+    if exitcode1!=0: 
+        print(exitcode1)
+        return False,(res,str(exitcode1))
+
+    res=res.decode("utf8")
+    return True,(res,err)
+
+
+
+if __name__=="__main__":
+
+    output=[]
+    print("Python version")
+    cmd="which python"
+    status,(res,error) = RunSubprocessCmd(cmd)
+    print(f"Python : ",{res})
+    output.append(res)
+    
+    print("Python version")
+    cmd="python --version"
+    status,(res,error) = RunSubprocessCmd(cmd)
+    print(f"Python : ",{res})
+    output.append(res)
+
+    # pip list
+    
+    print("get pip package names")
+    cmd="pip list"
+    status,(res,error) = RunSubprocessCmd(cmd)
+    if not status:
+        print("Error while running pip list : ",error)
+        sys.exit()
+
+    tmp=[tuple([y for y in x.strip().split(" ") if y!=""]) for x in res.split("\n") if x.strip()!=""]
+    tmp=tmp[2:]
+
+    for (name,version) in tmp:    
+        output.append((name,version))
+
+    # python modules
+        
+    installed_modules = {module.name for module in pkgutil.iter_modules()}
+
+    l_init=list(installed_modules)
+    l_sysmodules=sys.modules.keys()
+    l=[x for x in l_init if x not in l_sysmodules]
+
+    l=list(set(l))
+    l.sort()
+
+    for name in l:
+        spec=importlib.util.find_spec(name)
+        output.append((spec.name,spec.origin))
+
+    f=open("output_pip_modules_packages.txt","w")
+    for l in output:
+        if l==None: continue
+        l=str(l)
+        if not l[-1]=="\n": l=l+"\n"
+        f.write(l)
+    f.close()
+    

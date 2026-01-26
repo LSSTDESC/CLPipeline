@@ -1,0 +1,50 @@
+
+import sys
+import subprocess
+import pkgutil
+import importlib
+
+def RunSubprocessCmd(cmd):
+
+    #print(cmd)
+    p=subprocess.Popen(cmd, shell=True,stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    res,err=p.communicate()
+    exitcode1 = p.returncode
+
+    if exitcode1!=0: 
+        #print(exitcode1)
+        return False,(res,str(exitcode1))
+
+    res=res.decode("utf8")
+    return True,(res,err)
+
+
+
+if __name__=="__main__":
+
+    cosmosis_dir=sys.argv[1]
+
+    cmd=f"find {cosmosis_dir} -name \"*.so\" -print" 
+    status,(res,error) = RunSubprocessCmd(cmd)
+    #print(res)
+
+    list_init=[x for x in res.split("\n") if x!=""]
+    #print(list_init)
+    lib_list=list(set(list_init))
+    lib_list.sort()
+    #print(lib_list)
+
+    output=[]
+    for name in lib_list:
+        cmd=f"ldd -v {name}" 
+        status,(res,error) = RunSubprocessCmd(cmd)
+        #print(res)
+        output.append(res)
+
+    f=open("output_cosmosis_libraries.txt","w")
+    for l in output:
+        if l==None: continue
+        if not l[-1]=="\n": l=l+"\n"
+        f.write(l)
+    f.close()
+    
