@@ -14,7 +14,7 @@ export PYTHONPATH=../../:$PYTHONPATH
 ceci CL_cosmoDC2-20deg2_concat_in2p3.yml --yamlId TXPipe 
 ceci CL_cosmoDC2-20deg2_concat_in2p3.yml --yamlId TJPCov
 conda deactivate
-conda activate /sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_clp
+conda activate /sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp
 export PYTHONPATH=../../:$PYTHONPATH
 ceci CL_cosmoDC2-20deg2_concat_in2p3.yml --yamlId Firecrown
 cd outputs

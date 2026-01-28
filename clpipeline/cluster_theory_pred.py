@@ -1,24 +1,81 @@
-from .firecrown_recipes.counts_cp import MurataBinnedSpecZSelectionRecipe as MCS
-from .firecrown_recipes.deltasigma_cp import MurataBinnedSpecZDeltaSigmaSelectionRecipe as MDS
-from firecrown.models.cluster.deltasigma import ClusterDeltaSigma
-from firecrown.models.cluster.abundance import ClusterAbundance
-from firecrown.models.cluster.properties import ClusterProperty
-from firecrown.likelihood.binned_cluster_number_counts import BinnedClusterNumberCounts
-from firecrown.likelihood.binned_cluster_number_counts_deltasigma import BinnedClusterDeltaSigma
-from firecrown.models.cluster.mass_proxy import MurataBinned
+from crow import ClusterShearProfile, ClusterAbundance, kernel
+from crow.properties import ClusterProperty
+from crow.cluster_modules.mass_proxy import MurataUnbinned
+from crow.recipes.binned_grid import GridBinnedClusterRecipe
 import sacc
 import pyccl as ccl
 import numpy as np
-from firecrown.modeling_tools import ModelingTools
 
+
+def get_cluster_shear_profile(cosmo, hmf, concentration = None, is_delta_sigma = False, use_beta_interp = True) -> ClusterShearProfile:
+    """Creates and returns a ClusterShearProfile object."""
+    cluster_theory = ClusterShearProfile(
+        cosmo=cosmo,
+        halo_mass_function=hmf,
+        cluster_concentration=concentration,
+        is_delta_sigma=is_delta_sigma,
+        use_beta_s_interp=use_beta_interp,
+    )
+
+    return cluster_theory
+
+
+def get_cluster_abundance(cosmo, hmf) -> ClusterShearProfile:
+    """Creates and returns a ClusterShearProfile object."""
+    cluster_theory = ClusterShearProfile(
+        cosmo=cosmo,
+        halo_mass_function=hmf,
+        cluster_concentration=concentration,
+        is_delta_sigma=is_delta_sigma,
+        use_beta_s_interp=use_beta_interp,
+    )
+
+    return cluster_theory
+
+
+def get_cluster_recipe(
+    cluster_theory=None,
+    pivot_mass: float = 14.625862906,
+    pivot_redshift: float = 0.6,
+    mass_interval=(12, 17),
+    true_z_interval=(0.1, 2.0),
+    is_shear = False,
+    comp_func = None,
+    pur_func = None
+):
+    """Creates and returns an GridBinnedClusterRecipe.
+
+    Parameters
+    ----------
+    cluster_theory : ClusterShearProfile or None
+        If None, uses get_cluster_shear_profile()
+
+    Returns
+    -------
+    GridBinnedClusterRecipe
+    """
+    if is_shear:
+        cluster_theory.set_beta_parameters(10.0, 5.0)
+        cluster_theory.set_beta_s_interp(true_z_interval[0], true_z_interval[1])
+    redshift_distribution = kernel.SpectroscopicRedshift()
+    mass_distribution = mass_proxy.MurataUnbinned(pivot_mass, pivot_redshift)
+
+    recipe = GridBinnedClusterRecipe(
+        cluster_theory=cluster_theory,
+        redshift_distribution=redshift_distribution,
+        mass_distribution=mass_distribution,
+        completeness=comp_func,
+        purity=pur_func,
+        mass_interval=mass_interval,
+        true_z_interval=true_z_interval,
+    )
+
+    return recipe
 
 def counts_deltasigma_prediction_from_sacc(path, survey_nm, pivot_mass, pivot_redshift, mu_p0, mu_p1, mu_p2, sigma_p0, sigma_p1, sigma_p2, mass_parameter=False):
     s_read = sacc.Sacc.load_fits(path)
 
     
-    hmf = ccl.halos.MassFuncDespali16()
-    min_mass, max_mass = 13., 16.
-    min_z, max_z = 0.2, 0.8
     cluster_deltasigma = ClusterDeltaSigma((min_mass, max_mass), (min_z, max_z), hmf)
     cluster_abundance = ClusterAbundance((min_mass, max_mass), (min_z, max_z), hmf)
     cosmo_ccl = ccl.Cosmology(
