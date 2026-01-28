@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #File dedicated to impement the Firecrown pipeline stage into ceci
+from logging import config
 from .ceci_types import (
     SACCFile,
     YamlFile,
@@ -102,6 +103,8 @@ class FirecrownPipeline(PipelineStage):
             mass_grid_size = yml_config.get('mass_grid_size', 60)
             proxy_grid_size = yml_config.get('proxy_grid_size', 20)
             beta_parameters = yml_config.get('beta_parameters', (10.0, 5.0))
+            two_halo_term = yml_config.get('two_halo_term', False)
+            boost_factor = yml_config.get('boost_factor', False)
             # Open the file to be written
             with open(path_name, "w") as f:
                 f.write("import os\n\n")
@@ -144,6 +147,8 @@ class FirecrownPipeline(PipelineStage):
                     f.write(f"    cluster_concentration={cluster_concentration},\n")
                     f.write(f"    is_delta_sigma={is_deltasigma},\n")
                     f.write(f"    use_beta_s_interp={use_beta_interp},\n")
+                    f.write(f"    two_halo_term={two_halo_term},\n")
+                    f.write(f"    boost_factor={boost_factor},\n")
                     f.write("    )\n\n")
                     f.write("    return cluster_theory\n\n")
                 f.write("def get_cluster_recipe(\n")
@@ -268,6 +273,14 @@ class FirecrownPipeline(PipelineStage):
             emcee_walkers = config.get('emcee_walkers', 20)
             emcee_samples = config.get('emcee_samples', 4000)
             emcee_nsteps = config.get('emcee_nsteps', 10)
+            # polycord configuration
+            emcee_walkers = config.get('emcee_walkers', 20)
+            emcee_samples = config.get('emcee_samples', 4000)
+            emcee_nsteps = config.get('emcee_nsteps', 10)
+            polycord_live_points = config.get('polycord_live_points', 500)
+            polycord_num_repeats = config.get('polycord_num_repeats', 30)
+            polycord_tolerance = config.get('polycord_tolerance', 0.05)
+            polycord_feedback = config.get('polycord_feedback', 1)
 
             beta_parameters = config.get('beta_parameters', (10.0, 5.0))
             FIRECROWN_DIR = os.path.dirname(firecrown.__file__)
@@ -331,6 +344,11 @@ class FirecrownPipeline(PipelineStage):
                 f.write(f"samples = {emcee_samples}\n")
                 f.write(f"nsteps = {emcee_nsteps}\n")
 
+                f.write("[polychord]\n")
+                f.write(f"live_points = {polycord_live_points}\n")
+                f.write(f"num_repeats = {polycord_num_repeats}\n")
+                f.write(f"tolerance = {polycord_tolerance}\n")
+                f.write(f"feedback = {polycord_feedback}\n")
             print(f"INI file written to {output_ini_path}")
             print(f"INI file generated at {output_ini_path}")
             return True
