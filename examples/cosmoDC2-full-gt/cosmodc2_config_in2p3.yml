@@ -11,7 +11,7 @@ FirecrownPipeline:
     use_completeness: True
     use_purity: True
     use_grid: True
-    is_deltasigma: True
+    is_deltasigma: False
     use_beta_interp: True
     beta_parameters: [10.0, 5.0]
     pivot_mass: 14.3
