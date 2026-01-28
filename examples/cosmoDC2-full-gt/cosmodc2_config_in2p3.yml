@@ -17,15 +17,21 @@ FirecrownPipeline:
     pivot_mass: 14.3
     pivot_z: 0.5
     survey_name: 'cosmodc2-20deg2-CL'
-    sampler: 'emcee'
+    sampler: 'polychord'
     use_cluster_counts: True
     use_mean_log_mass: False
     use_mean_deltasigma: False
     use_mean_reduced_shear: True
     set_concentration: False
-    emcee_walkers: 20
-    emcee_samples: 4000
-    emcee_nsteps: 10
+    emcee_walkers: 70
+    emcee_samples: 50000
+    emcee_nsteps: 100
+    polycord_live_points: 500        # start here
+    polycord_num_repeats: 30
+    polycord_tolerance: 0.05
+    polycord_feedback: 1
+    two_halo_term: True
+    boost_factor: False
     cosmological_parameters:
         omega_c: {'sample': False, 'values': 0.22} # 'values': [0.1552, 0.2052, 0.3552]}
         sigma_8: {'sample': False, 'values': 0.8} # [0.7, 0.800, 0.9]}
@@ -37,12 +43,12 @@ FirecrownPipeline:
         w: {'sample': False, 'values': -1.0}
         wa: {'sample': False, 'values': 0.0}
     firecrown_parameters:
-        mass_distribution_mu0: {'sample': True, 'values': [2.0, 3.0, 4.0]}
-        mass_distribution_mu1: {'sample': True, 'values': [0.4, 0.8, 1.2]}
+        mass_distribution_mu0: {'sample': True, 'values': [2.0, 3.0, 5.0]}
+        mass_distribution_mu1: {'sample': True, 'values': [0.01, 0.8, 5.0]}
         mass_distribution_mu2: {'sample': True, 'values': [-0.6, -0.3, 0.6]}
         mass_distribution_sigma0: {'sample': True, 'values': [0.02, 0.3, 0.6]}
-        mass_distribution_sigma1: {'sample': True, 'values': [-0.1, -0.03, 0.1]}
-        mass_distribution_sigma2: {'sample': True, 'values': [-0.1, 0.06, 0.1]}
+        mass_distribution_sigma1: {'sample': True, 'values': [0.01, -0.03, 4.0]}
+        mass_distribution_sigma2: {'sample': True, 'values': [-0.6, 0.06, 0.6]}
         completeness_a_n: {'sample': False, 'values': 0.38}
         completeness_b_n: {'sample': False, 'values': 1.2634}
         completeness_a_logm_piv: {'sample': False, 'values': 13.31}
