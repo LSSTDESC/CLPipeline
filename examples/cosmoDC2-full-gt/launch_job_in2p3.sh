@@ -3,7 +3,7 @@
 #SBATCH --partition=hpc,lsst
 #SBATCH --ntasks=60
 #SBATCH --cpus-per-task=1
-#SBATCH --mem=300gb
+#SBATCH --mem=600gb
 
 module load conda
 #source /pbs/throng/lsst/software/desc/common/miniconda/setup_current_python.sh

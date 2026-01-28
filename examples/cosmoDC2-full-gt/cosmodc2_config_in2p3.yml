@@ -12,7 +12,7 @@ FirecrownPipeline:
     use_purity: True
     use_grid: True
     is_deltasigma: True
-    use_beta_interp: False
+    use_beta_interp: True
     beta_parameters: [10.0, 5.0]
     pivot_mass: 14.3
     pivot_z: 0.5
@@ -20,7 +20,8 @@ FirecrownPipeline:
     sampler: 'emcee'
     use_cluster_counts: True
     use_mean_log_mass: False
-    use_mean_deltasigma: True
+    use_mean_deltasigma: False
+    use_mean_reduced_shear: True
     set_concentration: False
     emcee_walkers: 20
     emcee_samples: 4000
@@ -92,7 +93,7 @@ TJPCovPipeline:
         sigma_p2: -0.05
 CLClusterSACC:
     survey_name: 'cosmodc2-20deg2-CL'
-    area: 20.0
+    area: 440.0
     d_min: 0.5
     d_max: 10.0
 TXSourceSelectorMetadetect:
@@ -149,39 +150,41 @@ BPZliteEstimator:
     mag_err_min: 0.005
     madau_reddening: false
     mag_limits:
-        mag_r: 28.
-        mag_i: 24.25
-        mag_z: 23.9
+        mag_r: 29.06
+        mag_i: 28.62
+        mag_z: 27.98
+
+
+#        mag_r: 28.
+#        mag_i: 24.25
+#        mag_z: 23.9
 
 CLClusterBinningRedshiftRichness:
-    zedge: [0.2, 0.4, 0.6, 0.8, 1.0, 1.2]
-    richedge: [10., 20., 35., 200.]
-
-    # zedge: [0.2, 0.3, 0.4, 0.5 ,0.6, 0.7, 0.8, 1.0]
-    # richedge: [20., 35., 70., 100., 200.]
+    zedge: [0.2, 0.3, 0.4, 0.5 ,0.6, 0.7, 0.8, 1.0]
+    richedge: [20., 35., 70., 100., 200.]
 
 CLClusterShearCatalogs:
-    chunk_rows: 100_000  # rows to read at once from source cat
     max_radius: 10.0   # Mpc
     delta_z: 0.2   # redshift buffer
-    redshift_cut_criterion: zmode
-    redshift_weight_criterion: zmode
-    redshift_cut_criterion_pdf_fraction: 0.8
+    redshift_cut_criterion: ztrue
+    redshift_weight_criterion: ztrue
+    redshift_cut_criterion_pdf_fraction: 0.9
     subtract_mean_shear: false
     coordinate_system: celestial #euclidean or celestial
     use_true_shear: true
-    use_radius: true
-    delta_sigma: true
+    use_radius: false
+    delta_sigma: false
+    max_angle: 21.5
 
 
 CLClusterEnsembleProfiles:
     #radial bin definition
     r_min: 0.5  #in Mpc
     r_max: 10.0  #in Mpc
-    nbins: 10  # number of bins
+    nbins: 12  # number of bins
     #type of profile
     magnification_profile: false
     coordinate_system: celestial #euclidean or celestial
-    units: mpc
-    angle_arcmin: 1.5
-    angle_arcmax: 22.0
+    units: arcmin
+    angle_arcmin_min: 2.0
+    angle_arcmin_max: 21.0    
