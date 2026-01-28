@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-#SBATCH --time=15:00:00
+#SBATCH --time=1:00:00
 #SBATCH --partition=hpc
 #SBATCH --ntasks=30
 #SBATCH --cpus-per-task=1
