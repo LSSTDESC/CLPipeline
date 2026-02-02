@@ -1,0 +1,44 @@
+global:
+    metacalibration: True
+FirecrownPipeline:
+    hmf: 'despali16'
+    min_mass: 12.0
+    max_mass: 15.5
+    min_z: 0.2
+    max_z: 0.8
+    mass_def: '200c'
+    use_shear_profile: False
+    use_completeness: False
+    use_purity: False
+    use_grid: True
+    is_deltasigma: True
+    use_beta_interp: False
+    beta_parameters: [10.0, 5.0]
+    pivot_mass: 14.3
+    pivot_z: 0.5
+    survey_name: 'cosmodc2_wazp_halos'
+    sampler: 'emcee'
+    use_cluster_counts: True
+    use_mean_log_mass: False
+    use_mean_deltasigma: False
+    set_concentration: False
+    emcee_walkers: 100
+    emcee_samples: 20000
+    emcee_nsteps: 200
+    cosmological_parameters:
+        omega_c: {'sample': True, 'values': [0.1552, 0.2052, 0.3552]}
+        sigma_8: {'sample': True, 'values': [0.7, 0.800, 0.9]}
+        omega_k: {'sample': False, 'values': 0.0}
+        omega_b: {'sample': False, 'values': 0.0448}
+        tau: {'sample': False, 'values': 0.08}
+        n_s: {'sample': False, 'values': 0.963}
+        h0: {'sample': False, 'values': 0.71}
+        w: {'sample': False, 'values': -1.0}
+        wa: {'sample': False, 'values': 0.0}
+    firecrown_parameters:
+        mass_distribution_mu0: {'sample': False, 'values': 4.5216}
+        mass_distribution_mu1: {'sample': False, 'values': 0.5333}
+        mass_distribution_mu2: {'sample': False, 'values': 0.1571}
+        mass_distribution_sigma0: {'sample': False, 'values': 0.2649}
+        mass_distribution_sigma1: {'sample': False, 'values': 0.0048}
+        mass_distribution_sigma2: {'sample': False, 'values': -0.0440}
