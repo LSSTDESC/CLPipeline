@@ -302,7 +302,7 @@ class FirecrownPipeline(PipelineStage):
                 f.write("modules = consistency camb firecrown_likelihood\n")
                 f.write("values = cluster_richness_values.ini\n")
                 f.write("likelihoods = firecrown\n")
-                f.write("quiet = T\n")
+                f.write("quiet = F\n")
                 f.write("debug = T\n")
                 f.write("timing = T\n\n")
 
