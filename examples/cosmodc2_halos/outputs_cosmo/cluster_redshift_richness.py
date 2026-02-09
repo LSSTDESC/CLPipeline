@@ -30,8 +30,8 @@ def get_cluster_recipe(
     cluster_theory,
     pivot_mass: float = 14.3,
     pivot_redshift: float = 0.5,
-    mass_interval=(12.0, 15.5),
-    true_z_interval=(0.2, 0.8),
+    mass_interval=(12.5, 17.0),
+    true_z_interval=(0.2, 1.0),
     is_reduced_shear = False,
 ):
     """Creates and returns a ClusterRecipe.
@@ -59,8 +59,8 @@ def get_cluster_recipe(
         mass_distribution=mass_distribution,
         completeness=completeness,
         purity=purity,
-        mass_interval=(12.0, 15.5),
-        true_z_interval=(0.2, 0.8),
+        mass_interval=(12.5, 17.0),
+        true_z_interval=(0.2, 1.0),
     )
 
     return recipe
@@ -78,7 +78,7 @@ def build_likelihood(build_parameters: NamedParameters) -> tuple[Likelihood, Mod
     if build_parameters.get_bool('use_mean_reduced_shear', True):
         average_on |= ClusterProperty.SHEAR
 
-    survey_name = 'cosmodc2_wazp_halos'
+    survey_name = 'cosmodc2_halos'
     recipe_counts = get_cluster_recipe(get_cluster_abundance())
     likelihood = ConstGaussian(
         [BinnedClusterNumberCounts(average_on, survey_name, recipe_counts)]

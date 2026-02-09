@@ -1,0 +1,141 @@
+**********************************************************************
+*                         SLURM Batch System                         *
+*              IN2P3 Computing Centre, Villeurbanne FR               *
+**********************************************************************
+* Date:                 Mon Feb  9 11:19:59 AM CET 2026
+* Job name:             launch_job_cosmo.sh
+* Job id:               26170470
+* User:                 ebarroso
+* Account:              lsst
+* Submit host:          jns-ebarroso.cc.in2p3.fr
+* Partition:            hpc
+* Quality of service:   normal
+* Nodelist:             ccwpslurm0022
+* Operating System:     Red Hat Enterprise Linux release 9.7 (Plow)
+* Architecture:         x86_64
+**********************************************************************
+/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.12/site-packages/ceci/__init__.py:12: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound
+SES - yaml config file :  TJPCov
+SES - final yaml config :  {'id': 'TJPCov', 'modules': 'clpipeline', 'launcher': {'name': 'mini', 'interval': 0.5}, 'site': {'name': 'local', 'max_threads': 4}, 'stages': [{'name': 'TJPCovPipeline', 'module_name': 'clpipeline.tjpcov_pipeline', 'nprocess': 1}], 'inputs': {'clusters_sacc_file': './clusters_sacc_file.sacc'}, 'config': './cosmodc2_config_cosmo.yml', 'resume': False, 'output_dir': './', 'log_dir': './logs_cosmo'}
+
+Executing TJPCovPipeline
+Command is:
+OMP_NUM_THREADS=1   python3 -m clpipeline TJPCovPipeline   --clusters_sacc_file=./clusters_sacc_file.sacc   --config=./cosmodc2_config_cosmo.yml   --clusters_sacc_file_cov=.//clusters_sacc_file_cov.sacc 
+Output writing to ./logs_cosmo/TJPCovPipeline.out
+
+Job TJPCovPipeline has completed successfully in 5 minutes, 54.1 seconds seconds !
+Pipeline successful.  Joy is sparked.
+WARNING: overwriting environment variables set in the machine
+overwriting variable ['CSL_DIR', 'FIRECROWN_DIR']
+/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/ceci/__init__.py:12: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound
+SES - yaml config file :  Firecrown
+SES - final yaml config :  {'id': 'Firecrown', 'modules': 'clpipeline', 'launcher': {'name': 'mini', 'interval': 0.5}, 'site': {'name': 'local', 'max_threads': 4}, 'stages': [{'name': 'FirecrownPipeline', 'module_name': 'clpipeline.firecrown_pipeline', 'nprocess': 1}], 'inputs': {'clusters_sacc_file_cov': './clusters_sacc_file_cov.sacc'}, 'config': './cosmodc2_config_cosmo.yml', 'resume': False, 'output_dir': './outputs_cosmo', 'log_dir': './logs_cosmo'}
+
+Executing FirecrownPipeline
+Command is:
+OMP_NUM_THREADS=1   python3 -m clpipeline FirecrownPipeline   --clusters_sacc_file_cov=./clusters_sacc_file_cov.sacc   --config=./cosmodc2_config_cosmo.yml   --cluster_counts_mean_mass_redshift_richness=./outputs_cosmo/cluster_counts_mean_mass_redshift_richness.ini   --cluster_redshift_richness=./outputs_cosmo/cluster_redshift_richness.py   --cluster_richness_values=./outputs_cosmo/cluster_richness_values.ini 
+Output writing to ./logs_cosmo/FirecrownPipeline.out
+
+Job FirecrownPipeline has completed successfully in 1.0 seconds seconds !
+Pipeline successful.  Joy is sparked.
+Deprecated: The [pipeline] quiet option is deprecated.  Set [runtime] verbosity instead.
+Setting up pipeline from parameter file cluster_counts_mean_mass_redshift_richness.ini
+--------------------------------------------------------------------------------------
+
+Setting up module consistency
+------------------------------
+
+Setting up module camb
+-----------------------
+/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/cosmosis-standard-library/boltzmann/camb/camb_interface.py:183: UserWarning: Option kmin does not have an effect.
+  warnings.warn("Option kmin does not have an effect.")
+**** WARNING: Parameter 'kmin' in the [camb] section never used!
+
+
+Setting up module firecrown_likelihood
+---------------------------------------
+Traceback (most recent call last):
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/bin/cosmosis", line 4, in <module>
+    status = cosmosis.main.main()
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/main.py", line 585, in main
+    return run_cosmosis(ini=args.inifile, pool=None, override=args.params, profile_mem=args.mem, profile_cpu=args.profile, variables=args.variables, only=args.only)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/main.py", line 299, in run_cosmosis
+    pipeline = LikelihoodPipeline(ini, override=variables, values=values, only=only, priors=priors)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/runtime/pipeline.py", line 778, in __init__
+    self.setup()
+    ~~~~~~~~~~^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/runtime/pipeline.py", line 464, in setup
+    module.setup(config_block)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/runtime/module.py", line 231, in setup
+    self.setup_functions(config)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/runtime/module.py", line 204, in setup_functions
+    self.data = self.setup_function(config)
+                ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/firecrown/connector/cosmosis/likelihood.py", line 359, in setup
+    return FirecrownLikelihood(config)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/firecrown/connector/cosmosis/likelihood.py", line 72, in __init__
+    self.likelihood, self.tools = load_likelihood(
+                                  ~~~~~~~~~~~~~~~^
+        likelihood_source, build_parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/firecrown/likelihood/_likelihood.py", line 228, in load_likelihood
+    return load_likelihood_from_script(likelihood_name, build_parameters)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/firecrown/likelihood/_likelihood.py", line 175, in load_likelihood_from_script
+    return load_likelihood_from_module_type(mod, build_parameters)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/firecrown/likelihood/_likelihood.py", line 108, in load_likelihood_from_module_type
+    build_return = build_likelihood(build_parameters)
+  File "/sps/lsst/users/ebarroso/CLPipeline/examples/cosmodc2_halos/outputs_cosmo/cluster_redshift_richness.py", line 88, in build_likelihood
+    sacc_data = sacc.Sacc.load_fits(sacc_path)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/sacc/sacc.py", line 971, in load_fits
+    with fits.open(filename, mode="readonly") as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/astropy/io/fits/hdu/hdulist.py", line 220, in fitsopen
+    return HDUList.fromfile(
+           ~~~~~~~~~~~~~~~~^
+        name,
+        ^^^^^
+    ...<9 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/astropy/io/fits/hdu/hdulist.py", line 484, in fromfile
+    return cls._readfrom(
+           ~~~~~~~~~~~~~^
+        fileobj=fileobj,
+        ^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/astropy/io/fits/hdu/hdulist.py", line 1186, in _readfrom
+    fileobj = _File(
+        fileobj,
+    ...<5 lines>...
+        decompress_in_memory=decompress_in_memory,
+    )
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/astropy/io/fits/file.py", line 240, in __init__
+    self._open_filename(fileobj, mode, overwrite)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/astropy/io/fits/file.py", line 701, in _open_filename
+    self._file = open(self.name, IO_FITS_MODES[mode])
+                 ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'clusters_sacc_file_cov.sacc'
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+Date: Mon Feb  9 11:26:01 AM CET 2026
+Job informations can be found using these commands:
+Accounting:
+sacct -j 26170470
+Efficiency:
+seff 26170470
+****************************************************************

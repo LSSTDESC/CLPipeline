@@ -1,0 +1,51 @@
+**********************************************************************
+*                         SLURM Batch System                         *
+*              IN2P3 Computing Centre, Villeurbanne FR               *
+**********************************************************************
+* Date:                 Mon Feb  9 11:19:55 AM CET 2026
+* Job name:             launch_job_mor.sh
+* Job id:               26170469
+* User:                 ebarroso
+* Account:              lsst
+* Submit host:          jns-ebarroso.cc.in2p3.fr
+* Partition:            hpc
+* Quality of service:   normal
+* Nodelist:             ccwpslurm0019
+* Operating System:     Red Hat Enterprise Linux release 9.7 (Plow)
+* Architecture:         x86_64
+**********************************************************************
+/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.12/site-packages/ceci/__init__.py:12: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound
+SES - yaml config file :  TJPCov
+SES - final yaml config :  {'id': 'TJPCov', 'modules': 'clpipeline', 'launcher': {'name': 'mini', 'interval': 0.5}, 'site': {'name': 'local', 'max_threads': 4}, 'stages': [{'name': 'TJPCovPipeline', 'module_name': 'clpipeline.tjpcov_pipeline', 'nprocess': 1}], 'inputs': {'clusters_sacc_file': './clusters_sacc_file.sacc'}, 'config': './cosmodc2_config_mor.yml', 'resume': False, 'output_dir': './', 'log_dir': './logs_mor'}
+
+Executing TJPCovPipeline
+Command is:
+OMP_NUM_THREADS=1   python3 -m clpipeline TJPCovPipeline   --clusters_sacc_file=./clusters_sacc_file.sacc   --config=./cosmodc2_config_mor.yml   --clusters_sacc_file_cov=.//clusters_sacc_file_cov.sacc 
+Output writing to ./logs_mor/TJPCovPipeline.out
+
+Job TJPCovPipeline has completed successfully in 6 minutes, 0.1 seconds seconds !
+Pipeline successful.  Joy is sparked.
+WARNING: overwriting environment variables set in the machine
+overwriting variable ['CSL_DIR', 'FIRECROWN_DIR']
+Traceback (most recent call last):
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/bin/cosmosis", line 4, in <module>
+    status = cosmosis.main.main()
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/main.py", line 585, in main
+    return run_cosmosis(ini=args.inifile, pool=None, override=args.params, profile_mem=args.mem, profile_cpu=args.profile, variables=args.variables, only=args.only)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/main.py", line 249, in run_cosmosis
+    ini = Inifile(ini, override=override, print_include_messages=is_root)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/runtime/config.py", line 137, in __init__
+    raise IOError("Unable to open configuration file `" + filename + "'")
+OSError: Unable to open configuration file `cluster_counts_mean_mass_redshift_richness.ini'
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+Date: Mon Feb  9 11:26:01 AM CET 2026
+Job informations can be found using these commands:
+Accounting:
+sacct -j 26170469
+Efficiency:
+seff 26170469
+****************************************************************
