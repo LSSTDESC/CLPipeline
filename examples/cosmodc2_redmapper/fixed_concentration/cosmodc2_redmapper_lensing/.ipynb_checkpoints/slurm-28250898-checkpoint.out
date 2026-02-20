@@ -1,0 +1,288 @@
+**********************************************************************
+*                         SLURM Batch System                         *
+*              IN2P3 Computing Centre, Villeurbanne FR               *
+**********************************************************************
+* Date:                 Thu Feb 19 06:34:22 PM CET 2026
+* Job name:             launch_job_both.sh
+* Job id:               28250898
+* User:                 ebarroso
+* Account:              lsst
+* Submit host:          cca012
+* Partition:            hpc
+* Quality of service:   normal
+* Nodelist:             ccwpslurm0024
+* Operating System:     Red Hat Enterprise Linux release 9.7 (Plow)
+* Architecture:         x86_64
+**********************************************************************
+/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.12/site-packages/ceci/__init__.py:12: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound
+SES - yaml config file :  TXPipe
+SES - final yaml config :  {'id': 'TXPipe', 'site': {'name': 'local', 'max_threads': 60}, 'launcher': {'name': 'mini', 'interval': 0.5}, 'modules': 'txpipe txpipe.extensions rail.estimation.algos.bpz_lite\n', 'python_paths': [], 'stages': [{'name': 'TXSourceSelectorMetadetect', 'nprocess': 60}, {'name': 'BPZliteInformer', 'nprocess': 1, 'aliases': {'input': 'spectroscopic_catalog', 'model': 'photoz_model'}}, {'name': 'BPZliteEstimator', 'nprocess': 60, 'aliases': {'model': 'photoz_model', 'input': 'shear_catalog', 'output': 'source_photoz_pdfs'}}, {'name': 'CLClusterBinningRedshiftRichness', 'nprocess': 1}, {'name': 'CLClusterShearCatalogs', 'nprocess': 10}, {'name': 'CLClusterEnsembleProfiles', 'nprocess': 10}, {'name': 'CLClusterSACC', 'nprocess': 1, 'aliases': {'cluster_profiles': 'cluster_profiles'}}], 'output_dir': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-full-2026/', 'log_dir': './logs_both', 'config': './cosmodc2_config_both.yml', 'inputs': {'shear_catalog': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/shear_catalog.hdf5', 'fiducial_cosmology': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/fiducial_cosmology.yml', 'calibration_table': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/20deg2/sample_cosmodc2_w10year_errors.dat', 'spectroscopic_catalog': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/20deg2/spectroscopic_catalog.hdf5', 'cluster_catalog': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/cluster_catalog.hdf5'}, 'resume': True, 'pipeline_log': './logs_both/log_full.txt'}
+Skipping stage TXSourceSelectorMetadetect because its outputs exist already
+Skipping stage BPZliteInformer because its outputs exist already
+Skipping stage CLClusterBinningRedshiftRichness because its outputs exist already
+Skipping stage BPZliteEstimator because its outputs exist already
+Skipping stage CLClusterShearCatalogs because its outputs exist already
+Skipping stage CLClusterEnsembleProfiles because its outputs exist already
+Skipping stage CLClusterSACC because its outputs exist already
+Pipeline successful.  Joy is sparked.
+/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.12/site-packages/ceci/__init__.py:12: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound
+SES - yaml config file :  TJPCov
+SES - final yaml config :  {'id': 'TJPCov', 'modules': 'clpipeline', 'launcher': {'name': 'mini', 'interval': 0.5}, 'site': {'name': 'local', 'max_threads': 4}, 'stages': [{'name': 'TJPCovPipeline', 'module_name': 'clpipeline.tjpcov_pipeline', 'nprocess': 1}], 'inputs': {'clusters_sacc_file': '/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-full-2026/cluster_sacc_catalog.sacc'}, 'config': './cosmodc2_config_both.yml', 'resume': False, 'output_dir': './outputs_both', 'log_dir': './logs_both'}
+
+Executing TJPCovPipeline
+Command is:
+OMP_NUM_THREADS=1   python3 -m clpipeline TJPCovPipeline   --clusters_sacc_file=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-full-2026/cluster_sacc_catalog.sacc   --config=./cosmodc2_config_both.yml   --clusters_sacc_file_cov=./outputs_both/clusters_sacc_file_cov.sacc 
+Output writing to ./logs_both/TJPCovPipeline.out
+
+Job TJPCovPipeline has completed successfully in 24 minutes, 19.8 seconds seconds !
+Pipeline successful.  Joy is sparked.
+WARNING: overwriting environment variables set in the machine
+overwriting variable ['FIRECROWN_DIR', 'CSL_DIR']
+/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/ceci/__init__.py:12: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound
+SES - yaml config file :  Firecrown
+SES - final yaml config :  {'id': 'Firecrown', 'modules': 'clpipeline', 'launcher': {'name': 'mini', 'interval': 0.5}, 'site': {'name': 'local', 'max_threads': 4}, 'stages': [{'name': 'FirecrownPipeline', 'module_name': 'clpipeline.firecrown_pipeline', 'nprocess': 1}], 'inputs': {'clusters_sacc_file_cov': './outputs_both/clusters_sacc_file_cov.sacc'}, 'config': './cosmodc2_config_both.yml', 'resume': False, 'output_dir': './outputs_both', 'log_dir': './logs_both'}
+
+Executing FirecrownPipeline
+Command is:
+OMP_NUM_THREADS=1   python3 -m clpipeline FirecrownPipeline   --clusters_sacc_file_cov=./outputs_both/clusters_sacc_file_cov.sacc   --config=./cosmodc2_config_both.yml   --cluster_counts_mean_mass_redshift_richness=./outputs_both/cluster_counts_mean_mass_redshift_richness.ini   --cluster_redshift_richness=./outputs_both/cluster_redshift_richness.py   --cluster_richness_values=./outputs_both/cluster_richness_values.ini 
+Output writing to ./logs_both/FirecrownPipeline.out
+
+Job FirecrownPipeline has completed successfully in 1.0 seconds seconds !
+Pipeline successful.  Joy is sparked.
+Deprecated: The [pipeline] quiet option is deprecated.  Set [runtime] verbosity instead.
+Setting up pipeline from parameter file cluster_counts_mean_mass_redshift_richness.ini
+--------------------------------------------------------------------------------------
+
+Setting up module consistency
+------------------------------
+
+Setting up module camb
+-----------------------
+/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/cosmosis-standard-library/boltzmann/camb/camb_interface.py:183: UserWarning: Option kmin does not have an effect.
+  warnings.warn("Option kmin does not have an effect.")
+**** WARNING: Parameter 'kmin' in the [camb] section never used!
+
+
+Setting up module firecrown_likelihood
+---------------------------------------
+Setup all pipeline modules
+
+Module timing:
+consistency 0.001123
+camb 0.001336
+firecrown_likelihood 0.103434
+
+Parameter Priors
+----------------
+cosmological_parameters--omega_c                               ~ delta(0.22)
+cosmological_parameters--sigma_8                               ~ delta(0.8)
+cosmological_parameters--omega_k                               ~ delta(0.0)
+cosmological_parameters--omega_b                               ~ delta(0.0448)
+cosmological_parameters--tau                                   ~ delta(0.08)
+cosmological_parameters--n_s                                   ~ delta(0.963)
+cosmological_parameters--h0                                    ~ delta(0.71)
+cosmological_parameters--w                                     ~ delta(-1.0)
+cosmological_parameters--wa                                    ~ delta(0.0)
+firecrown_number_counts--mass_distribution_mu0                 ~ U(1.0, 10.0)
+firecrown_number_counts--mass_distribution_mu1                 ~ U(-2.0, 2.0)
+firecrown_number_counts--mass_distribution_mu2                 ~ delta(0.03723521)
+firecrown_number_counts--mass_distribution_sigma0              ~ U(0.01, 5.0)
+firecrown_number_counts--mass_distribution_sigma1              ~ delta(0.0)
+firecrown_number_counts--mass_distribution_sigma2              ~ delta(0.0)
+firecrown_number_counts--completeness_a_n                      ~ delta(0.38)
+firecrown_number_counts--completeness_b_n                      ~ delta(1.2634)
+firecrown_number_counts--completeness_a_logm_piv               ~ delta(13.31)
+firecrown_number_counts--completeness_b_logm_piv               ~ delta(0.2025)
+firecrown_number_counts--purity_a_n                            ~ delta(3.9193)
+firecrown_number_counts--purity_b_n                            ~ delta(-0.3323)
+firecrown_number_counts--purity_a_logm_piv                     ~ delta(1.1839)
+firecrown_number_counts--purity_b_logm_piv                     ~ delta(-0.4077)
+firecrown_number_counts--cluster_theory_cluster_concentration  ~ delta(3.8)
+
+****************************************************
+* Running sampler 1/1: emcee
+* Running in serial mode.
+* Saving output -> output_rp/number_counts_samples.txt
+****************************************************
+Generating starting positions in small ball around starting point
+Begun sampling
+consistency took: 0.013 seconds
+camb took: 3.087 seconds
+Exception running likelihood at parameters: [1.99246617 0.79298816 0.30098903].You should fix this; for now, using zero likelihood.
+Traceback (most recent call last):
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/runtime/pipeline.py", line 1238, in run_results
+    like, r.extra, r.block = self.likelihood(p, return_data=True, all_params=all_params)
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/runtime/pipeline.py", line 1370, in likelihood
+    data = self.run_parameters(p, all_params=all_params)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/runtime/pipeline.py", line 1142, in run_parameters
+    if self.run(data):
+       ~~~~~~~~^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/runtime/pipeline.py", line 649, in run
+    status = module.execute(data_package)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/runtime/module.py", line 246, in execute
+    return self.execute_function(data_block, self.data)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/firecrown/connector/cosmosis/likelihood.py", line 372, in execute
+    return instance.execute(sample)
+           ~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/firecrown/connector/cosmosis/likelihood.py", line 158, in execute
+    handle_unused_params(
+    ~~~~~~~~~~~~~~~~~~~~^
+        params=firecrown_params,
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+        updated_records=updated_records,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        raise_on_unused=self.likelihood.raise_on_unused_parameter,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/firecrown/parameters/_map.py", line 193, in handle_unused_params
+    raise ValueError(message)
+ValueError: Unused keys in parameters: ['purity_a_logm_piv', 'purity_a_n', 'purity_b_logm_piv', 'purity_b_n'].
+This may indicate a missing statistic or systematic.
+You may also have a modeling mismatch, e.g. you have specified sampling of neutrino masses but did not configure CAMB to use massive neutrinos.
+ConstGaussian => GuardedStatistic => BinnedClusterShearProfile => UpdatableClusterObjects: 
+  UpdatableParameters: 
+    Sampler parameters used:  ['cluster_theory_cluster_concentration']
+  UpdatableParameters: 
+    Sampler parameters used:  ['mass_distribution_mu0', 'mass_distribution_mu1', 'mass_distribution_mu2', 'mass_distribution_sigma0', 'mass_distribution_sigma1', 'mass_distribution_sigma2']
+  UpdatableParameters: 
+    Sampler parameters used:  ['completeness_a_n', 'completeness_b_n', 'completeness_a_logm_piv', 'completeness_b_logm_piv']
+ModelingTools => CCLFactory: 
+  Sampler parameters used:  ['Omega_c', 'Omega_b', 'h', 'n_s', 'Omega_k', 'Neff', 'm_nu', 'w0', 'wa', 'T_CMB', 'sigma8']
+
+
+Because you have debug=T I will let this kill the chain.
+The input parameters were:array([1.99246617, 0.79298816, 0.30098903])
+Traceback (most recent call last):
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/emcee/ensemble.py", line 640, in __call__
+    return self.f(x, *self.args, **self.kwargs)
+           ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/samplers/emcee/emcee_sampler.py", line 8, in log_probability_function
+    r = emcee_pipeline.run_results(p)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/runtime/pipeline.py", line 1238, in run_results
+    like, r.extra, r.block = self.likelihood(p, return_data=True, all_params=all_params)
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/runtime/pipeline.py", line 1370, in likelihood
+    data = self.run_parameters(p, all_params=all_params)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/runtime/pipeline.py", line 1142, in run_parameters
+    if self.run(data):
+       ~~~~~~~~^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/runtime/pipeline.py", line 649, in run
+    status = module.execute(data_package)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/runtime/module.py", line 246, in execute
+    return self.execute_function(data_block, self.data)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/firecrown/connector/cosmosis/likelihood.py", line 372, in execute
+    return instance.execute(sample)
+           ~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/firecrown/connector/cosmosis/likelihood.py", line 158, in execute
+    handle_unused_params(
+    ~~~~~~~~~~~~~~~~~~~~^
+        params=firecrown_params,
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+        updated_records=updated_records,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        raise_on_unused=self.likelihood.raise_on_unused_parameter,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/firecrown/parameters/_map.py", line 193, in handle_unused_params
+    raise ValueError(message)
+ValueError: Unused keys in parameters: ['purity_a_logm_piv', 'purity_a_n', 'purity_b_logm_piv', 'purity_b_n'].
+This may indicate a missing statistic or systematic.
+You may also have a modeling mismatch, e.g. you have specified sampling of neutrino masses but did not configure CAMB to use massive neutrinos.
+ConstGaussian => GuardedStatistic => BinnedClusterShearProfile => UpdatableClusterObjects: 
+  UpdatableParameters: 
+    Sampler parameters used:  ['cluster_theory_cluster_concentration']
+  UpdatableParameters: 
+    Sampler parameters used:  ['mass_distribution_mu0', 'mass_distribution_mu1', 'mass_distribution_mu2', 'mass_distribution_sigma0', 'mass_distribution_sigma1', 'mass_distribution_sigma2']
+  UpdatableParameters: 
+    Sampler parameters used:  ['completeness_a_n', 'completeness_b_n', 'completeness_a_logm_piv', 'completeness_b_logm_piv']
+ModelingTools => CCLFactory: 
+  Sampler parameters used:  ['Omega_c', 'Omega_b', 'h', 'n_s', 'Omega_k', 'Neff', 'm_nu', 'w0', 'wa', 'T_CMB', 'sigma8']
+emcee: Exception while calling your likelihood function:
+  params: [1.99246617 0.79298816 0.30098903]
+  args: []
+  kwargs: {}
+  exception:
+Traceback (most recent call last):
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/bin/cosmosis", line 4, in <module>
+    status = cosmosis.main.main()
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/main.py", line 585, in main
+    return run_cosmosis(ini=args.inifile, pool=None, override=args.params, profile_mem=args.mem, profile_cpu=args.profile, variables=args.variables, only=args.only)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/main.py", line 436, in run_cosmosis
+    sampler_main_loop(sampler, output, pool, is_root)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/main.py", line 70, in sampler_main_loop
+    sampler.execute()
+    ~~~~~~~~~~~~~~~^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/samplers/emcee/emcee_sampler.py", line 154, in execute
+    for (pos, prob, rstate, extra_info) in self.ensemble.sample(self.p0, **kwargs):
+                                           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/emcee/ensemble.py", line 351, in sample
+    state.log_prob, state.blobs = self.compute_log_prob(state.coords)
+                                  ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/emcee/ensemble.py", line 496, in compute_log_prob
+    results = list(map_func(self.log_prob_fn, p))
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/emcee/ensemble.py", line 640, in __call__
+    return self.f(x, *self.args, **self.kwargs)
+           ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/samplers/emcee/emcee_sampler.py", line 8, in log_probability_function
+    r = emcee_pipeline.run_results(p)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/runtime/pipeline.py", line 1238, in run_results
+    like, r.extra, r.block = self.likelihood(p, return_data=True, all_params=all_params)
+                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/runtime/pipeline.py", line 1370, in likelihood
+    data = self.run_parameters(p, all_params=all_params)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/runtime/pipeline.py", line 1142, in run_parameters
+    if self.run(data):
+       ~~~~~~~~^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/runtime/pipeline.py", line 649, in run
+    status = module.execute(data_package)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/runtime/module.py", line 246, in execute
+    return self.execute_function(data_block, self.data)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/firecrown/connector/cosmosis/likelihood.py", line 372, in execute
+    return instance.execute(sample)
+           ~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/firecrown/connector/cosmosis/likelihood.py", line 158, in execute
+    handle_unused_params(
+    ~~~~~~~~~~~~~~~~~~~~^
+        params=firecrown_params,
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+        updated_records=updated_records,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        raise_on_unused=self.likelihood.raise_on_unused_parameter,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/firecrown/parameters/_map.py", line 193, in handle_unused_params
+    raise ValueError(message)
+ValueError: Unused keys in parameters: ['purity_a_logm_piv', 'purity_a_n', 'purity_b_logm_piv', 'purity_b_n'].
+This may indicate a missing statistic or systematic.
+You may also have a modeling mismatch, e.g. you have specified sampling of neutrino masses but did not configure CAMB to use massive neutrinos.
+ConstGaussian => GuardedStatistic => BinnedClusterShearProfile => UpdatableClusterObjects: 
+  UpdatableParameters: 
+    Sampler parameters used:  ['cluster_theory_cluster_concentration']
+  UpdatableParameters: 
+    Sampler parameters used:  ['mass_distribution_mu0', 'mass_distribution_mu1', 'mass_distribution_mu2', 'mass_distribution_sigma0', 'mass_distribution_sigma1', 'mass_distribution_sigma2']
+  UpdatableParameters: 
+    Sampler parameters used:  ['completeness_a_n', 'completeness_b_n', 'completeness_a_logm_piv', 'completeness_b_logm_piv']
+ModelingTools => CCLFactory: 
+  Sampler parameters used:  ['Omega_c', 'Omega_b', 'h', 'n_s', 'Omega_k', 'Neff', 'm_nu', 'w0', 'wa', 'T_CMB', 'sigma8']
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+Date: Thu Feb 19 06:58:55 PM CET 2026
+Job informations can be found using these commands:
+Accounting:
+sacct -j 28250898
+Efficiency:
+seff 28250898
+****************************************************************
