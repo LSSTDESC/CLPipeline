@@ -1,0 +1,38 @@
+**********************************************************************
+*                         SLURM Batch System                         *
+*              IN2P3 Computing Centre, Villeurbanne FR               *
+**********************************************************************
+* Date:                 Wed Feb 11 11:04:41 AM CET 2026
+* Job name:             launch_job_mor.sh
+* Job id:               26572367
+* User:                 ebarroso
+* Account:              lsst
+* Submit host:          cca011
+* Partition:            hpc
+* Quality of service:   normal
+* Nodelist:             ccwpslurm0024
+* Operating System:     Red Hat Enterprise Linux release 9.7 (Plow)
+* Architecture:         x86_64
+**********************************************************************
+/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.12/site-packages/ceci/__init__.py:12: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound
+SES - yaml config file :  TJPCov
+SES - final yaml config :  {'id': 'TJPCov', 'modules': 'clpipeline', 'launcher': {'name': 'mini', 'interval': 0.5}, 'site': {'name': 'local', 'max_threads': 4}, 'stages': [{'name': 'TJPCovPipeline', 'module_name': 'clpipeline.tjpcov_pipeline', 'nprocess': 1}], 'inputs': {'clusters_sacc_file': './clusters_sacc_file.sacc'}, 'config': './cosmodc2_config_mor.yml', 'resume': False, 'output_dir': './outputs_mor', 'log_dir': './logs_mor'}
+
+Executing TJPCovPipeline
+Command is:
+OMP_NUM_THREADS=1   python3 -m clpipeline TJPCovPipeline   --clusters_sacc_file=./clusters_sacc_file.sacc   --config=./cosmodc2_config_mor.yml   --clusters_sacc_file_cov=./outputs_mor/clusters_sacc_file_cov.sacc 
+Output writing to ./logs_mor/TJPCovPipeline.out
+
+[2026-02-11T11:09:12.881] error: *** JOB 26572367 ON ccwpslurm0024 CANCELLED AT 2026-02-11T11:09:12 DUE to SIGNAL Terminated ***
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+Date: Wed Feb 11 11:09:12 AM CET 2026
+Job informations can be found using these commands:
+Accounting:
+sacct -j 26572367
+Efficiency:
+seff 26572367
+****************************************************************

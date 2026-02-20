@@ -1,6 +1,6 @@
 /sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.12/site-packages/ceci/__init__.py:12: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
   from pkg_resources import DistributionNotFound
-Executing stage: TJPCovPipeline @ 2026-02-09 11:19:58.284867
+Executing stage: TJPCovPipeline @ 2026-02-10 11:53:37.111130
 Computing independent covariance blocks
 Rank None: ('cosmodc2_halos', 'rich_0', 'bin_z_0'), ('cosmodc2_halos', 'rich_0', 'bin_z_0')
 Rank None: ('cosmodc2_halos', 'rich_0', 'bin_z_0'), ('cosmodc2_halos', 'rich_0', 'bin_z_1')
@@ -317,12 +317,6 @@ Building the covariance: placing blocks in their place
 ('cosmodc2_halos', 'rich_2', 'bin_z_2') ('cosmodc2_halos', 'rich_2', 'bin_z_2')
 ('cosmodc2_halos', 'rich_2', 'bin_z_2') ('cosmodc2_halos', 'rich_2', 'bin_z_3')
 ('cosmodc2_halos', 'rich_2', 'bin_z_3') ('cosmodc2_halos', 'rich_2', 'bin_z_3')
-/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.12/site-packages/tjpcov/covariance_io.py:93: UserWarning: Output file ./clusters_sacc_file_cov.sacc already exists. Appending the UTC time to the filename to avoid losing the covariance computation. Writing sacc file to {output_new}
-  warnings.warn(
-/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.12/site-packages/tjpcov/covariance_io.py:93: UserWarning: Output file ./clusters_sacc_file_cov_gauss.sacc already exists. Appending the UTC time to the filename to avoid losing the covariance computation. Writing sacc file to {output_new}
-  warnings.warn(
-/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.12/site-packages/tjpcov/covariance_io.py:93: UserWarning: Output file ./clusters_sacc_file_cov_SSC.sacc already exists. Appending the UTC time to the filename to avoid losing the covariance computation. Writing sacc file to {output_new}
-  warnings.warn(
-NOTE/WARNING: Expected output file .//clusters_sacc_file_cov.sacc was not generated.
-Time:  357.58508586883545  sec
-Stage complete: TJPCovPipeline @ 2026-02-09 11:25:57.169605 took 5.98 minutes
+NOTE/WARNING: Expected output file ./outputs_mor/clusters_sacc_file_cov.sacc was not generated.
+Time:  479.8298234939575  sec
+Stage complete: TJPCovPipeline @ 2026-02-10 12:02:13.843029 took 8.61 minutes

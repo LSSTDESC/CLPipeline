@@ -36,12 +36,12 @@ FirecrownPipeline:
         w: {'sample': False, 'values': -1.0}
         wa: {'sample': False, 'values': 0.0}
     firecrown_parameters:
-        mass_distribution_mu0: {'sample': True, 'values': [2.0, 2.0, 4.0]}
-        mass_distribution_mu1: {'sample': True, 'values': [0.4, 0.8, 1.2]}
-        mass_distribution_mu2: {'sample': True, 'values': [-0.6, -0.3, 0.6]}
-        mass_distribution_sigma0: {'sample': True, 'values': [0.02, 0.3, 0.6]}
-        mass_distribution_sigma1: {'sample': True, 'values': [-0.1, -0.03, 0.1]}
-        mass_distribution_sigma2: {'sample': True, 'values': [-0.1, 0.06, 0.1]}
+        mass_distribution_mu0: {'sample': True, 'values': [2.0, 2.0, 10.0]}
+        mass_distribution_mu1: {'sample': True, 'values': [0.01, 0.8, 10.0]}
+        mass_distribution_mu2: {'sample': False, 'values': 0.1}
+        mass_distribution_sigma0: {'sample': True, 'values': [0.02, 0.3, 10.0]}
+        mass_distribution_sigma1: {'sample': False, 'values': 0.0}
+        mass_distribution_sigma2: {'sample': False, 'values': 0.0}
 TJPCovPipeline:
     use_mpi: False
     do_xi: False
@@ -79,5 +79,5 @@ TJPCovPipeline:
         mu_p1: 0.8
         mu_p2: 0.1
         sigma_p0: 0.50
-        sigma_p1: 0.01
-        sigma_p2: 0.02
+        sigma_p1: 0.0
+        sigma_p2: 0.0
