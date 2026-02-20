@@ -2,8 +2,8 @@
 #SBATCH --time=15:00:00
 #SBATCH --partition=hpc,lsst
 #SBATCH --cpus-per-task=1
-#SBATCH --mem=8gb
-#SBATCH --ntasks=1 
+#SBATCH --mem=64gb
+#SBATCH --ntasks=10 
 module load conda
 export HDF5_DO_MPI_FILE_SYNC=0
 #export PYTHONPATH=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe:$PYTHONPATH

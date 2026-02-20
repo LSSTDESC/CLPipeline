@@ -1,0 +1,83 @@
+**********************************************************************
+*                         SLURM Batch System                         *
+*              IN2P3 Computing Centre, Villeurbanne FR               *
+**********************************************************************
+* Date:                 Fri Feb 20 10:08:57 AM CET 2026
+* Job name:             launch_job_cosmo.sh
+* Job id:               28283760
+* User:                 ebarroso
+* Account:              lsst
+* Submit host:          cca020
+* Partition:            hpc
+* Quality of service:   normal
+* Nodelist:             ccwpslurm0023
+* Operating System:     Red Hat Enterprise Linux release 9.7 (Plow)
+* Architecture:         x86_64
+**********************************************************************
+WARNING: overwriting environment variables set in the machine
+overwriting variable ['CSL_DIR', 'FIRECROWN_DIR']
+Deprecated: The [pipeline] quiet option is deprecated.  Set [runtime] verbosity instead.
+Setting up pipeline from parameter file cluster_counts_mean_mass_redshift_richness.ini
+--------------------------------------------------------------------------------------
+
+Setting up module consistency
+------------------------------
+
+Setting up module camb
+-----------------------
+/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/cosmosis-standard-library/boltzmann/camb/camb_interface.py:183: UserWarning: Option kmin does not have an effect.
+  warnings.warn("Option kmin does not have an effect.")
+**** WARNING: Parameter 'kmin' in the [camb] section never used!
+
+
+Setting up module firecrown_likelihood
+---------------------------------------
+Setup all pipeline modules
+
+Module timing:
+consistency 0.001114
+camb 0.001324
+firecrown_likelihood 0.062264
+
+Parameter Priors
+----------------
+cosmological_parameters--omega_c                               ~ U(0.1552, 0.3552)
+cosmological_parameters--sigma_8                               ~ U(0.7, 0.9)
+cosmological_parameters--omega_k                               ~ delta(0.0)
+cosmological_parameters--omega_b                               ~ delta(0.0448)
+cosmological_parameters--tau                                   ~ delta(0.08)
+cosmological_parameters--n_s                                   ~ delta(0.963)
+cosmological_parameters--h0                                    ~ delta(0.71)
+cosmological_parameters--w                                     ~ delta(-1.0)
+cosmological_parameters--wa                                    ~ delta(0.0)
+firecrown_number_counts--mass_distribution_mu0                 ~ delta(3.35518603)
+firecrown_number_counts--mass_distribution_mu1                 ~ delta(1.02354896)
+firecrown_number_counts--mass_distribution_mu2                 ~ delta(0.03723521)
+firecrown_number_counts--mass_distribution_sigma0              ~ delta(0.54009686)
+firecrown_number_counts--mass_distribution_sigma1              ~ delta(0.0)
+firecrown_number_counts--mass_distribution_sigma2              ~ delta(0.0)
+firecrown_number_counts--completeness_a_n                      ~ delta(0.38)
+firecrown_number_counts--completeness_b_n                      ~ delta(1.2634)
+firecrown_number_counts--completeness_a_logm_piv               ~ delta(13.31)
+firecrown_number_counts--completeness_b_logm_piv               ~ delta(0.2025)
+firecrown_number_counts--cluster_theory_cluster_concentration  ~ delta(3.8)
+
+****************************************************
+* Running sampler 1/1: emcee
+* Running in serial mode.
+* Saving output -> output_rp/number_counts_samples.txt
+****************************************************
+Generating starting positions in small ball around starting point
+Begun sampling
+[2026-02-20T10:09:02.819] error: *** JOB 28283760 ON ccwpslurm0023 CANCELLED AT 2026-02-20T10:09:02 DUE to SIGNAL Terminated ***
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+Date: Fri Feb 20 10:09:02 AM CET 2026
+Job informations can be found using these commands:
+Accounting:
+sacct -j 28283760
+Efficiency:
+seff 28283760
+****************************************************************
