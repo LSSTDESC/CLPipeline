@@ -1,0 +1,1370 @@
+**********************************************************************
+*                         SLURM Batch System                         *
+*              IN2P3 Computing Centre, Villeurbanne FR               *
+**********************************************************************
+* Date:                 Fri Feb 20 10:19:41 AM CET 2026
+* Job name:             launch_job_cosmo.sh
+* Job id:               28284843
+* User:                 ebarroso
+* Account:              lsst
+* Submit host:          cca020
+* Partition:            hpc
+* Quality of service:   normal
+* Nodelist:             ccwpslurm0019
+* Operating System:     Red Hat Enterprise Linux release 9.7 (Plow)
+* Architecture:         x86_64
+**********************************************************************
+WARNING: overwriting environment variables set in the machine
+overwriting variable ['CSL_DIR', 'FIRECROWN_DIR']
+Deprecated: The [pipeline] quiet option is deprecated.  Set [runtime] verbosity instead.
+Setting up pipeline from parameter file cluster_counts_mean_mass_redshift_richness.ini
+--------------------------------------------------------------------------------------
+
+Setting up module consistency
+------------------------------
+
+Setting up module camb
+-----------------------
+/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/cosmosis-standard-library/boltzmann/camb/camb_interface.py:183: UserWarning: Option kmin does not have an effect.
+  warnings.warn("Option kmin does not have an effect.")
+**** WARNING: Parameter 'kmin' in the [camb] section never used!
+
+
+Setting up module firecrown_likelihood
+---------------------------------------
+Setup all pipeline modules
+
+Module timing:
+consistency 0.001152
+camb 0.003293
+firecrown_likelihood 0.064863
+
+Parameter Priors
+----------------
+cosmological_parameters--omega_c                               ~ U(0.1552, 0.3552)
+cosmological_parameters--sigma_8                               ~ U(0.7, 0.9)
+cosmological_parameters--omega_k                               ~ delta(0.0)
+cosmological_parameters--omega_b                               ~ delta(0.0448)
+cosmological_parameters--tau                                   ~ delta(0.08)
+cosmological_parameters--n_s                                   ~ delta(0.963)
+cosmological_parameters--h0                                    ~ delta(0.71)
+cosmological_parameters--w                                     ~ delta(-1.0)
+cosmological_parameters--wa                                    ~ delta(0.0)
+firecrown_number_counts--mass_distribution_mu0                 ~ delta(3.35518603)
+firecrown_number_counts--mass_distribution_mu1                 ~ delta(1.02354896)
+firecrown_number_counts--mass_distribution_mu2                 ~ delta(0.03723521)
+firecrown_number_counts--mass_distribution_sigma0              ~ delta(0.54009686)
+firecrown_number_counts--mass_distribution_sigma1              ~ delta(0.0)
+firecrown_number_counts--mass_distribution_sigma2              ~ delta(0.0)
+firecrown_number_counts--completeness_a_n                      ~ delta(0.38)
+firecrown_number_counts--completeness_b_n                      ~ delta(1.2634)
+firecrown_number_counts--completeness_a_logm_piv               ~ delta(13.31)
+firecrown_number_counts--completeness_b_logm_piv               ~ delta(0.2025)
+firecrown_number_counts--purity_a_n                            ~ delta(3.9193)
+firecrown_number_counts--purity_b_n                            ~ delta(-0.3323)
+firecrown_number_counts--purity_a_logm_piv                     ~ delta(1.1839)
+firecrown_number_counts--purity_b_logm_piv                     ~ delta(-0.4077)
+firecrown_number_counts--cluster_theory_cluster_concentration  ~ U(1.0, 10.0)
+
+****************************************************
+* Running sampler 1/1: emcee
+* Running in serial mode.
+* Saving output -> output_rp/number_counts_samples.txt
+****************************************************
+Generating starting positions in small ball around starting point
+Begun sampling
+consistency took: 0.012 seconds
+camb took: 0.597 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.1 seconds
+Posterior = -496.35746057329163 for parameter set #1: [0.25523271747433673, 0.850208861482059, 2.0125408418731685]
+consistency took: 0.000 seconds
+camb took: 0.570 seconds
+firecrown_likelihood took: 0.483 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -501.0033062445393 for parameter set #2: [0.25500677428609436, 0.8504041185393468, 1.9991559564467551]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.483 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -496.87001164516266 for parameter set #3: [0.2552215635047447, 0.850046992507095, 2.008503049128141]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.483 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -498.72531588505694 for parameter set #4: [0.25529788937126674, 0.8499107805490547, 2.001394460739534]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.482 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -496.81264779585695 for parameter set #5: [0.25504224407173515, 0.8497835567267608, 2.003273233507814]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.483 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -498.55693448789975 for parameter set #6: [0.25524336486326055, 0.8495286587702523, 1.9961444957222734]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.483 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -501.0344277821266 for parameter set #7: [0.25504172023383304, 0.8500448370490554, 1.993405535383324]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.483 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.95807277143047 for parameter set #8: [0.25520734158391084, 0.8500455422030317, 1.9984357746212458]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.484 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -504.50774850956634 for parameter set #9: [0.2550063592517725, 0.850350540948471, 1.9873486223062322]
+consistency took: 0.000 seconds
+camb took: 0.568 seconds
+firecrown_likelihood took: 0.483 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.27592188144183 for parameter set #10: [0.255512519277751, 0.849802890847206, 2.0002387677310773]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.483 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -496.12062038035674 for parameter set #11: [0.25508177841628443, 0.8498561493481145, 2.006891277290837]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.484 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -501.6878380471589 for parameter set #12: [0.25557051338755904, 0.8496427608897594, 1.9909425721527167]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.483 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -505.9191153000196 for parameter set #13: [0.2552067492649582, 0.8502982097604287, 1.9831080160199313]
+consistency took: 0.000 seconds
+camb took: 0.568 seconds
+firecrown_likelihood took: 0.493 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -500.90954325848344 for parameter set #14: [0.2551132739606406, 0.850086561697454, 1.9950633306755492]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.483 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -501.1342941767939 for parameter set #15: [0.2551479915915212, 0.8497634073319743, 1.9902742886386406]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -495.3873116197725 for parameter set #16: [0.2553784481075436, 0.8503492361919915, 2.0191506527446075]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.483 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -503.4117082712543 for parameter set #17: [0.25513201433147586, 0.8498489720112895, 1.9841382800369733]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.483 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -495.2466373865452 for parameter set #18: [0.25509849907284404, 0.8500782187650952, 2.012985080031207]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.483 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -501.74081489976544 for parameter set #19: [0.2553004661370079, 0.8500223563307383, 1.9933629844508394]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.484 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -501.4524032992483 for parameter set #20: [0.255564740121993, 0.8499642909192616, 1.9960453781105563]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.539 seconds
+Total pipeline time: 1.1 seconds
+Posterior = -500.8135416549938 for parameter set #21: [0.25532971854588227, 0.8503513703964389, 2.001133675634587]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -500.9092951315187 for parameter set #22: [0.25554738534588506, 0.8501566521488219, 2.0002654640293094]
+consistency took: 0.000 seconds
+camb took: 0.569 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.2896037063424 for parameter set #23: [0.25508177288144085, 0.8500298450185981, 1.995947089076901]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -495.66898479130896 for parameter set #24: [0.2551189608884354, 0.8498292128168503, 2.0083404018380935]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.484 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -502.14093141936576 for parameter set #25: [0.2552646659736334, 0.8500556743776628, 1.9922087707777358]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.6614428006575 for parameter set #26: [0.25515929768268164, 0.8498828208478113, 1.9935041361311567]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -498.1770966383731 for parameter set #27: [0.25500434953443685, 0.8497071854203901, 1.9985455967958028]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.41047432343714 for parameter set #28: [0.2550441102393225, 0.849918077564042, 1.993670732444508]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -498.16755637351775 for parameter set #29: [0.25529658143855427, 0.8503012067155542, 2.008606959367148]
+consistency took: 0.000 seconds
+camb took: 0.569 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -498.9665688210747 for parameter set #30: [0.25546724031871254, 0.8501163570183863, 2.005139245074189]
+consistency took: 0.000 seconds
+camb took: 0.569 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -498.47437951652165 for parameter set #31: [0.25512963308497905, 0.8499475294240687, 2.001063226015315]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.484 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.95696009892606 for parameter set #32: [0.25498014930361446, 0.8500044926660415, 1.9935524425729738]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -501.22274455869416 for parameter set #33: [0.2553409603016556, 0.8500539453319867, 1.9958304869728802]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -501.8942989235653 for parameter set #34: [0.2554084476449018, 0.8499650144765422, 1.9931367489230616]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.484 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -494.0947789643519 for parameter set #35: [0.25545133799524783, 0.849814230890059, 2.0165423670317555]
+consistency took: 0.000 seconds
+camb took: 0.569 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -507.34283395947756 for parameter set #36: [0.2549965673643146, 0.8505076472020484, 1.9805480229320587]
+consistency took: 0.000 seconds
+camb took: 0.568 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.8665712374577 for parameter set #37: [0.2550154912083422, 0.8500955104760922, 1.995429677019993]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.0015687165351 for parameter set #38: [0.2552434393335245, 0.8498155138437014, 1.9954860541174093]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.42098531020815 for parameter set #39: [0.25505203856785275, 0.8500490081981613, 1.9955052988604765]
+consistency took: 0.000 seconds
+camb took: 0.568 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -494.578889543944 for parameter set #40: [0.2551880308138497, 0.8497344490799217, 2.011231565487347]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -494.67973957753003 for parameter set #41: [0.25533646797303944, 0.8496650019331617, 2.0113988584640046]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.490 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -498.22990719229455 for parameter set #42: [0.254905956860261, 0.850182571350395, 2.00396219022712]
+consistency took: 0.000 seconds
+camb took: 0.572 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -502.38318555272764 for parameter set #43: [0.25501284791941436, 0.8502530905183916, 1.9927636151872128]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.1234374757795 for parameter set #44: [0.2551719550272743, 0.8496675636286104, 1.992389192152881]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -502.94700921518023 for parameter set #45: [0.2551821155168482, 0.850182440127138, 1.9906034618816544]
+consistency took: 0.000 seconds
+camb took: 0.569 seconds
+firecrown_likelihood took: 0.484 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -498.3118100333048 for parameter set #46: [0.25517196695573796, 0.8499070638141533, 2.0014373521415796]
+consistency took: 0.000 seconds
+camb took: 0.628 seconds
+firecrown_likelihood took: 0.502 seconds
+Total pipeline time: 1.13 seconds
+Posterior = -497.213063669628 for parameter set #47: [0.2553238383167833, 0.8498555244111485, 2.0057370210323686]
+consistency took: 0.000 seconds
+camb took: 0.576 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -503.9464849674057 for parameter set #48: [0.2552025417908335, 0.8500651431039997, 1.9860653660785785]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -502.6889895388737 for parameter set #49: [0.25517954403140564, 0.8500238861875286, 1.9892284635901918]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -498.7361578453404 for parameter set #50: [0.25506955099654943, 0.8501211253477348, 2.0020374273710355]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -494.46768280850716 for parameter set #51: [0.25526734285388525, 0.8503909076113596, 2.0216406332398904]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -501.7358660194022 for parameter set #52: [0.2549945045410139, 0.8504477131585717, 1.9973060767459703]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.484 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -496.6732830128534 for parameter set #53: [0.2552821516468203, 0.8500209649491717, 2.0093747741347245]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -496.46659180747986 for parameter set #54: [0.2550619710185003, 0.8498197791757053, 2.005078574102567]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -499.291639880001 for parameter set #55: [0.2549958317017972, 0.8502801205134403, 2.0027997873415386]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -507.11303661831016 for parameter set #56: [0.25489951368051184, 0.8503509156101928, 1.9782166473579472]
+consistency took: 0.001 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -504.9761238622106 for parameter set #57: [0.25522174205329845, 0.8503026654019267, 1.9862552685901917]
+consistency took: 0.000 seconds
+camb took: 0.561 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -503.0088056901154 for parameter set #58: [0.2557361654255502, 0.8501966621779508, 1.995992507622817]
+consistency took: 0.000 seconds
+camb took: 0.561 seconds
+firecrown_likelihood took: 0.484 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -503.3451635886078 for parameter set #59: [0.25528447637182555, 0.8505511851396166, 1.9954016755160715]
+consistency took: 0.000 seconds
+camb took: 0.569 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.6087924393166 for parameter set #60: [0.25582506306782943, 0.8502568751206102, 2.008597125042891]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -494.1444833972832 for parameter set #61: [0.25510647982291473, 0.8498126253472866, 2.0129310592720917]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.6335760688128 for parameter set #62: [0.25532216094473353, 0.8499813097984289, 1.9997035169174509]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.484 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -496.06420754105 for parameter set #63: [0.2554171544466502, 0.8506686649213552, 2.021871404360872]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.00527255486907 for parameter set #64: [0.2554559958989091, 0.8501145330896425, 2.004878340260164]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.483 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -498.49029257196344 for parameter set #65: [0.2551254909733632, 0.849951488737731, 2.0010266200507383]
+consistency took: 0.000 seconds
+camb took: 0.592 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.08 seconds
+Posterior = -499.8901031419956 for parameter set #66: [0.25467527326268025, 0.8499874901148123, 1.993732767913941]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -514.7856213370446 for parameter set #67: [0.2545111399714996, 0.8511707090707843, 1.9620222133334257]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.490 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -501.2794712131544 for parameter set #68: [0.25485129889125846, 0.8501921768373063, 1.993841002666333]
+consistency took: 0.000 seconds
+camb took: 0.568 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.96449588308246 for parameter set #69: [0.2552481721308664, 0.8498117279611218, 1.9955975329876627]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -496.7933405223487 for parameter set #70: [0.2552398925731852, 0.8498033432990629, 2.0055398495696877]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.6351407383346 for parameter set #71: [0.25510607897074355, 0.8499600988954403, 1.9941309899295758]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -502.8417210536394 for parameter set #72: [0.25517639819969806, 0.8501824428438551, 1.9908800278514402]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -497.9429578234121 for parameter set #73: [0.255259455421805, 0.8498699217970308, 2.002959814689759]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -502.15074675870466 for parameter set #74: [0.2551882058425707, 0.8498787984854034, 1.9890293293383312]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -498.2008959842494 for parameter set #75: [0.25507204761228147, 0.8500670220893529, 2.0030284948516157]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -496.97068239649093 for parameter set #76: [0.2552854513680691, 0.8501062798219057, 2.009638345145537]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -498.4460031534542 for parameter set #77: [0.2551763816201798, 0.8493528202240687, 1.993453278495833]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -502.0120219595043 for parameter set #78: [0.25506305912484706, 0.849935426527926, 1.9890370600845735]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -496.95405375713733 for parameter set #79: [0.2553295853679693, 0.8498072765544034, 2.0059570556659847]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -492.85664619344016 for parameter set #80: [0.25473712466619586, 0.8496768074264465, 2.012631461286313]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -504.847961472771 for parameter set #81: [0.25567400195345613, 0.8496329265006068, 1.9818973544188807]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -503.4625513338007 for parameter set #82: [0.2550641656491139, 0.8502637478959207, 1.9889555160616947]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.658290441375 for parameter set #83: [0.25518861791131625, 0.849783002847683, 1.9924330295346688]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -495.3579253456148 for parameter set #84: [0.25538068780273493, 0.8503568712340115, 2.019378023388857]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -503.5550335862042 for parameter set #85: [0.2551482450525479, 0.849829128208621, 1.9835772771063374]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -495.3515265476791 for parameter set #86: [0.25509774059709567, 0.8501034602730433, 2.0129902140643914]
+consistency took: 0.000 seconds
+camb took: 0.561 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -504.27832834682465 for parameter set #87: [0.25515346413617784, 0.8502571013691433, 1.987164127617278]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.41373102522846 for parameter set #88: [0.25504631546679396, 0.8500218871691099, 1.9951015440186688]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.8279911176245 for parameter set #89: [0.2551297152768945, 0.8498603862741096, 1.992386413302753]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -496.2128532144436 for parameter set #90: [0.25512907395337675, 0.8500314402461928, 2.0094984035322123]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.3108405825636 for parameter set #91: [0.25507262414883847, 0.849931439229155, 1.9944435731082506]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -503.2657143624876 for parameter set #92: [0.25534960339279167, 0.8501541072066118, 1.9908297188167658]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -502.6166549825104 for parameter set #93: [0.25545996540084676, 0.849712195757199, 1.9879038207711426]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -495.47517684449946 for parameter set #94: [0.25554533002396546, 0.8499255561189024, 2.0145441349944258]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.74500297312375 for parameter set #95: [0.25510692834890436, 0.8501421644366007, 1.999469053498776]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -496.23386380466513 for parameter set #96: [0.25523215610261607, 0.8498156597699987, 2.007439140409496]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -496.63449387761506 for parameter set #97: [0.2547880999501072, 0.8503135909367469, 2.009752029677534]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -497.369533224611 for parameter set #98: [0.25524282036180845, 0.8493281281035359, 1.997173613154612]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -498.2775953822237 for parameter set #99: [0.2551727957429164, 0.8499112682677236, 2.001612912431564]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -503.2197088650771 for parameter set #100: [0.2551893533851854, 0.8500886912143477, 1.988537314567014]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -494.4398738373852 for parameter set #101: [0.25529989267485476, 0.850660319514806, 2.025912535609981]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.7440964453083 for parameter set #102: [0.2549434738273129, 0.8506613953792358, 2.006126566518208]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.484 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -496.43241801814406 for parameter set #103: [0.2552486088415848, 0.8500359701486193, 2.0100323919812833]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.484 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -493.9975399560773 for parameter set #104: [0.25503903277081796, 0.8495955742890314, 2.009718629636801]
+consistency took: 0.000 seconds
+camb took: 0.568 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -494.8699464454728 for parameter set #105: [0.2551512987912042, 0.8488275870525243, 1.9974335414478162]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -502.6167507157313 for parameter set #106: [0.2550693502469128, 0.8499029405295947, 1.9867584416026218]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.86592415859207 for parameter set #107: [0.25501298996265775, 0.8502776148839092, 2.001097848718756]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -505.2603823393742 for parameter set #108: [0.2558898721539748, 0.8496297140849751, 1.9826312803136528]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.0006173399896 for parameter set #109: [0.2550578170956157, 0.8502403266385052, 1.9995290772856569]
+consistency took: 0.000 seconds
+camb took: 0.577 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -492.37697939557654 for parameter set #110: [0.25547048878076234, 0.8507262947020459, 2.0354931837007513]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.5379486700032 for parameter set #111: [0.2554176666700947, 0.8506044664269349, 2.0096420935314088]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.88029829813274 for parameter set #112: [0.2553089108122574, 0.8499711699197983, 1.9986476825579165]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -496.199719601478 for parameter set #113: [0.25513106442287997, 0.8500300986487974, 2.009541910696233]
+consistency took: 0.000 seconds
+camb took: 0.586 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.07 seconds
+Posterior = -492.714251974164 for parameter set #114: [0.2556098088931568, 0.8513166068513236, 2.044487172936203]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -495.89852283565625 for parameter set #115: [0.25431824664763086, 0.8497815753986612, 1.9986180721040887]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -508.58777674028164 for parameter set #116: [0.25486548249261654, 0.8507326625071853, 1.978467233330124]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.9751828544953 for parameter set #117: [0.25476620879455897, 0.8502713244896866, 1.9950562514083705]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.1502127798837 for parameter set #118: [0.2549599122061709, 0.8501975826490425, 2.001754758546432]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -493.47834705068243 for parameter set #119: [0.25521638589406354, 0.8495195371841359, 2.0120874408454714]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -497.09374403787905 for parameter set #120: [0.25503568963691214, 0.8503000492293186, 2.009476279776796]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.2618589806613 for parameter set #121: [0.2550743671196817, 0.8501089193091973, 1.9970490402604588]
+consistency took: 0.000 seconds
+camb took: 0.568 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -497.9887548123743 for parameter set #122: [0.25490352605428906, 0.8497237145188301, 1.9983880797440918]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.10217641230076 for parameter set #123: [0.25527153514711864, 0.8498644994583237, 1.9992941301358416]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -502.01350967310395 for parameter set #124: [0.2552043424016081, 0.8501781941118475, 1.9937059328120141]
+consistency took: 0.000 seconds
+camb took: 0.621 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.11 seconds
+Posterior = -499.23677498539587 for parameter set #125: [0.2549305474066797, 0.8506792605829101, 2.007879778011222]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -496.1039255495184 for parameter set #126: [0.2552783815518304, 0.8501469969920256, 2.0129505278303785]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -506.93789964066826 for parameter set #127: [0.25492249078792745, 0.8503266662000852, 1.9786524224229756]
+consistency took: 0.000 seconds
+camb took: 0.595 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.08 seconds
+Posterior = -496.88363693012747 for parameter set #128: [0.2548841467325831, 0.8497959566202296, 2.002724640296939]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -489.33946901032846 for parameter set #129: [0.2544092419344339, 0.8493827571582863, 2.0152029465710655]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -505.0921229058372 for parameter set #130: [0.25520947828479135, 0.8503258694768578, 1.9860904499822196]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.115384519138 for parameter set #131: [0.2551326027417138, 0.8497397033539587, 1.9930205191988943]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -507.0874507039337 for parameter set #132: [0.25509280478495605, 0.8495252561944482, 1.9681000937235198]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -492.1136758553057 for parameter set #133: [0.25482523915089655, 0.8503690027296742, 2.0256982514713737]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.484 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -503.39289816598387 for parameter set #134: [0.255127448424181, 0.8502609004567536, 1.9897446423562997]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -511.93946090724125 for parameter set #135: [0.2559473508934617, 0.8497756590727984, 1.964593553578515]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.7770836923735 for parameter set #136: [0.2554790167674993, 0.8502494113590319, 2.004507218427215]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.485 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.6818349883823 for parameter set #137: [0.2551093627732156, 0.8499840930783575, 1.9975176988623111]
+consistency took: 0.000 seconds
+camb took: 0.592 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.08 seconds
+Posterior = -494.86687320379497 for parameter set #138: [0.2551483945900839, 0.8499192809941729, 2.012488057794049]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -501.5244774997975 for parameter set #139: [0.2551887549041315, 0.8495483959415692, 1.9865211714909339]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.1741252728719 for parameter set #140: [0.2550661758731443, 0.8500659556075318, 1.9966582428664128]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -498.746409277582 for parameter set #141: [0.2554866791626194, 0.8499249593128151, 2.003373585883539]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -498.1505678453548 for parameter set #142: [0.255117850473027, 0.849929521570798, 2.001735975791702]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.1313202206346 for parameter set #143: [0.2553345069099333, 0.8501492313379441, 2.0005575982959853]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -502.0051113686076 for parameter set #144: [0.2554686357424529, 0.8498050312353921, 1.9911778834943727]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -493.10397704227535 for parameter set #145: [0.25560336944885587, 0.8497117600901567, 2.0198654309509565]
+consistency took: 0.000 seconds
+camb took: 0.568 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -499.9024376833538 for parameter set #146: [0.2552146782870841, 0.8498780779906794, 1.99638086922975]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -489.764014503945 for parameter set #147: [0.25507660079858935, 0.8495162342623558, 2.0228316836651463]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -498.2261825890837 for parameter set #148: [0.2552356972899145, 0.8494854930277744, 1.9965316732945766]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -502.324842677367 for parameter set #149: [0.25515492888622, 0.8501929228047415, 1.9924459531734173]
+consistency took: 0.000 seconds
+camb took: 0.640 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.13 seconds
+Posterior = -500.52477873472117 for parameter set #150: [0.25506054264701494, 0.8502754070766788, 1.9983692467639687]
+consistency took: 0.000 seconds
+camb took: 0.605 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.09 seconds
+Posterior = -494.5311769509133 for parameter set #151: [0.2553020262426146, 0.8506593076925669, 2.0256177838645972]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.79909350350556 for parameter set #152: [0.2549861994109106, 0.8505806966903143, 2.005252162188522]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -496.9350170100529 for parameter set #153: [0.25521022208305216, 0.8500753386327853, 2.0085767864017146]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -494.45198010615434 for parameter set #154: [0.2554080411754301, 0.8500831823596561, 2.018741268663769]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -496.3479082409626 for parameter set #155: [0.2550863031609937, 0.8495806791039107, 2.002394709830346]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -504.5235169265606 for parameter set #156: [0.25493387057573025, 0.8498643544821103, 1.9800346702969531]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -506.8940739880243 for parameter set #157: [0.25492433019787303, 0.8503245069170947, 1.9787765534477662]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -487.8965103171338 for parameter set #158: [0.25380364625595037, 0.8486160735792526, 2.0036244151825806]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -501.04172694528097 for parameter set #159: [0.2553271848084699, 0.8498870219254608, 1.993978656050938]
+consistency took: 0.000 seconds
+camb took: 0.572 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -494.3366509115622 for parameter set #160: [0.2548101720757878, 0.8503440710594339, 2.017877100709722]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -502.13486408046424 for parameter set #161: [0.2551549284048748, 0.8501396459715981, 1.9923168083594025]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -494.0034276653438 for parameter set #162: [0.25511760894199376, 0.8498812439079269, 2.0144615269763086]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.6162862935713 for parameter set #163: [0.2551441498248179, 0.8499086080359555, 1.9938537402322993]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -496.27683759349037 for parameter set #164: [0.2555534276493869, 0.8507129190193697, 2.023196693633049]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -493.59028757210206 for parameter set #165: [0.2540587352098631, 0.8497667073001088, 2.0033208020273188]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -491.3781023190455 for parameter set #166: [0.2556851703328238, 0.8496173743305849, 2.0250425654020723]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -510.7294734950618 for parameter set #167: [0.2548575585011611, 0.8507280629946662, 1.9717449149277764]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.9932066361535 for parameter set #168: [0.2552203903319459, 0.849864611669529, 1.9959629568511912]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.18208973273363 for parameter set #169: [0.25500937780733157, 0.8506132906048, 2.004708228242706]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -492.1195455346107 for parameter set #170: [0.2550995195976984, 0.8495228065323707, 2.015411595652809]
+consistency took: 0.000 seconds
+camb took: 0.570 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -490.88819074245555 for parameter set #171: [0.2551699215597978, 0.8492718393512626, 2.016622844256168]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.490 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -500.1589206254746 for parameter set #172: [0.25506786622300887, 0.8501605364830741, 1.9980232058798708]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -497.55909404298325 for parameter set #173: [0.2552403373474394, 0.8493382441412128, 1.9966843882991667]
+consistency took: 0.000 seconds
+camb took: 0.568 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -502.3538137500616 for parameter set #174: [0.25513602242080663, 0.8502179516910061, 1.9925143474979876]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -500.2617331941926 for parameter set #175: [0.25519802788935725, 0.8505190287468857, 2.0039329784775335]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -496.0641610727348 for parameter set #176: [0.2551231956281505, 0.8489615919426388, 1.9951846920432599]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -498.9682080930621 for parameter set #177: [0.25507779927290947, 0.850009830981476, 1.9998397153740874]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -493.76076290575844 for parameter set #178: [0.254724049515447, 0.849478253684466, 2.006821573969986]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -501.01338920871166 for parameter set #179: [0.2555778412203039, 0.8496411384109888, 1.9931219346549625]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.490 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -513.1255013521754 for parameter set #180: [0.25514287627186893, 0.8500859111150115, 1.9576446575094015]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -499.8259111191166 for parameter set #181: [0.25503294994766207, 0.8503358743600333, 2.0011637927347876]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -489.83025376597453 for parameter set #182: [0.25551507309045746, 0.8509874067758519, 2.0484090612439627]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -501.5075623427633 for parameter set #183: [0.25506808841731715, 0.8502008950764574, 1.9942988604802976]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.27458533644426 for parameter set #184: [0.2551231709066965, 0.8500958523886948, 2.0004898120829195]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -506.21276474661533 for parameter set #185: [0.2559706343211989, 0.8502739399420012, 1.9892406427340479]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.7710084465309 for parameter set #186: [0.2552925790522437, 0.8504328023233579, 2.0020350894619354]
+consistency took: 0.000 seconds
+camb took: 0.575 seconds
+firecrown_likelihood took: 0.491 seconds
+Total pipeline time: 1.07 seconds
+Posterior = -506.87209182343315 for parameter set #187: [0.2563665700321928, 0.850792723351469, 1.99829852624189]
+consistency took: 0.000 seconds
+camb took: 0.577 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.07 seconds
+Posterior = -499.90238369707055 for parameter set #188: [0.25530762073878266, 0.8499723551867379, 1.9985810249687945]
+consistency took: 0.000 seconds
+camb took: 0.626 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.12 seconds
+Posterior = -501.7286298441728 for parameter set #189: [0.2552080449353173, 0.8494500865187056, 1.9847373571447924]
+consistency took: 0.000 seconds
+camb took: 0.572 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -495.38163507711715 for parameter set #190: [0.2550622653409964, 0.8504656956195084, 2.0176371066451093]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -502.24391893437485 for parameter set #191: [0.2557556257644225, 0.8499568153362331, 1.9952936490280595]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.490 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -497.5702030090032 for parameter set #192: [0.2551617507692493, 0.8499652601942631, 2.0045213816691474]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.5883454051029 for parameter set #193: [0.2553510867362952, 0.8502920166132222, 2.001239529352153]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -501.51721213218906 for parameter set #194: [0.25544753717027985, 0.8498096120211608, 1.9925773539388298]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.9945126098984 for parameter set #195: [0.25474550345668157, 0.8502594472929605, 1.9946306203155673]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.990433834202 for parameter set #196: [0.25514872582063103, 0.8502630132467375, 2.0007632099831985]
+consistency took: 0.000 seconds
+camb took: 0.573 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -496.4192988016721 for parameter set #197: [0.2547264612983603, 0.8495454003312987, 1.9992310540925413]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -502.4240885271062 for parameter set #198: [0.25549376502181337, 0.8500887190227702, 1.993987834598171]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -496.5891354275009 for parameter set #199: [0.25463651617151767, 0.8497156144481136, 2.0001421300012265]
+consistency took: 0.000 seconds
+camb took: 0.608 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.1 seconds
+Posterior = -510.9245748938389 for parameter set #200: [0.2548689837418785, 0.84923662044673, 1.9517051041802613]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -492.232981153423 for parameter set #201: [0.2554011135467042, 0.8498966406096554, 2.023324170968502]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -493.019949408103 for parameter set #202: [0.2555096995026113, 0.8500146970308914, 2.023505167861416]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -497.327048945426 for parameter set #203: [0.2553789799300568, 0.8494336370678549, 2.000072637569334]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -498.33450006884254 for parameter set #204: [0.255150731669869, 0.84970848350847, 1.9984238897748805]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -512.2156250138933 for parameter set #205: [0.255092510324492, 0.8503856931566457, 1.9638663730380161]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.490 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -487.0295625824175 for parameter set #206: [0.25470378143567446, 0.8487402403655291, 2.018338675581764]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -494.5428617482091 for parameter set #207: [0.25465569851292386, 0.8491083581482956, 1.9985806277650926]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -483.5881854183633 for parameter set #208: [0.25575921198896134, 0.8514701526643778, 2.0801609169370434]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -491.3466012175817 for parameter set #209: [0.2547229272882299, 0.8505396890150041, 2.0296304299944965]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.491 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -499.1871375245439 for parameter set #210: [0.25512911355426304, 0.8500574267202207, 2.0002968021028886]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -507.70283518559955 for parameter set #211: [0.2560728013277445, 0.8503209732182222, 1.986219932790028]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.9826581695651 for parameter set #212: [0.2553892139736239, 0.8504709421170628, 2.006051287795729]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.490 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.80055356026486 for parameter set #213: [0.25530956242052344, 0.849965361146806, 1.9988281425045489]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -496.2635676406759 for parameter set #214: [0.25507207957168904, 0.8503653385890229, 2.0134445955022424]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.4636430726654 for parameter set #215: [0.2551571890675383, 0.8498585011316744, 1.9937774330596592]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -495.95021078994694 for parameter set #216: [0.2551484787063803, 0.8497835245978522, 2.0070866760776163]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -494.1775156073861 for parameter set #217: [0.2545068606130296, 0.8496884769212538, 2.0062454538790444]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -504.3563376482282 for parameter set #218: [0.2558215465643889, 0.8499466539856614, 1.9891261964948175]
+consistency took: 0.000 seconds
+camb took: 0.561 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -489.7739544210751 for parameter set #219: [0.25603844130793035, 0.8494531322514114, 2.031628590848311]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -485.6150828535599 for parameter set #220: [0.2548614691728357, 0.8484253580905888, 2.0201728078314436]
+consistency took: 0.000 seconds
+camb took: 0.561 seconds
+firecrown_likelihood took: 0.490 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -488.8463201588298 for parameter set #221: [0.2552043755403925, 0.8488704751364515, 2.018046324608427]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -497.02962340972005 for parameter set #222: [0.2553398659789279, 0.8498364261166166, 2.0062200206488]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -497.24517924671204 for parameter set #223: [0.25470867586973744, 0.8498941305063635, 2.0011966225790485]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.3468214715756 for parameter set #224: [0.25514970921581, 0.8499856440657465, 1.9989979695589128]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.537465574197 for parameter set #225: [0.25520926060791865, 0.8502055427851553, 2.0020085536058527]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -494.5767435786376 for parameter set #226: [0.2552967921577057, 0.8506294542465789, 2.024986100712964]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -503.76746604705954 for parameter set #227: [0.2547621262026012, 0.8509501192465346, 1.9954924248390564]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.490 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -494.94215633386693 for parameter set #228: [0.25505868376426155, 0.8496648325546482, 2.0078151386011345]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -507.2691163148033 for parameter set #229: [0.25482969345441114, 0.8497613356174929, 1.9692232670946828]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -506.0142516030279 for parameter set #230: [0.2556188223624473, 0.8494164763475789, 1.9748491402351593]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -504.11074152634717 for parameter set #231: [0.25520300483590036, 0.85026831429456, 1.9883186292594042]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.1123479447564 for parameter set #232: [0.255042838786575, 0.8503293732536471, 2.0002557881690257]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -510.08774554823117 for parameter set #233: [0.255587572815576, 0.8507042582471556, 1.97933314609147]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -511.1307694178324 for parameter set #234: [0.2552989486535054, 0.8511265075641287, 1.9790649021102966]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -499.6449578614426 for parameter set #235: [0.255831810518593, 0.8502627221444649, 2.008630182526594]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -496.773470312204 for parameter set #236: [0.2552818944500185, 0.8499972823534346, 2.0087174246757447]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -501.686044468388 for parameter set #237: [0.2553395994517401, 0.8511430270187094, 2.0095116898131713]
+consistency took: 0.000 seconds
+camb took: 0.561 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -504.3895068119464 for parameter set #238: [0.25513589313739166, 0.8492386248595073, 1.972978894659663]
+consistency took: 0.000 seconds
+camb took: 0.561 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -492.43185837336875 for parameter set #239: [0.2556324071151924, 0.8513758028324017, 2.046564629759946]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -495.56432353140735 for parameter set #240: [0.25534038887434973, 0.8495740738524518, 2.007304366040003]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.490 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -500.37848112132036 for parameter set #241: [0.2553400675217414, 0.8502053327846578, 2.0005996250321876]
+consistency took: 0.000 seconds
+camb took: 0.567 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -518.6942045465753 for parameter set #242: [0.2548456757996836, 0.8512269087874315, 1.9541875231702905]
+consistency took: 0.000 seconds
+camb took: 0.562 seconds
+firecrown_likelihood took: 0.487 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -501.17765887828244 for parameter set #243: [0.25472996128338504, 0.8502778029438564, 1.9941502082371843]
+consistency took: 0.000 seconds
+camb took: 0.561 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -501.22660818330047 for parameter set #244: [0.2552720244747069, 0.8499803409057328, 1.9941388023509672]
+consistency took: 0.000 seconds
+camb took: 0.563 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -501.4213253679378 for parameter set #245: [0.2548639586843991, 0.8509551211519065, 2.0040430197885324]
+consistency took: 0.000 seconds
+camb took: 0.596 seconds
+firecrown_likelihood took: 0.486 seconds
+Total pipeline time: 1.08 seconds
+Posterior = -505.8444672780482 for parameter set #246: [0.2552608165772307, 0.8509800868406922, 1.9931893678291432]
+consistency took: 0.000 seconds
+camb took: 0.661 seconds
+firecrown_likelihood took: 0.490 seconds
+Total pipeline time: 1.15 seconds
+Posterior = -507.39595780404846 for parameter set #247: [0.25525963597180296, 0.8509086309905898, 1.9873226969410334]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.490 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -497.69219075379937 for parameter set #248: [0.25535163772033115, 0.8492218724228892, 1.9957397771528098]
+consistency took: 0.000 seconds
+camb took: 0.590 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.08 seconds
+Posterior = -498.4611087052795 for parameter set #249: [0.25533585151889027, 0.8501173677657664, 2.0054822825343885]
+consistency took: 0.000 seconds
+camb took: 0.569 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -500.4437981368766 for parameter set #250: [0.2546770362685716, 0.8499554365704944, 1.9915644879281957]
+consistency took: 0.000 seconds
+camb took: 0.612 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.1 seconds
+Posterior = -490.1371049601294 for parameter set #251: [0.2550046605663587, 0.8507455830981357, 2.0395797714619652]
+consistency took: 0.000 seconds
+camb took: 0.590 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.08 seconds
+Posterior = -496.9792971974997 for parameter set #252: [0.25518665755820774, 0.8503639646497714, 2.0122415854146105]
+consistency took: 0.000 seconds
+camb took: 0.566 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -490.0711908614961 for parameter set #253: [0.25547940022369203, 0.8498689251570496, 2.030899288967941]
+consistency took: 0.000 seconds
+camb took: 0.833 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.32 seconds
+Posterior = -492.79357669559795 for parameter set #254: [0.25507008293332195, 0.8493675848084155, 2.010761449177197]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -496.3462618249694 for parameter set #255: [0.25514928287103833, 0.8490005838389187, 1.9950663324815796]
+consistency took: 0.000 seconds
+camb took: 0.569 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.06 seconds
+Posterior = -506.5049006490199 for parameter set #256: [0.2547138386391765, 0.8501968151191203, 1.9762606438136077]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.489 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -498.3791094739725 for parameter set #257: [0.2552220204458203, 0.8498659428968744, 2.001142043353058]
+consistency took: 0.000 seconds
+camb took: 0.565 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -504.101873736753 for parameter set #258: [0.2550230006542788, 0.8502833100325905, 1.9868217180844598]
+consistency took: 0.000 seconds
+camb took: 0.564 seconds
+firecrown_likelihood took: 0.488 seconds
+Total pipeline time: 1.05 seconds
+Posterior = -494.9145858429807 for parameter set #259: [0.25448136961042966, 0.8490185447972262, 1.9945100514925027]

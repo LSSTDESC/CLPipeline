@@ -1,0 +1,158 @@
+**********************************************************************
+*                         SLURM Batch System                         *
+*              IN2P3 Computing Centre, Villeurbanne FR               *
+**********************************************************************
+* Date:                 Fri Feb 20 10:07:57 AM CET 2026
+* Job name:             launch_job_mor.sh
+* Job id:               28283758
+* User:                 ebarroso
+* Account:              lsst
+* Submit host:          cca020
+* Partition:            hpc
+* Quality of service:   normal
+* Nodelist:             ccwpslurm0023
+* Operating System:     Red Hat Enterprise Linux release 9.7 (Plow)
+* Architecture:         x86_64
+**********************************************************************
+WARNING: overwriting environment variables set in the machine
+overwriting variable ['CSL_DIR', 'FIRECROWN_DIR']
+Deprecated: The [pipeline] quiet option is deprecated.  Set [runtime] verbosity instead.
+Setting up pipeline from parameter file cluster_counts_mean_mass_redshift_richness.ini
+--------------------------------------------------------------------------------------
+
+Setting up module consistency
+------------------------------
+
+Setting up module camb
+-----------------------
+/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/cosmosis-standard-library/boltzmann/camb/camb_interface.py:183: UserWarning: Option kmin does not have an effect.
+  warnings.warn("Option kmin does not have an effect.")
+**** WARNING: Parameter 'kmin' in the [camb] section never used!
+
+
+Setting up module firecrown_likelihood
+---------------------------------------
+Setup all pipeline modules
+
+Module timing:
+consistency 0.001108
+camb 0.001317
+firecrown_likelihood 0.061344
+
+Parameter Priors
+----------------
+cosmological_parameters--omega_c                               ~ delta(0.22)
+cosmological_parameters--sigma_8                               ~ delta(0.8)
+cosmological_parameters--omega_k                               ~ delta(0.0)
+cosmological_parameters--omega_b                               ~ delta(0.0448)
+cosmological_parameters--tau                                   ~ delta(0.08)
+cosmological_parameters--n_s                                   ~ delta(0.963)
+cosmological_parameters--h0                                    ~ delta(0.71)
+cosmological_parameters--w                                     ~ delta(-1.0)
+cosmological_parameters--wa                                    ~ delta(0.0)
+firecrown_number_counts--mass_distribution_mu0                 ~ U(1.0, 10.0)
+firecrown_number_counts--mass_distribution_mu1                 ~ U(-2.0, 2.0)
+firecrown_number_counts--mass_distribution_mu2                 ~ U(-2.0, 2.0)
+firecrown_number_counts--mass_distribution_sigma0              ~ U(0.02, 5.0)
+firecrown_number_counts--mass_distribution_sigma1              ~ delta(0.0)
+firecrown_number_counts--mass_distribution_sigma2              ~ delta(0.0)
+firecrown_number_counts--completeness_a_n                      ~ delta(0.38)
+firecrown_number_counts--completeness_b_n                      ~ delta(1.2634)
+firecrown_number_counts--completeness_a_logm_piv               ~ delta(13.31)
+firecrown_number_counts--completeness_b_logm_piv               ~ delta(0.2025)
+firecrown_number_counts--cluster_theory_cluster_concentration  ~ delta(3.8)
+
+****************************************************
+* Running sampler 1/1: emcee
+* Running in serial mode.
+* Saving output -> output_rp/number_counts_samples.txt
+****************************************************
+Generating starting positions in small ball around starting point
+Begun sampling
+consistency took: 0.012 seconds
+camb took: 3.083 seconds
+firecrown_likelihood took: 0.387 seconds
+Total pipeline time: 3.48 seconds
+Posterior = -5910.384120175166 for parameter set #1: [3.008651234483822, 0.7997706861958935, -0.30223435126206133, 0.3011850802082672]
+consistency took: 0.000 seconds
+camb took: 3.033 seconds
+firecrown_likelihood took: 0.382 seconds
+Total pipeline time: 3.42 seconds
+Posterior = -6000.329411138236 for parameter set #2: [3.010796900145778, 0.7943218194742618, -0.2928831825215419, 0.29821110853006]
+consistency took: 0.000 seconds
+camb took: 3.037 seconds
+firecrown_likelihood took: 0.381 seconds
+Total pipeline time: 3.42 seconds
+Posterior = -6023.630447603778 for parameter set #3: [3.0063723174792876, 0.7964576551275897, -0.299712620188463, 0.2999580556309286]
+consistency took: 0.000 seconds
+camb took: 3.036 seconds
+firecrown_likelihood took: 0.380 seconds
+Total pipeline time: 3.42 seconds
+Posterior = -6594.223310156107 for parameter set #4: [2.9942034944587093, 0.795768329668411, -0.29884393035260404, 0.29309416805035904]
+consistency took: 0.000 seconds
+camb took: 3.025 seconds
+firecrown_likelihood took: 0.381 seconds
+Total pipeline time: 3.41 seconds
+Posterior = -6025.218384505761 for parameter set #5: [2.9984866278057822, 0.8044658844021839, -0.3036244795995937, 0.3035249390112668]
+consistency took: 0.000 seconds
+camb took: 3.028 seconds
+firecrown_likelihood took: 0.381 seconds
+Total pipeline time: 3.41 seconds
+Posterior = -6681.6150062483 for parameter set #6: [2.9840555359435768, 0.7957362571145494, -0.2970291140325958, 0.2967946294352529]
+consistency took: 0.000 seconds
+camb took: 3.026 seconds
+firecrown_likelihood took: 0.381 seconds
+Total pipeline time: 3.41 seconds
+Posterior = -6138.275011791247 for parameter set #7: [3.0066684244525494, 0.798678919203442, -0.2940069040362272, 0.29660504368414903]
+consistency took: 0.000 seconds
+camb took: 3.028 seconds
+firecrown_likelihood took: 0.382 seconds
+Total pipeline time: 3.41 seconds
+Posterior = -5911.1159652813285 for parameter set #8: [3.0126992092284612, 0.7994554741626039, -0.30484078888227684, 0.2989281645921952]
+consistency took: 0.000 seconds
+camb took: 3.025 seconds
+firecrown_likelihood took: 0.381 seconds
+Total pipeline time: 3.41 seconds
+Posterior = -5859.210452621405 for parameter set #9: [3.011162940194159, 0.8026834959133957, -0.300892623730874, 0.30073123675013613]
+consistency took: 0.000 seconds
+camb took: 3.024 seconds
+firecrown_likelihood took: 0.381 seconds
+Total pipeline time: 3.4 seconds
+Posterior = -5695.193456319764 for parameter set #10: [3.0046587832469083, 0.7980427111490713, -0.29687226942924916, 0.309059875076529]
+consistency took: 0.000 seconds
+camb took: 3.029 seconds
+firecrown_likelihood took: 0.383 seconds
+Total pipeline time: 3.41 seconds
+Posterior = -6210.8130208208495 for parameter set #11: [3.0081933022668954, 0.8038756773048545, -0.30436842758855565, 0.2933580400796111]
+consistency took: 0.000 seconds
+camb took: 3.024 seconds
+firecrown_likelihood took: 0.383 seconds
+Total pipeline time: 3.41 seconds
+Posterior = -6026.934042201682 for parameter set #12: [3.0046075963387864, 0.8001448626286956, -0.3032693152632384, 0.30049333069266454]
+consistency took: 0.000 seconds
+camb took: 3.076 seconds
+firecrown_likelihood took: 0.382 seconds
+Total pipeline time: 3.46 seconds
+Posterior = -6098.205819823641 for parameter set #13: [3.0005572516250756, 0.800956746928768, -0.29920262270852027, 0.30086808977313584]
+consistency took: 0.000 seconds
+camb took: 3.028 seconds
+firecrown_likelihood took: 0.381 seconds
+Total pipeline time: 3.41 seconds
+Posterior = -5885.861594689774 for parameter set #14: [3.003951586030633, 0.7992428994406748, -0.2997656041147345, 0.304491598121761]
+consistency took: 0.000 seconds
+camb took: 3.034 seconds
+firecrown_likelihood took: 0.381 seconds
+Total pipeline time: 3.41 seconds
+Posterior = -6070.041928207963 for parameter set #15: [3.003086105653512, 0.8058521356050505, -0.3009090310395808, 0.2995794324405391]
+[2026-02-20T10:08:54.995] error: *** JOB 28283758 ON ccwpslurm0023 CANCELLED AT 2026-02-20T10:08:54 DUE to SIGNAL Terminated ***
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+Date: Fri Feb 20 10:08:55 AM CET 2026
+Job informations can be found using these commands:
+Accounting:
+sacct -j 28283758
+Efficiency:
+seff 28283758
+****************************************************************

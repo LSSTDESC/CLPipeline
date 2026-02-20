@@ -1,0 +1,122 @@
+**********************************************************************
+*                         SLURM Batch System                         *
+*              IN2P3 Computing Centre, Villeurbanne FR               *
+**********************************************************************
+* Date:                 Mon Feb  9 11:51:07 AM CET 2026
+* Job name:             launch_job_mor.sh
+* Job id:               26186099
+* User:                 ebarroso
+* Account:              lsst
+* Submit host:          jns-ebarroso.cc.in2p3.fr
+* Partition:            hpc
+* Quality of service:   normal
+* Nodelist:             ccwpslurm0018
+* Operating System:     Red Hat Enterprise Linux release 9.7 (Plow)
+* Architecture:         x86_64
+**********************************************************************
+WARNING: overwriting environment variables set in the machine
+overwriting variable ['CSL_DIR', 'FIRECROWN_DIR']
+/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/ceci/__init__.py:12: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound
+SES - yaml config file :  Firecrown
+SES - final yaml config :  {'id': 'Firecrown', 'modules': 'clpipeline', 'launcher': {'name': 'mini', 'interval': 0.5}, 'site': {'name': 'local', 'max_threads': 4}, 'stages': [{'name': 'FirecrownPipeline', 'module_name': 'clpipeline.firecrown_pipeline', 'nprocess': 1}], 'inputs': {'clusters_sacc_file_cov': './clusters_sacc_file_cov.sacc'}, 'config': './cosmodc2_config_mor.yml', 'resume': False, 'output_dir': './outputs_mor', 'log_dir': './logs_mor'}
+
+Executing FirecrownPipeline
+Command is:
+OMP_NUM_THREADS=1   python3 -m clpipeline FirecrownPipeline   --clusters_sacc_file_cov=./clusters_sacc_file_cov.sacc   --config=./cosmodc2_config_mor.yml   --cluster_counts_mean_mass_redshift_richness=./outputs_mor/cluster_counts_mean_mass_redshift_richness.ini   --cluster_redshift_richness=./outputs_mor/cluster_redshift_richness.py   --cluster_richness_values=./outputs_mor/cluster_richness_values.ini 
+Output writing to ./logs_mor/FirecrownPipeline.out
+
+Job FirecrownPipeline has completed successfully in 1.0 seconds seconds !
+Pipeline successful.  Joy is sparked.
+Deprecated: The [pipeline] quiet option is deprecated.  Set [runtime] verbosity instead.
+Setting up pipeline from parameter file cluster_counts_mean_mass_redshift_richness.ini
+--------------------------------------------------------------------------------------
+
+Setting up module consistency
+------------------------------
+
+Setting up module camb
+-----------------------
+/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/cosmosis-standard-library/boltzmann/camb/camb_interface.py:183: UserWarning: Option kmin does not have an effect.
+  warnings.warn("Option kmin does not have an effect.")
+**** WARNING: Parameter 'kmin' in the [camb] section never used!
+
+
+Setting up module firecrown_likelihood
+---------------------------------------
+Setup all pipeline modules
+
+Module timing:
+consistency 0.001109
+camb 0.001322
+firecrown_likelihood 0.060193
+
+Parameter Priors
+----------------
+cosmological_parameters--omega_c                   ~ U(0.1552, 0.3552)
+cosmological_parameters--sigma_8                   ~ U(0.7, 0.9)
+cosmological_parameters--omega_k                   ~ delta(0.0)
+cosmological_parameters--omega_b                   ~ delta(0.0448)
+cosmological_parameters--tau                       ~ delta(0.08)
+cosmological_parameters--n_s                       ~ delta(0.963)
+cosmological_parameters--h0                        ~ delta(0.71)
+cosmological_parameters--w                         ~ delta(-1.0)
+cosmological_parameters--wa                        ~ delta(0.0)
+firecrown_number_counts--mass_distribution_mu0     ~ delta(3.2)
+firecrown_number_counts--mass_distribution_mu1     ~ delta(0.8)
+firecrown_number_counts--mass_distribution_mu2     ~ delta(0.1)
+firecrown_number_counts--mass_distribution_sigma0  ~ delta(0.5)
+firecrown_number_counts--mass_distribution_sigma1  ~ delta(0.01)
+firecrown_number_counts--mass_distribution_sigma2  ~ delta(0.02)
+
+****************************************************
+* Running sampler 1/1: emcee
+* Running in serial mode.
+* Saving output -> output_rp/number_counts_samples.txt
+Traceback (most recent call last):
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/output/text_output.py", line 54, in __init__
+    self.lock_file(self._file)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/output/output_base.py", line 173, in lock_file
+    fcntl.lockf(f, fcntl.LOCK_EX|fcntl.LOCK_NB)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+BlockingIOError: [Errno 11] Resource temporarily unavailable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/bin/cosmosis", line 4, in <module>
+    status = cosmosis.main.main()
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/main.py", line 585, in main
+    return run_cosmosis(ini=args.inifile, pool=None, override=args.params, profile_mem=args.mem, profile_cpu=args.profile, variables=args.variables, only=args.only)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/main.py", line 404, in run_cosmosis
+    output = setup_output(sampler_class, sampler_number, ini, pool, sample_methods, sample_method, resume, output_original)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/main.py", line 168, in setup_output
+    output = output_module.output_from_options(output_options, resume)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/output/__init__.py", line 25, in output_from_options
+    return output_class.from_options(options,resume)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/output/text_output.py", line 153, in from_options
+    return cls(filename, rank, nchain, delimiter=delimiter, lock=lock, resume=resume)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp/lib/python3.13/site-packages/cosmosis/output/text_output.py", line 65, in __init__
+    raise IOError(error_msg)
+OSError: 
+Another CosmoSIS process was trying to use the same output file (output_rp/number_counts_samples.txt). 
+This means one of four things:
+1) you were trying to use MPI but left out the --mpi flag
+2) your MPI installation is not working properly
+3) you have another CosmoSIS run going trying to use the same filename
+4) your file system cannot cope with file locks properly.  
+In the last case you can set lock=F in the [output] section to disable this feature.
+
+****************************************************************
+*                      SLURM Batch System                      *
+*           IN2P3 Computing Centre, Villeurbanne FR            *
+****************************************************************
+Date: Mon Feb  9 11:51:12 AM CET 2026
+Job informations can be found using these commands:
+Accounting:
+sacct -j 26186099
+Efficiency:
+seff 26186099
+****************************************************************
