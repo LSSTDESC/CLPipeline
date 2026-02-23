@@ -33,6 +33,7 @@ def get_cluster_recipe(
     mass_interval=(12.5, 17.0),
     true_z_interval=(0.2, 1.0),
     is_reduced_shear = False,
+    force_no_purity = False,
 ):
     """Creates and returns a ClusterRecipe.
 
