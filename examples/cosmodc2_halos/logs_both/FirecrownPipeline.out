@@ -3,11 +3,11 @@
 NOTE/WARNING: Expected output file ./outputs_both/cluster_counts_mean_mass_redshift_richness.ini was not generated.
 NOTE/WARNING: Expected output file ./outputs_both/cluster_redshift_richness.py was not generated.
 NOTE/WARNING: Expected output file ./outputs_both/cluster_richness_values.ini was not generated.
-Executing stage: FirecrownPipeline @ 2026-02-10 16:20:16.232669
+Executing stage: FirecrownPipeline @ 2026-02-20 10:43:42.708296
 ./clusters_sacc_file_cov.sacc
 Python file generated at ./outputs_both/cluster_redshift_richness.py
 INI file written to ./outputs_both/cluster_counts_mean_mass_redshift_richness.ini
 INI file generated at ./outputs_both/cluster_counts_mean_mass_redshift_richness.ini
 {'omega_c': {'sample': True, 'values': [0.1552, 0.2052, 0.3552]}, 'sigma_8': {'sample': True, 'values': [0.7, 0.8, 0.9]}, 'omega_k': {'sample': False, 'values': 0.0}, 'omega_b': {'sample': False, 'values': 0.0448}, 'tau': {'sample': False, 'values': 0.08}, 'n_s': {'sample': False, 'values': 0.963}, 'h0': {'sample': False, 'values': 0.71}, 'w': {'sample': False, 'values': -1.0}, 'wa': {'sample': False, 'values': 0.0}}
 INI file written to ./outputs_both/cluster_richness_values.ini
-Stage complete: FirecrownPipeline @ 2026-02-10 16:20:24.628723 took 0.14 minutes
+Stage complete: FirecrownPipeline @ 2026-02-20 10:43:47.772617 took 0.08 minutes
