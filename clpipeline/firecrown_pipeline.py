@@ -105,6 +105,7 @@ class FirecrownPipeline(PipelineStage):
             beta_parameters = yml_config.get('beta_parameters', (10.0, 5.0))
             two_halo_term = yml_config.get('two_halo_term', False)
             boost_factor = yml_config.get('boost_factor', False)
+            use_cluster_counts = yml_config.get('use_cluster_counts', True)
             # Open the file to be written
             with open(path_name, "w") as f:
                 f.write("import os\n\n")
@@ -130,13 +131,14 @@ class FirecrownPipeline(PipelineStage):
                     ")\n"
                 )
                 f.write("from firecrown.modeling_tools import ModelingTools\n\n")
-                f.write("def get_cluster_abundance() -> ClusterAbundance:\n")
-                f.write("    \"\"\"Creates and returns a ClusterAbundance object.\"\"\" \n")
-                f.write("    cluster_theory = ClusterAbundance(\n")
-                f.write(f"    halo_mass_function = {hmf}(mass_def=\"{mass_def}\"),\n")
-                f.write("    cosmo = ccl.CosmologyVanillaLCDM()\n")
-                f.write("    )\n\n")
-                f.write("    return cluster_theory\n\n")
+                if use_cluster_counts:
+                    f.write("def get_cluster_abundance() -> ClusterAbundance:\n")
+                    f.write("    \"\"\"Creates and returns a ClusterAbundance object.\"\"\" \n")
+                    f.write("    cluster_theory = ClusterAbundance(\n")
+                    f.write(f"    halo_mass_function = {hmf}(mass_def=\"{mass_def}\"),\n")
+                    f.write("    cosmo = ccl.CosmologyVanillaLCDM()\n")
+                    f.write("    )\n\n")
+                    f.write("    return cluster_theory\n\n")
                 if use_shear_profile:
                     f.write("\n")
                     f.write("def get_cluster_shear_profile() -> ClusterShearProfile:\n")
@@ -158,6 +160,7 @@ class FirecrownPipeline(PipelineStage):
                 f.write(f"    mass_interval=({min_mass}, {max_mass}),\n")
                 f.write(f"    true_z_interval=({min_z}, {max_z}),\n")
                 f.write(f"    is_reduced_shear = False,\n")
+                f.write("    force_no_purity = False,\n")
                 f.write("):\n")
                 f.write("    \"\"\"Creates and returns a ClusterRecipe.\n\n")
                 f.write("    Parameters\n")
@@ -170,7 +173,10 @@ class FirecrownPipeline(PipelineStage):
                 else:
                     f.write(f"    completeness = None\n")
                 if use_purity:
-                    f.write(f"    purity = purity_models.PurityAguena16()\n")
+                    f.write(f"    if force_no_purity:\n")
+                    f.write(f"        purity = None\n")
+                    f.write(f"    else:\n")
+                    f.write(f"        purity = purity_models.PurityAguena16()\n")
                 else:
                     f.write(f"    purity = None\n")
                 f.write("    if is_reduced_shear:\n")
@@ -219,9 +225,9 @@ class FirecrownPipeline(PipelineStage):
                 f.write("    if build_parameters.get_bool('use_mean_reduced_shear', True):\n")
                 f.write("        average_on |= ClusterProperty.SHEAR\n\n")
                 f.write(f"    survey_name = '{survey_name}'\n")
-                f.write("    recipe_counts = get_cluster_recipe(get_cluster_abundance())\n")
-                if use_shear_profile:
-                    f.write(f"    recipe_shear = get_cluster_recipe(get_cluster_shear_profile(), is_reduced_shear = {not is_deltasigma})\n")
+                if use_shear_profile and use_cluster_counts:
+                    f.write("    recipe_counts = get_cluster_recipe(get_cluster_abundance())\n")
+                    f.write(f"    recipe_shear = get_cluster_recipe(get_cluster_shear_profile(), is_reduced_shear = {not is_deltasigma}, force_no_purity=True)\n")
                     f.write("    likelihood = ConstGaussian(\n")
                     f.write("        [\n")
                     f.write("            BinnedClusterNumberCounts(\n")
@@ -231,9 +237,14 @@ class FirecrownPipeline(PipelineStage):
                     f.write("                average_on, survey_name, recipe_shear\n")
                     f.write("            ),\n")
                     f.write("        ]\n")
-                else:
+                elif use_cluster_counts:
+                    f.write("    recipe_counts = get_cluster_recipe(get_cluster_abundance())\n")
                     f.write("    likelihood = ConstGaussian(\n")
                     f.write("        [BinnedClusterNumberCounts(average_on, survey_name, recipe_counts)]\n")
+                elif use_shear_profile:
+                    f.write(f"    recipe_shear = get_cluster_recipe(get_cluster_shear_profile(), is_reduced_shear = {not is_deltasigma}, force_no_purity=True)\n")
+                    f.write("    likelihood = ConstGaussian(\n")
+                    f.write("        [BinnedClusterShearProfile(average_on, survey_name, recipe_shear)]\n")
                 f.write("    )\n\n")
                 f.write(f"    sacc_path = '{sacc_path}'\n")
                 f.write("    sacc_data = sacc.Sacc.load_fits(sacc_path)\n")

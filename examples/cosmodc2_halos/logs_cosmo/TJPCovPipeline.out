@@ -1,6 +1,6 @@
 /sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.12/site-packages/ceci/__init__.py:12: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
   from pkg_resources import DistributionNotFound
-Executing stage: TJPCovPipeline @ 2026-02-10 11:53:37.108905
+Executing stage: TJPCovPipeline @ 2026-02-20 10:35:02.970639
 Computing independent covariance blocks
 Rank None: ('cosmodc2_halos', 'rich_0', 'bin_z_0'), ('cosmodc2_halos', 'rich_0', 'bin_z_0')
 Rank None: ('cosmodc2_halos', 'rich_0', 'bin_z_0'), ('cosmodc2_halos', 'rich_0', 'bin_z_1')
@@ -318,5 +318,5 @@ Building the covariance: placing blocks in their place
 ('cosmodc2_halos', 'rich_2', 'bin_z_2') ('cosmodc2_halos', 'rich_2', 'bin_z_3')
 ('cosmodc2_halos', 'rich_2', 'bin_z_3') ('cosmodc2_halos', 'rich_2', 'bin_z_3')
 NOTE/WARNING: Expected output file ././outputs_cosmo/clusters_sacc_file_cov.sacc was not generated.
-Time:  484.56329441070557  sec
-Stage complete: TJPCovPipeline @ 2026-02-10 12:02:18.576411 took 8.69 minutes
+Time:  480.4385781288147  sec
+Stage complete: TJPCovPipeline @ 2026-02-20 10:43:35.866813 took 8.55 minutes
