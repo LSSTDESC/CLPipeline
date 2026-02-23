@@ -3,11 +3,11 @@
 NOTE/WARNING: Expected output file ./outputs_cosmo/cluster_counts_mean_mass_redshift_richness.ini was not generated.
 NOTE/WARNING: Expected output file ./outputs_cosmo/cluster_redshift_richness.py was not generated.
 NOTE/WARNING: Expected output file ./outputs_cosmo/cluster_richness_values.ini was not generated.
-Executing stage: FirecrownPipeline @ 2026-02-10 12:02:25.842944
+Executing stage: FirecrownPipeline @ 2026-02-20 10:43:43.422469
 ./clusters_sacc_file_cov.sacc
 Python file generated at ./outputs_cosmo/cluster_redshift_richness.py
 INI file written to ./outputs_cosmo/cluster_counts_mean_mass_redshift_richness.ini
 INI file generated at ./outputs_cosmo/cluster_counts_mean_mass_redshift_richness.ini
 {'omega_c': {'sample': True, 'values': [0.1552, 0.2052, 0.3552]}, 'sigma_8': {'sample': True, 'values': [0.7, 0.8, 0.9]}, 'omega_k': {'sample': False, 'values': 0.0}, 'omega_b': {'sample': False, 'values': 0.0448}, 'tau': {'sample': False, 'values': 0.08}, 'n_s': {'sample': False, 'values': 0.963}, 'h0': {'sample': False, 'values': 0.71}, 'w': {'sample': False, 'values': -1.0}, 'wa': {'sample': False, 'values': 0.0}}
 INI file written to ./outputs_cosmo/cluster_richness_values.ini
-Stage complete: FirecrownPipeline @ 2026-02-10 12:02:29.664650 took 0.06 minutes
+Stage complete: FirecrownPipeline @ 2026-02-20 10:43:47.772289 took 0.07 minutes
