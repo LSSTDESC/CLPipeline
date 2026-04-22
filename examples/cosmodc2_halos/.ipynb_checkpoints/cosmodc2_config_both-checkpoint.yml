@@ -2,8 +2,8 @@ global:
     metacalibration: True
 FirecrownPipeline:
     hmf: 'despali16'
-    min_mass: 12.5
-    max_mass: 17.0
+    min_mass: 13.0
+    max_mass: 15.3
     min_z: 0.2
     max_z: 1.0
     mass_def: '200c'
@@ -26,8 +26,8 @@ FirecrownPipeline:
     emcee_samples: 20000
     emcee_nsteps: 200
     cosmological_parameters:
-        omega_c: {'sample': True, 'values': [0.1552, 0.2052, 0.3552]}
-        sigma_8: {'sample': True, 'values': [0.7, 0.800, 0.9]}
+        omega_c: {'sample': True, 'values': [0.1, 0.2052, 0.4]}
+        sigma_8: {'sample': True, 'values': [0.5, 0.800, 1.0]}
         omega_k: {'sample': False, 'values': 0.0}
         omega_b: {'sample': False, 'values': 0.0448}
         tau: {'sample': False, 'values': 0.08}
@@ -38,8 +38,8 @@ FirecrownPipeline:
     firecrown_parameters:
         mass_distribution_mu0: {'sample': True, 'values': [2.0, 2.0, 10.0]}
         mass_distribution_mu1: {'sample': True, 'values': [0.01, 0.8, 10.0]}
-        mass_distribution_mu2: {'sample': False, 'values': 0.1}
-        mass_distribution_sigma0: {'sample': True, 'values': [0.02, 0.3, 10.0]}
+        mass_distribution_mu2: {'sample': True, 'values': [-2.0, 0.8, 2.0]}
+        mass_distribution_sigma0: {'sample': True, 'values': [0.0, 0.3, 10.0]}
         mass_distribution_sigma1: {'sample': False, 'values': 0.0}
         mass_distribution_sigma2: {'sample': False, 'values': 0.0}
 TJPCovPipeline:
@@ -52,6 +52,7 @@ TJPCovPipeline:
     # 'set' from parameters OR pass CCL cosmology object OR yaml file
     cosmo: 'set' 
     fsky: 0.3
+    replace_tjpcov_cov: False
     parameters:
         # Not used for while (read by ccl.cosmo):
         Omega_c: 0.22
@@ -64,14 +65,14 @@ TJPCovPipeline:
         transfer_function: 'boltzmann_camb'
     photo-z:
         # from DES Y1
-        sigma_0: 0.05
+        sigma_0: 0.005
     mor_parameters:
         #halo mass function parameters
         mass_func: 'Despali16'
         mass_def: '200c'
         halo_bias: 'Tinker10'
-        min_halo_mass: 1.0e12
-        max_halo_mass: 1.0e17
+        min_halo_mass: 1.0e13
+        max_halo_mass: 2.0e15
         #richness-mass relation parameters (from eq (14) in https://arxiv.org/pdf/1904.07524):
         m_pivot: 14.3
         z_pivot: 0.5

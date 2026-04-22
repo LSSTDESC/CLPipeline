@@ -1,6 +1,6 @@
 /sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.12/site-packages/ceci/__init__.py:12: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
   from pkg_resources import DistributionNotFound
-Executing stage: TJPCovPipeline @ 2026-02-11 11:16:07.687462
+Executing stage: TJPCovPipeline @ 2026-03-30 12:04:18.339141
 Computing independent covariance blocks
 Rank None: ('cosmodc2_wazp_halos', 'rich_0', 'bin_z_0'), ('cosmodc2_wazp_halos', 'rich_0', 'bin_z_0')
 Rank None: ('cosmodc2_wazp_halos', 'rich_0', 'bin_z_0'), ('cosmodc2_wazp_halos', 'rich_0', 'bin_z_1')
@@ -317,6 +317,21 @@ Building the covariance: placing blocks in their place
 ('cosmodc2_wazp_halos', 'rich_2', 'bin_z_2') ('cosmodc2_wazp_halos', 'rich_2', 'bin_z_2')
 ('cosmodc2_wazp_halos', 'rich_2', 'bin_z_2') ('cosmodc2_wazp_halos', 'rich_2', 'bin_z_3')
 ('cosmodc2_wazp_halos', 'rich_2', 'bin_z_3') ('cosmodc2_wazp_halos', 'rich_2', 'bin_z_3')
-NOTE/WARNING: Expected output file ./outputs_both/clusters_sacc_file_cov.sacc was not generated.
-Time:  348.32608437538147  sec
-Stage complete: TJPCovPipeline @ 2026-02-11 11:21:57.037777 took 5.82 minutes
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/sps/lsst/users/ebarroso/CLPipeline/clpipeline/__main__.py", line 6, in <module>
+    PipelineStage.main()
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.12/site-packages/ceci/stage.py", line 526, in main
+    stage.execute(args)
+  File "/sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp/lib/python3.12/site-packages/ceci/stage.py", line 699, in execute
+    stage.run()
+  File "/sps/lsst/users/ebarroso/CLPipeline/clpipeline/tjpcov_pipeline.py", line 78, in run
+    self.replace_crow_counts(config_dict)
+  File "/sps/lsst/users/ebarroso/CLPipeline/clpipeline/tjpcov_pipeline.py", line 175, in replace_crow_counts
+    completeness_aguena['a_n'] = 1.570597
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^
+TypeError: 'CompletenessAguena16' object does not support item assignment
+Time:  475.0188660621643  sec
+Replacing Counts TJPCov cov for Crow cov. SSC + Counts
+Stage failed: TJPCovPipeline @ 2026-03-30 12:12:26.394704 after 8.13 minutes

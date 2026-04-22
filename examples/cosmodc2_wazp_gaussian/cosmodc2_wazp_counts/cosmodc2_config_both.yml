@@ -9,7 +9,7 @@ FirecrownPipeline:
     mass_def: '200c'
     use_shear_profile: False
     use_completeness: True
-    use_purity: True
+    use_purity: False
     use_grid: True
     is_deltasigma: True
     use_beta_interp: False
@@ -37,22 +37,19 @@ FirecrownPipeline:
         wa: {'sample': False, 'values': 0.0}
     firecrown_parameters:
         mass_distribution_mu0: {'sample': True, 'values': [2.0, 2.0, 4.0]}
-        mass_distribution_mu1: {'sample': True, 'values': [0.4, 0.8, 1.2]}
-        mass_distribution_mu2: {'sample': False, 'values': 1.07948}
-        mass_distribution_sigma0: {'sample': True, 'values': [0.02, 0.3, 0.6]}
-        mass_distribution_sigma1: {'sample': False, 'values': -0.01316}
-        mass_distribution_sigma2: {'sample': False, 'values': -0.13137}
-        completeness_a_n: {'sample': False, 'values': 0.150137}
-        completeness_b_n: {'sample': False, 'values': 0.332197}
-        completeness_a_logm_piv: {'sample': False, 'values': 10.185595}
-        completeness_b_logm_piv: {'sample': False, 'values': 1.282687}
-        purity_a_n: {'sample': False, 'values': -0.758356}
-        purity_b_n: {'sample': False, 'values': 1.522514}
-        purity_a_logm_piv: {'sample': False, 'values': 0.015416}
-        purity_b_logm_piv: {'sample': False, 'values': 0.581012}
+        mass_distribution_mu1: {'sample': True, 'values': [0.0, 0.8, 2.0]}
+        mass_distribution_mu2: {'sample': True, 'values': [-2.0, 0.8, 2.0]}
+        mass_distribution_sigma0: {'sample': True, 'values': [0.0, 0.3, 10.0]}
+        mass_distribution_sigma1: {'sample': False, 'values': 0.0}
+        mass_distribution_sigma2: {'sample': False, 'values': 0.0}
+        completeness_a_n: {'sample': False, 'values': 1.570597}
+        completeness_b_n: {'sample': False, 'values': -0.028690}
+        completeness_a_logm_piv: {'sample': False, 'values': 14.264386}
+        completeness_b_logm_piv: {'sample': False, 'values': 0.029814}
 TJPCovPipeline:
     use_mpi: False
     do_xi: False
+    wazp_catalog: True
     #cov_type: [ClusterCountsGaussian]
     #cov_type: [ClusterMass, ClusterCountsGaussian, ClusterCountsSSC]
     cov_type: [ClusterCountsGaussian, ClusterCountsSSC]
@@ -60,6 +57,7 @@ TJPCovPipeline:
     # 'set' from parameters OR pass CCL cosmology object OR yaml file
     cosmo: 'set' 
     fsky: 0.3
+    replace_tjpcov_cov: True
     parameters:
         # Not used for while (read by ccl.cosmo):
         Omega_c: 0.22
@@ -83,9 +81,9 @@ TJPCovPipeline:
         #richness-mass relation parameters (from eq (14) in https://arxiv.org/pdf/1904.07524):
         m_pivot: 14.3
         z_pivot: 0.5
-        mu_p0: 3.58716
-        mu_p1: 0.86116
-        mu_p2: 1.07948
-        sigma_p0: 0.48591
-        sigma_p1: -0.01316
-        sigma_p2: -0.13137
+        mu_p0: 3.8168
+        mu_p1: 0.6057
+        mu_p2: 0.5177
+        sigma_p0: 0.4014
+        sigma_p1: 0.0
+        sigma_p2: 0.0
