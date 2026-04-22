@@ -80,8 +80,8 @@ class FirecrownPipeline(PipelineStage):
         }
         try:
             # Extract values from the configuration
-            hmf_key = yml_config.get('hmf', 'bocquet16')  # Default to 'bocquet16' if not specified
-            hmf = hmf_dict.get(hmf_key, 'ccl.halos.MassFuncBocquet16()')  # Default to MassFuncBocquet16 if not found
+            hmf_key = yml_config.get('hmf', 'bocquet16').lower()  # Default to 'bocquet16' if not specified
+            hmf = hmf_dict.get(hmf_key, 'ccl.halos.MassFuncBocquet16')  # Default to MassFuncBocquet16 if not found
             mass_def = str(yml_config.get('mass_def', '200c'))
             min_mass = yml_config.get('min_mass', 13.0)
             max_mass = yml_config.get('max_mass', 16.0)

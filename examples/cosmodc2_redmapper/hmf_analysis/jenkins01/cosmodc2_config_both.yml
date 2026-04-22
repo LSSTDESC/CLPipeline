@@ -1,7 +1,7 @@
 global:
     metacalibration: True
 FirecrownPipeline:
-    hmf: 'tinker08'
+    hmf: 'jenkins01'
     min_mass: 12.0
     max_mass: 15.5
     min_z: 0.2
@@ -26,8 +26,8 @@ FirecrownPipeline:
     emcee_samples: 20000
     emcee_nsteps: 20
     cosmological_parameters:
-        omega_c: {'sample': False, 'values': 0.22} # 'values': [0.1552, 0.2052, 0.3552]}
-        sigma_8: {'sample': False, 'values': 0.8} # [0.7, 0.800, 0.9]}
+        omega_c: {'sample': True, 'values': [0.1552, 0.2052, 0.3552]}
+        sigma_8: {'sample': True, 'values': [0.7, 0.800, 0.9]}
         omega_k: {'sample': False, 'values': 0.0}
         omega_b: {'sample': False, 'values': 0.0448}
         tau: {'sample': False, 'values': 0.08}
@@ -75,7 +75,7 @@ TJPCovPipeline:
         sigma_0: 0.05
     mor_parameters:
         #halo mass function parameters
-        mass_func: 'Tinker08'
+        mass_func: 'Jenkins01'
         mass_def: '200c'
         halo_bias: 'Tinker10'
         min_halo_mass: 1.0e12
@@ -163,7 +163,7 @@ CLClusterBinningRedshiftRichness:
     richedge: [20., 35., 70., 100., 200.]
 
 CLClusterShearCatalogs:
-    max_radius: 10.0   # Mpc
+    max_radius: 4.0   # Mpc
     delta_z: 0.2   # redshift buffer
     redshift_cut_criterion: ztrue
     redshift_weight_criterion: ztrue

@@ -1,7 +1,7 @@
 global:
     metacalibration: True
 FirecrownPipeline:
-    hmf: 'tinker08'
+    hmf: 'watson13'
     min_mass: 12.0
     max_mass: 15.5
     min_z: 0.2
@@ -75,7 +75,7 @@ TJPCovPipeline:
         sigma_0: 0.05
     mor_parameters:
         #halo mass function parameters
-        mass_func: 'Tinker08'
+        mass_func: 'Watson13'
         mass_def: '200c'
         halo_bias: 'Tinker10'
         min_halo_mass: 1.0e12
