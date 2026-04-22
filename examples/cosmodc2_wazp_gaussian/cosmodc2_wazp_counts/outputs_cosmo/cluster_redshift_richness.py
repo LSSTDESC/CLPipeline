@@ -33,6 +33,7 @@ def get_cluster_recipe(
     mass_interval=(12.5, 17.0),
     true_z_interval=(0.2, 1.0),
     is_reduced_shear = False,
+    force_no_purity = False,
 ):
     """Creates and returns a ClusterRecipe.
 
@@ -42,7 +43,7 @@ def get_cluster_recipe(
     """
     redshift_distribution = kernel.SpectroscopicRedshift()
     completeness = completeness_models.CompletenessAguena16()
-    purity = purity_models.PurityAguena16()
+    purity = None
     if is_reduced_shear:
         cluster_theory.set_beta_parameters(10.0, 5.0)
     mass_distribution = mass_proxy.MurataUnbinned(

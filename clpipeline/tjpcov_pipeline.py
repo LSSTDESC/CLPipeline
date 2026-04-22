@@ -69,14 +69,13 @@ class TJPCovPipeline(PipelineStage):
         combined_config.update(config_dict)
         cc = CovarianceCalculator(combined_config)
         cov_terms     = cc.get_covariance_terms()
-        sacc_with_cov = cc.create_sacc_cov(output=filename, save_terms=True, overwrite=True)
+        sacc_with_cov = cc.create_sacc_cov(output=filename, save_terms=True)
         print('Time: ', (time.time()-st), ' sec')
         if only_counts == False and has_covariance == True:
             new_sacc = self.extract_data_covariance(sacc_file, tjpcov_out_sacc)
         if config_dict["replace_tjpcov_cov"]:
             print("Replacing Counts TJPCov cov for Crow cov. SSC + Counts")
             self.replace_crow_counts(config_dict)
-
     def extract_and_save_cluster_counts(self, input_sacc_file: str, output_sacc_file: str):
         """
         Reads a SACC file, extracts only the cluster counts data (without covariance),
@@ -141,6 +140,7 @@ class TJPCovPipeline(PipelineStage):
         from crow import completeness_models, mass_proxy, purity_models, kernel
         #This function should not exist as it should be implemented in TJPCov
         #This is temporary and so most of the options and configurations are fixed
+        is_wazp = config_dict.get("wazp_catalog", False)
         cosmo_params = config_dict["parameters"]
         cosmo = ccl.Cosmology(
             Omega_c=cosmo_params["Omega_c"],
@@ -169,6 +169,12 @@ class TJPCovPipeline(PipelineStage):
         cl_abundance          = ClusterAbundance(cosmo, hmf)
         purity_aguena         = purity_models.PurityAguena16()
         completeness_aguena   = completeness_models.CompletenessAguena16()
+        if is_wazp:
+            purity_aguena = None
+            completeness_aguena['a_n'] = 1.570597
+            completeness_aguena['b_n'] = -0.028690
+            completeness_aguena['a_logm_piv'] = 14.264386
+            completeness_aguena['b_logm_piv'] = 0.029814
         redshift_distribution = kernel.SpectroscopicRedshift()
         recipe_grid_abundance = GridBinnedClusterRecipe(
             mass_interval=mass_interval,
@@ -228,8 +234,6 @@ class TJPCovPipeline(PipelineStage):
                 print(f"Replaced cov points at {i,j}. From {old_cov_ij} to {full_cov[i,j]}")
         sacc_tjpcov_full.covariance = sacc.covariance.FullCovariance(full_cov)
         sacc_tjpcov_full.save_fits(f"{config_dict['outdir']}/clusters_sacc_file_cov.sacc", overwrite=True)
-        
-
 
 
 

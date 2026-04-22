@@ -30,7 +30,7 @@ def get_cluster_recipe(
     cluster_theory,
     pivot_mass: float = 14.3,
     pivot_redshift: float = 0.5,
-    mass_interval=(12.5, 17.0),
+    mass_interval=(13.0, 15.3),
     true_z_interval=(0.2, 1.0),
     is_reduced_shear = False,
     force_no_purity = False,
@@ -60,7 +60,7 @@ def get_cluster_recipe(
         mass_distribution=mass_distribution,
         completeness=completeness,
         purity=purity,
-        mass_interval=(12.5, 17.0),
+        mass_interval=(13.0, 15.3),
         true_z_interval=(0.2, 1.0),
     )
 

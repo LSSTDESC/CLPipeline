@@ -106,6 +106,7 @@ class FirecrownPipeline(PipelineStage):
             two_halo_term = yml_config.get('two_halo_term', False)
             boost_factor = yml_config.get('boost_factor', False)
             use_cluster_counts = yml_config.get('use_cluster_counts', True)
+            use_poisson_noise = yml_config.get('use_poisson_noise', False)
             # Open the file to be written
             with open(path_name, "w") as f:
                 f.write("import os\n\n")
@@ -188,8 +189,10 @@ class FirecrownPipeline(PipelineStage):
                         "    mass_distribution = mass_proxy.MurataUnbinned(\n"
                         f"        pivot_log_mass={pivot_mass},\n"
                         f"        pivot_redshift={pivot_z},\n"
-                        "    )\n\n"
                     )
+                    if use_poisson_noise:
+                        f.write(f"        use_noise={use_poisson_noise},\n")
+                    f.write("    )\n\n")
                     f.write("    recipe = GridBinnedClusterRecipe(\n")
                     f.write(f"        redshift_grid_size = {redshift_grid_size},\n")
                     f.write(f"        mass_grid_size = {mass_grid_size},\n")
@@ -302,7 +305,7 @@ class FirecrownPipeline(PipelineStage):
                 f.write(f"root = {root}\n\n")
 
                 f.write("[default]\n")
-                f.write("fatal_errors = T\n\n")
+                f.write("fatal_errors = F\n\n")
 
                 f.write("[output]\n")
                 f.write(f"filename = {out_filename}\n")
@@ -314,7 +317,7 @@ class FirecrownPipeline(PipelineStage):
                 f.write("values = cluster_richness_values.ini\n")
                 f.write("likelihoods = firecrown\n")
                 f.write("quiet = F\n")
-                f.write("debug = T\n")
+                f.write("debug = F\n")
                 f.write("timing = T\n\n")
 
                 f.write("[consistency]\n")
