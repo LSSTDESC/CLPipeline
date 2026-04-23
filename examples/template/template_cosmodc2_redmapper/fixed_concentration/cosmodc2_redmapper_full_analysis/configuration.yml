@@ -1,0 +1,55 @@
+id: configure
+
+site: in2p3
+
+# Directory that will contain all the files
+concentration: fixed_concentration
+analysis: cosmodc2_redmapper_full_analysis
+runidentifier: cosmo
+
+templatedir: template_cosmodc2_redmapper/$CONCENTRATION/$ANALYSIS
+name: cosmodc2_redmapper/$CONCENTRATION/$ANALYSIS/run_$SITE_$RUNIDENTIFIER
+userworkingdir: $PWD
+computationdir: $USERWORKINGDIR/$NAME
+
+# Survey data
+data: cosmodc2
+datadir_full: cosmodc2/full
+datadir_20deg2: cosmodc2/20deg2
+
+# job concatenated yaml file
+jobconcatyamlfile: $TEMPLATEDIR/job_concat_$SITE.yml
+
+# Pipeline setup
+txpipe_datadir:
+    nersc: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe_data
+    in2p3: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data
+    local: my_data_directory
+
+txpipe_outputdir:
+    nersc: 
+    in2p3: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-full-2026/
+
+txpipe_directory:
+    nersc: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe
+    in2p3: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe
+
+outputdir : ./outputs_$RUNIDENTIFIER
+logdir: ./logs_$RUNIDENTIFIER
+
+config_file_generic: ./$TEMPLATEDIR/cosmodc2_config_$RUNIDENTIFIER.yml
+config_file: ./config_$SITE_$RUNIDENTIFIER.yml
+
+
+# Conda package directory
+conda_directory:
+    nersc: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project
+    in2p3: /sps/lsst/groups/clusters/cl_pipeline_project
+    local: my_conda_directory
+
+# Batch parameters - see batch_param.yml file
+batch_id: $ANALYSIS
+batch_files: 
+    nersc: ./$TEMPLATEDIR/launch_job_all_generic.sh
+    in2p3: ./$TEMPLATEDIR/launch_job_all_generic.sh
+

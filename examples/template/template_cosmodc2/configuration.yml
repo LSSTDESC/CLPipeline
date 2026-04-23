@@ -1,0 +1,50 @@
+id: configure
+
+site: in2p3
+
+# Directory that will contain all the files
+runidentifier: 20deg2
+
+name: cosmodc2_$SITE_$RUNIDENTIFIER
+templatedir: template_cosmodc2
+computationdir: $PWD/$NAME
+
+# job concatenated yaml file
+jobconcatyamlfile: $TEMPLATEDIR/job_cosmoDC2-$RUNIDENTIFIER_concat_$SITE.yml
+
+# Survey data
+data: cosmodc2
+datadir: cosmodc2/$RUNIDENTIFIER
+
+# Pipeline setup
+txpipe_datadir:
+    nersc: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe_data
+    in2p3: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data
+    local: my_data_directory
+
+txpipe_outputdir:
+    nersc: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-$RUNIDENTIFIER-CL
+    in2p3: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-$RUNIDENTIFIER-test-crow
+
+txpipe_directory:
+    nersc: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe
+    in2p3: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe
+
+outputdir : ./outputs
+logdir: ./logs
+
+config_file_generic: ./$TEMPLATEDIR/$DATA_config_$RUNIDENTIFIER.yml
+config_file: ./config_$SITE.yml
+
+# Conda package directory
+conda_directory:
+    nersc: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project
+    in2p3: /sps/lsst/groups/clusters/cl_pipeline_project
+    local: my_conda_directory
+
+# Batch parameters - see batch_param.yml file
+batch_id: cosmodc2-$RUNIDENTIFIER
+batch_files: 
+    nersc: ./$TEMPLATEDIR/launch_job_all_generic.sh
+    in2p3: ./$TEMPLATEDIR/launch_txpipe_generic.sh;./$TEMPLATEDIR/launch_fire_generic.sh;./$TEMPLATEDIR/launch_job_all_generic.sh
+
