@@ -1,4 +1,4 @@
-global:
+    global:
     metacalibration: True
 FirecrownPipeline:
     hmf: 'despali16'

@@ -2,7 +2,7 @@
 #SBATCH --time=15:00:00
 #SBATCH --partition=hpc,lsst
 #SBATCH --cpus-per-task=1
-#SBATCH --mem=500gb
+#SBATCH --mem=50gb
 #SBATCH --ntasks=60 
 module load conda
 export HDF5_DO_MPI_FILE_SYNC=0
