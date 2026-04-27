@@ -3,7 +3,7 @@
 It consists in defining a set of configuration parameters (in a `configuration.xml` file) that can be used to parametrize any file used in the analysis pipeline (config files, job submission script, txpipe, firecrown or tjpcov files).  
 
 
-###>> `Configuration.yml` file
+### >> `Configuration.yml` file
 
 Each key defined in the `configutation.xml` file will be initialized as a parameter that can be used in the definition of any file.
 
@@ -61,7 +61,7 @@ For each parameter defined in `configuration.yml`, a variable name $PARAMETER_NA
 
 **It is possible to add/remove parameters in `configuration.yaml` depending on the type of pipeline to configure.  **
 	
-###>> ceci yaml files
+### >> ceci yaml files
 
 The yaml files used to define the different ceci pipeline processes are concatenated in an unique file using the yaml multiple document feature  ( files are separated using a `---`). <br>
 The name of this concatenated file is defined as *jobconcatyamlfile*  in `configuration.yml`<br>
@@ -70,7 +70,7 @@ This yaml file is going to be parametrized based on the values defines in `confi
 In our example, the file `template_readme_example/input/job_cosmoDC2-20deg2_concat.yml` is going to be split into 3 subfiles : `txpipe.yml, firecrown.yml and tjpcov.yml`
 
 	
-###>> `batch_param.yml` file	
+### >> `batch_param.yml` file	
 	
 Instead of redefining the batch parameters  ( CPU, RAM, tasks, ....)  for each job, one can store them in a `batch_param.yml` file and retrieve and configure the batch scripts automatically
 For example : 
@@ -94,7 +94,7 @@ For example :
 These will for example  define 2 values  `$BACTH_TXPIPE and $BATCH_ALL` that can be used to configure automatically the job submission scripts.
 ( see `input/launch_job_all_generic.sh` )
 	
-###>> creation and initialization of the run files	
+### >> creation and initialization of the run files	
 	
 #### configuration command
 
