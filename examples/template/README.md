@@ -96,17 +96,17 @@ These will for example  define 2 values  `$BACTH_TXPIPE and $BATCH_ALL` that can
 	
 ### >> creation and initialization of the run files	
 	
-#### configuration command
+#### --- configuration command
 
 	python configure_pipeline.py template_readme_example/input/configuration.py
 
 
-#### where are the output files
+#### --- where are the output files
 
 the configured output files are all stored in the $COMPUTINGDIR directory defined in the `configuration.yml` file.<br>
 
 
-#### how to overwrite a value defined in the `configuration.tml` file
+#### --- how to overwrite a value defined in the `configuration.tml` file
 
 It is possible to overwrite parameters defined in `configuration.yml` by adding a dictionnary of values at the end of the command line.<br> 
 For example :
