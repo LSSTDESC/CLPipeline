@@ -206,7 +206,10 @@ def CreateBatchSubmissionScripts(paramDict):
     print(f"BATCH {batchId}")
 
     # Read batch configutaion parameters from batch_param.yaml file
-    batchParam = GetYamlDocumentSection(batchId, "batch_param.yml")
+    filename = "./batch_param.yml"
+    if "$BATCH_PARAM_FILE" in paramDict:
+        filename = paramDict["$BATCH_PARAM_FILE"]
+    batchParam = GetYamlDocumentSection(batchId, filename)
     print(batchParam)
     
     # Get site value
