@@ -10,7 +10,7 @@ module load conda
 export HDF5_DO_MPI_FILE_SYNC=0
 #export PYTHONPATH=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe:$PYTHONPATH
 conda activate /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/conda_envs/txpipe_clp
-export PYTHONPATH=/sps/lsst/users/ebarroso/CLPipeline:$PYTHONPATH
+export PYTHONPATH=/global/u2/e/edujb/CLPipeline/:$PYTHONPATH
 export PYTHONPATH=/global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe:$PYTHONPATH
 
 cd /sps/lsst/users/ebarroso/CLPipeline/examples/cosmodc2_redmapper/templates/../baseline/cosmodc2_redmapper_full_analysis/run_nersc_both

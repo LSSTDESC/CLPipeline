@@ -34,7 +34,7 @@ stages:
     nprocess: 1
     aliases:
         cluster_profiles: cluster_profiles
-output_dir: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe_data/outputs-full-2026/
+output_dir: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-full-2026/
 log_dir: ./logs_both
 config: ./config_nersc_both.yml
 inputs:
