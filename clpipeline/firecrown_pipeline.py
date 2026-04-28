@@ -191,7 +191,7 @@ class FirecrownPipeline(PipelineStage):
                     f.write(f"    if force_no_purity:\n")
                     f.write(f"        purity = None\n")
                     f.write(f"    else:\n")
-                    f.write(f"        purity = purity_models.PurityAguena16()\n")
+                    f.write(f"        purity = purity_models.PurityAguena16LnProxy()\n")
                 else:
                     f.write(f"    purity = None\n")
                 f.write("    if is_reduced_shear:\n")
