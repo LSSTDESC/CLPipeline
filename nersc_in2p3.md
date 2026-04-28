@@ -125,6 +125,8 @@ TXPipe requires special handling of MPI dependencies, especially on Perlmutter (
 #### Installation
 
 ```bash
+module load python
+module load conda
 export CONDA_PKGS_DIRS=/global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/conda_envs/pkgs/txpipe_clp
 
 module load mpich/4.3.0
@@ -140,10 +142,10 @@ conda env create \
 #### Fix MPI Installation
 
 ```bash
+conda activate /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/conda_envs/txpipe_clp
 conda remove --force mpi4py libfabric libfabric1
 
-MPI4PY_BUILD_MPIABI=1 MPICC="mpicc -shared" \
-pip install --no-cache-dir --no-binary=mpi4py mpi4py
+MPI4PY_BUILD_MPIABI=1 MPICC="mpicc -shared" pip install --no-cache-dir --no-binary=mpi4py mpi4py
 ```
 
 #### Activation Script Setup
@@ -152,13 +154,11 @@ pip install --no-cache-dir --no-binary=mpi4py mpi4py
 mkdir -p /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/conda_envs/txpipe_clp/etc/conda/activate.d
 
 cat > /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/conda_envs/txpipe_clp/etc/conda/activate.d/txpipe_clp.sh << 'EOF'
-module load mpich/4.3.0
-
+module load cray-mpich
 export MPI4PY_RC_RECV_MPROBE='False'
 export HDF5_USE_FILE_LOCKING=FALSE
-export MPICH_GPU_SUPPORT_ENABLED=0
-
 export LD_LIBRARY_PATH=${MPICH_DIR}/lib-abi-mpich:${LD_LIBRARY_PATH}
+export MPICH_GPU_SUPPORT_ENABLED=0
 EOF
 ```
 
