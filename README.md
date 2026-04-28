@@ -1,178 +1,111 @@
 # CLPipeline
-Repository dedicated to the Cluster Working Group from the DESC-LSST collaboration.
+Repository dedicated to the Cluster Working Group of the DESC-LSST collaboration.
 
 ## Installation
-To run the examples, there is no need to install/create new conda environments.
-The environments are saved in a shared space both in in2p3 and Nersc. For the 
-moment, we have two conda environments. One for Firecrown and another one for
-TXPipe and TJPCov. For firecrown, run:
-```
+To run the examples, there is no need to create new Conda environments.
+Shared environments are available on both IN2P3 and NERSC.
+
+Currently, two environments are provided:
+- One for Firecrown
+- One for TXPipe and TJPCov
+
+### Firecrown
+
+Activate the Firecrown environment with:
+
+IN2P3:
 conda activate /sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_clp
-```
-for in2p3 and 
-```
+
+NERSC:
 conda activate /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/conda_envs/firecrown_clp
-```
 
-for Nersc.
+### TXPipe and TJPCov
 
-For TXPipe and TJPCov,
-```
+IN2P3:
 conda activate /sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_clp
-```
-for in2p3 and 
-```
-conda activate /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/conda_envs/txpipe_clp
-```
-for Nersc.
 
-To have these same environments locally,run:
-```
+NERSC:
+conda activate /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/conda_envs/txpipe_clp
+
+---
+
+### Local Installation
+
+To reproduce these environments locally, run:
+
 conda env update -f txpipe_environment.yml
 conda env update -f firecrown_environment.yml
+
 conda activate firecrown_clp
 conda env config vars set CSL_DIR=${CONDA_PREFIX}/cosmosis-standard-library
+
 conda deactivate
 conda activate firecrown_clp
+
 cd ${CONDA_PREFIX}
 source ${CONDA_PREFIX}/bin/cosmosis-configure
 cosmosis-build-standard-library main
-```
-To activate one or the other environment, run:
-```
-conda activate firecrown_clp
-```
-or
-```
-conda activate txpipe_clp
-```
 
-## Mock Example Run
-Inside the repository folder, run:
-```
-conda activate /sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_clp
-ceci tests/CL_test_txpipe_concat.yml --yamlId Firecrown
-```
-with `yamlId` being either `TJPCov` or `Firecrown`. **DO NOT RUN TXPipe** outside
-the bash script. TXPipe requires parallel jobs and multiple computing nodes, which
-cannot be run locally. The `yamlId` variable defines wich part of the pipeline will
-run.
+To switch between environments:
+
+conda activate firecrown_clp
+
+or
+
+conda activate txpipe_clp
+
+---
+
+## Pipeline Structure
+
+This repository connects:
+- TXPipe for data computation
+- TJPCov for covariance matrix computation
+- Firecrown for MCMC inference
+
+The pipeline is managed using Ceci.
+
+To run the pipeline, two configuration files are required:
+
+1. CL_concat.yml  
+   Defines which pipeline stages are executed, specifies inputs and outputs, and manages parallelization and computation settings.
+
+2. config.yml  
+   Contains configuration details for each stage. Any modeling changes should be made in this file.
+
+The pipeline configuration file defines:
+- Which stages are run
+- Input and output files
+- Whether MPI is used
+- Other global settings
+
+The stage configuration file defines parameters specific to each stage.
+
+We use separate configurations for TXPipe, TJPCov, and Firecrown because:
+- They produce different outputs
+- They require different Conda environments
+
+Pipeline flow:
+- TXPipe performs data computation and outputs a SACC file
+- TJPCov updates this file with the covariance matrix
+- Firecrown prepares the inputs required for inference
+
+A separate job must be run to execute the final Firecrown inference.
+
+Note:
+Due to missing components in TJPCov, the Firecrown stage currently performs additional computations to rescale the covariance matrix.
+
+---
 
 ## Example Runs
-Inside the `examples` repository folder, there are three different examples:
-`cosmoDC2-20deg2`, `SDSS_data`, and `Wazp_cosmoDC2`. Each example is configured
-through two files:
 
-1. `CL_concat.yml` - Defines which pipeline stages should be run, specifies
-inputs and outputs, and manages parallelization and computation settings.
-2. `config.yml` - Contains configuration details for each stage. Any modeling
-changes should be made in this file.
+The `examples` directory contains sample pipeline executions.
 
-### cosmoDC2-20deg2
-This folder contains `CL_cosmoDC2-20deg2_concat_in2p3.yml` and
-`CL_cosmoDC2-20deg2_concat_nersc.yml`, the pipeline configuration files for
-the `in2p3` and `nersc` computing centers. The `cosmodc2_config_in2p3.yml` and 
-`cosmodc2_config_nersc.yml` files defines the configuration for each stage.
-Outputs are stored in `cosmoDC2-20deg2/outputs`.
+In `examples/cosmodc2_remapper`, there are multiple example analyses.
+There is also a template directory (`examples/template`) with scripts to generate the required files.
+However, using the template is optional if you are familiar with manually constructing the pipeline inputs, as shown in `examples/cosmodc_halos`.
 
-To run this example, ensure the conda environments defined in
-`firecrown_environment.yml` and `txpipe_environment.yml` are installed. Then,
-inside `cosmoDC2-20deg2`, run:
-```
-sbatch launch_job_in2p3.sh
-```
-for `in2p3` and
-```
-sbatch launch_job_nersc.sh
-```
-for `nersc`.
+After generating the necessary files, run the pipeline using Ceci.
 
-This example runs three pipeline stages:
-1. `TXPipe` processes the 20deg2 files from `cosmoDC2`, handling calibration,
-binning, and computations, producing a `Sacc` file.
-2. `TJPCov` computes the theoretical covariance and updates the `Sacc` file.
-3. `Firecrown` generates necessary files for MCMC sampling, defining the
-Firecrown likelihood with the `Sacc` file as input.
-
-Finally, `cosmosis` is executed to start MCMC sampling. The final chain plot
-can be found in `examples/plot_samples.ipynb`.
-
-### wazp_cosmoDC2
-This folder contains `CL_cosmoDC2_wazp_concat.yml`, the pipeline configuration 
-file. The `cosmodc2_config.yml` file defines all stage configurations.
-
-To run this example, inside
-`wazp_cosmoDC2`, for in2p3 run:
-```
-conda activate /sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_clp
-python generate_wazp_sacc_cosmodc2.py
-```
-and for nersc:
-```
-conda activate /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/conda_envs/firecrown_clp
-python generate_wazp_sacc_cosmodc2.py
-```
-This generates the required `Sacc` file. Then run:
-```
-sbatch launch_job_in2p3.sh
-```
-for `in2p3` and
-```
-sbatch launch_job_nersc.sh
-```
-for `nersc`.
-
-This example runs the `TJPCov` and `Firecrown` stages:
-1. `TJPCov` computes theoretical covariance and updates the `Sacc` file.
-2. `Firecrown` generates necessary files for MCMC sampling.
-
-To run the example with a data-driven covariance, use:
-```
-conda activate /sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_clp
-python generate_wazp_sacc_cosmodc2.py
-sbatch launch_fire_in2p3.sh
-```
-Note that the sacc with covariance file will be the same name as the one
-generated by the TJPCov stage in the last script. So make sure to rerun
-`generate_wazp_sacc_cosmodc2.py`.
-For nersc,
-```
-conda activate /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/conda_envs/firecrown_clp
-python generate_wazp_sacc_cosmodc2.py
-sbatch launch_fire_nersc.sh
-```
-
-The final chain plot is in `examples/plot_samples.ipynb`.
-
-### SDSS_data
-This folder contains `CL_SDSS_concat.yml`, the pipeline configuration file.
-This file define stages, inputs, and outputs. Results are stored in `SDSS_data/outputs`.
-
-To run this example, inside `SDSS_data`, for in2p3 run:
-
-```
-conda activate /sps/lsst/groups/cluster/cl_pipeline_project.conda_envs/firecrown_clp
-python generate_sdss_data.py
-```
-and for nersc:
-```
-conda activate /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/conda_envs/firecrown_clp
-python generate_sdss_data.py
-```
-
-This generates the required `Sacc` file. Then run:
-```
-sbatch launch_job_in2p3.sh
-```
-for `in2p3` and
-```
-sbatch launch_job_nersc.sh
-```
-for `nersc`.
-
-This example runs only the `Firecrown` stage, generating necessary files for
-MCMC sampling. The final chain plot is in `examples/plot_samples.ipynb`.
-
-## Theory Test
-Inside `cl_theory_test` there some example notebooks about how to use Firecrown
-to make theoretical predictions.
+Example:
+examples/cosmodc2_remapper/baseline/run_in2p3_mor

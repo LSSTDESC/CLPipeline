@@ -20,11 +20,12 @@ dependencies:
   - getdist
   - glib
   - idna
+  - lsstdesc-ceci=2.4.*
   - matplotlib-base
   - more-itertools
   - mypy
   - numcosmo >=0.21.1
-  - numpy >= 1.25.0
+  - numpy >= 2.0, < 2.4
   - pip >= 20.1
   - portalocker
   - pybobyqa
@@ -33,10 +34,10 @@ dependencies:
   - pylint
   - pytest
   - pytest-cov
-  - python >= 3.10
+  - python >=3.11
   - pyyaml
   - requests
-  - sacc >= 0.11
+  - sacc >= 2.1
   - scipy
   - sphinx
   - sphinx-autoapi
@@ -46,11 +47,23 @@ dependencies:
   - tabulate
   - types-pyyaml
   - urllib3
+  - jupyter
+  - graphviz
+  - pytest-xdist
+  - hypothesis
+  - plotnine < 0.15
+  - rich
+  - typer
+  - types-requests
+  - linkchecker
+  - pytest-json-report
   - pip:
     - qp-prob
+    - git+https://github.com/LSSTDESC/CLMM.git@1.14.6
     - git+https://github.com/LSSTDESC/firecrown
+    - git+https://github.com/LSSTDESC/TJPCov.git@clustercount_cov_validation
     - autoclasstoc
     - cobaya
     - isitgr
     - pygobject-stubs
-    - git+https://github.com/hellebore74/ceci
+    - lsstdesc-crow
