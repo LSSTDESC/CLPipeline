@@ -12,7 +12,7 @@ stages:
     nprocess: 1
 inputs:
     clusters_sacc_file: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-full-2026//cluster_sacc_catalog.sacc
-config: ./config_in2p3_mor.yml
+config: ./config_in2p3_cosmo.yml
 resume: false
-output_dir: ./outputs_mor
-log_dir: ./logs_mor
+output_dir: ./outputs_cosmo
+log_dir: ./logs_cosmo

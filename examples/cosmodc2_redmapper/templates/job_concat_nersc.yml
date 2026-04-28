@@ -41,8 +41,7 @@ log_dir: $LOGDIR
 ---
 id: TXPipe
 site:
-   name: cori-batch
-   image: ghcr.io/lsstdesc/txpipe-dev
+   name: nersc-batch
 launcher:
     name: mini
     interval: 0.5

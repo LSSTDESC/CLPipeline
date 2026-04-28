@@ -12,16 +12,16 @@ conda activate /sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_c
 export PYTHONPATH=/sps/lsst/users/ebarroso/CLPipeline:$PYTHONPATH
 export PYTHONPATH=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe:$PYTHONPATH
 
-cd /sps/lsst/users/ebarroso/CLPipeline/examples/cosmodc2_redmapper/templates/../baseline/tinker10/run_in2p3_mor
+cd /sps/lsst/users/ebarroso/CLPipeline/examples/cosmodc2_redmapper/templates/../baseline/cosmodc2_redmapper_full_analysis/run_in2p3_cosmo
 
 ceci TXPipe.yml
-ceci TJPCov.yml
 
 conda deactivate
 conda activate /sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp
 export PYTHONPATH=/sps/lsst/users/ebarroso/CLPipeline:$PYTHONPATH
 
+ceci TJPCov.yml
 ceci Firecrown.yml
 
-cd ./outputs_mor
+cd ./outputs_cosmo
 cosmosis cluster_counts_mean_mass_redshift_richness.ini

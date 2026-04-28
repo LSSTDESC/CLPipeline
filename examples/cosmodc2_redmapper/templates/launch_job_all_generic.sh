@@ -11,12 +11,12 @@ export PYTHONPATH=$TXPIPE_DIRECTORY:$PYTHONPATH
 cd $COMPUTATIONDIR
 
 ceci TXPipe.yml
-ceci TJPCov.yml
 
 conda deactivate
 conda activate $CONDA_DIRECTORY/conda_envs/firecrown_developer_clp
 export PYTHONPATH=$CLPIPELINE_DIR:$PYTHONPATH
 
+ceci TJPCov.yml
 ceci Firecrown.yml
 
 cd $OUTPUTDIR

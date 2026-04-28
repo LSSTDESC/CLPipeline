@@ -11,8 +11,8 @@ stages:
     module_name: clpipeline.firecrown_pipeline
     nprocess: 1
 inputs:
-    clusters_sacc_file_cov: ./outputs_both/clusters_sacc_file_cov.sacc
-config: ./config_in2p3_both.yml
+    clusters_sacc_file_cov: ./outputs_cosmo/clusters_sacc_file_cov.sacc
+config: ./config_in2p3_cosmo.yml
 resume: false
-output_dir: ./outputs_both
-log_dir: ./logs_both
+output_dir: ./outputs_cosmo
+log_dir: ./logs_cosmo

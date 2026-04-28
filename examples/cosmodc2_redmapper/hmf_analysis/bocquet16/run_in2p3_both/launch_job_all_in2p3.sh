@@ -15,12 +15,12 @@ export PYTHONPATH=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe:$PYTHONPA
 cd /sps/lsst/users/ebarroso/CLPipeline/examples/cosmodc2_redmapper/templates/../hmf_analysis/bocquet16/run_in2p3_both
 
 ceci TXPipe.yml
-ceci TJPCov.yml
 
 conda deactivate
 conda activate /sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/firecrown_developer_clp
 export PYTHONPATH=/sps/lsst/users/ebarroso/CLPipeline:$PYTHONPATH
 
+ceci TJPCov.yml
 ceci Firecrown.yml
 
 cd ./outputs_both

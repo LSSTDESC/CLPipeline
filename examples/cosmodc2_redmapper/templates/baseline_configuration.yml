@@ -50,6 +50,7 @@ conda_directory:
 
 # Batch parameters - see batch_param.yml file
 batch_id: $ANALYSIS
+batch_param_file: ./batch_param.yml
 batch_files: 
     nersc: ./$TEMPLATEDIR/launch_job_all_generic.sh
     in2p3: ./$TEMPLATEDIR/launch_job_all_generic.sh

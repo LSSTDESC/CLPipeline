@@ -2,7 +2,7 @@
 SCRIPT=${PWD}/../../../clpipeline/scripts/configure_pipeline.py
 CFG=baseline_configuration.yml
 
-
+Change the site if running at nersc!!!!
 BASELINE
 # --- FULL ANALYSIS (3)
 python $SCRIPT $CFG '{"runidentifier":"cosmo","analysis":"cosmodc2_redmapper_full_analysis"}'
