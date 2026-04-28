@@ -16,7 +16,21 @@ import textwrap
 import numpy as np
 class FirecrownPipeline(PipelineStage):
     """
-    Firecrown Pipeline stage.
+    Firecrown pipeline stage for cluster cosmology analysis.
+
+    This stage:
+    - Builds a Firecrown likelihood from a SACC file
+    - Generates the corresponding CosmoSIS configuration
+    - Writes parameter files for sampling
+
+    Key configuration groups:
+    - Modeling options (hmf, mass range, redshift range)
+    - Observable selection (cluster counts, shear)
+    - Systematics (purity, completeness)
+    - Sampling configuration (emcee, polychord)
+
+    Full configuration documentation:
+    See docs/firecrown_pipeline_options.txt
     """
     name = "FirecrownPipeline"
 
@@ -177,7 +191,7 @@ class FirecrownPipeline(PipelineStage):
                     f.write(f"    if force_no_purity:\n")
                     f.write(f"        purity = None\n")
                     f.write(f"    else:\n")
-                    f.write(f"        purity = purity_models.PurityAguena16()\n")
+                    f.write(f"        purity = purity_models.PurityAguena16LnProxy()\n")
                 else:
                     f.write(f"    purity = None\n")
                 f.write("    if is_reduced_shear:\n")

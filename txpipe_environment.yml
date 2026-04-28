@@ -1,17 +1,14 @@
-# environment-perlmutter-fixed.yml
-# before starting to install, we have to do `module load mpich/4.3.0`, and in the env activation, `    module load mpich/4.3.0, export MPI4PY_RC_RECV_MPROBE='False', export HDF5_USE_FILE_LOCKING=FALSE`
 name: txpipe_clp
 channels:
   - conda-forge
-  - defaults
 dependencies:
   - astropy=7.1.*
   - camb=1.6.*
   - cmake=4.1.*
   - cosmosis=3.24.*
   - dask=2024.5.*
-  - dm-tree=0.1.9
-  # Firecrown is here in the regular env file, but not perlmutter, where we have to hack later 
+  - dm-tree=0.1.*
+  - firecrown=1.7.*
   - fitsio=1.3.*
   - h5py=3.15.*=mpi_mpich_*
   - healpy=1.18.*
@@ -23,7 +20,7 @@ dependencies:
   - matplotlib=3.10.*
   - mockmpi=0.8.*
   - mpi4py=4.1.*
-  - mpich=4.3.*=external_*
+  - mpich=4.3.*
   - namaster=2.5.*
   - numpy=2.3.*
   - pandas=2.3.*
@@ -31,7 +28,7 @@ dependencies:
   - psutil=7.1.*
   - pyccl=3.2.*
   - pygraphviz=1.14.*
-  - python=3.13.*
+  - python=3.12.*
   - qp-prob=1.0.*
   - scikit-learn=1.7.*
   - scipy=1.16.*
@@ -41,28 +38,18 @@ dependencies:
   - threadpoolctl=3.5.*
   - tjpcov=0.4.*
   - treecorr=5.1.*
-  # Perlmutter-specific additions
-  - nbconvert
-  - ipykernel
-  - lsstdesc-gcr-catalogs
-  - lsstdesc-dc2-dm-data
-  - psycopg2
-  - pyarrow
-  - pytables
   - pip:
     - git+https://github.com/jlvdb/hyperbolic@b88b107a291fa16c2006cf971ce610248d58e94c
     - dask-mpi==2022.4.0
     - git+https://github.com/LSSTDESC/CLMM.git@1.14.6
     - parallel-statistics==0.13
     - sacc[all]==2.1.*
-    - jax==0.7.2
-    - jaxlib==0.7.2
+    - jax==0.7.*
+    - jaxlib==0.7.*
     - glass==2023.7
     - git+https://github.com/beckermr/hybrideb@a3198ea5bc8175542b058e5c1289d910f05fd99d
     - pz-rail[algos] @ git+https://github.com/LSSTDESC/RAIL@v1.1.2
     - pz-rail-bpz==1.0.1
-    # Numpy has to be here to make sure that pypi doesn't
-    # try to install a different version
+    # Numpy has to be here to make sure that pypi doesn't
+    # try to install a different version
     - numpy==2.3.*
-    # NERSC-specific
-    - git+https://github.com/LSSTDESC/dataregistry.git
