@@ -10,8 +10,8 @@ authors = [
 description = "CLPipeline project"
 readme = "README.md"
 requires-python = ">=3.8"
-[tool.setuptools]
-py-modules = []
+[tool.setuptools.packages.find]
+where = ["."]
 [project.urls]
 Homepage = "https://github.com/eduardojsbarroso/CLPipeline"
 Issues = "https://github.com/eduardojsbarroso/CLPipeline/issues"

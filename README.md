@@ -109,3 +109,6 @@ After generating the necessary files, run the pipeline using Ceci.
 
 Example:
 examples/cosmodc2_remapper/baseline/run_in2p3_mor
+
+## Scripts
+Check `examples/template` on how to use a script to generate the pipeline and configuration files. Note that this was implementes for cosmodc2 and it is under construction for further analysis.

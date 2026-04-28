@@ -1,0 +1,58 @@
+id: configure
+
+site: in2p3
+
+# Directory that will contain all the files
+runidentifier: 20deg2
+
+# Mandatory parameters - these are used to configure properly the computing directories
+#   - name :
+#   - templatedir :  directory that contains the template files
+#   - computingdir :  directory that contains all the templates files once they are fully configured
+#                             all the jobs and batch jobs are to be launched from this directory
+#                             all the output and log files are stored in this directory
+#            CAUTION : the name of this directory shoul dbe self-explanatory and define a different name for each run
+
+name: cosmodc2_$SITE_$RUNIDENTIFIER
+templatedir: template_readme_example
+computationdir: $PWD/$NAME
+
+# job concatenated yaml file  : file that contains all the yaml files defined as a yaml multiple docuemtn file
+jobconcatyamlfile: $TEMPLATEDIR/job_cosmoDC2-$RUNIDENTIFIER_concat.yml
+
+# Survey data
+data: cosmodc2
+datadir: cosmodc2/$RUNIDENTIFIER
+
+# Pipeline setup - the parameter value will be defined depending on the "site" parameter value
+txpipe_datadir:
+    nersc: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe_data
+    in2p3: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data
+
+txpipe_outputdir:
+    nersc: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-$RUNIDENTIFIER-CL
+    in2p3: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-$RUNIDENTIFIER-test-crow
+
+txpipe_directory:
+    nersc: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project/TXPipe
+    in2p3: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe
+
+outputdir : ./outputs
+logdir: ./logs
+
+config_file_generic: ./$TEMPLATEDIR/$DATA_config_$RUNIDENTIFIER.yml
+config_file: ./config_$SITE.yml
+
+# Conda package directory
+conda_directory:
+    nersc: /global/cfs/projectdirs/lsst/groups/CL/cl_pipeline_project
+    in2p3: /sps/lsst/groups/clusters/cl_pipeline_project
+    local: my_conda_directory
+
+# Batch parameters - see batch_param.yml file
+batch_id: cosmodc2-$RUNIDENTIFIER
+batch_param_file: ./$TEMPLATEDIR/batch_param.yml
+batch_files: 
+    nersc: ./$TEMPLATEDIR/launch_job_all_generic.sh
+    in2p3: ./$TEMPLATEDIR/launch_txpipe_generic.sh;./$TEMPLATEDIR/launch_job_all_generic.sh
+

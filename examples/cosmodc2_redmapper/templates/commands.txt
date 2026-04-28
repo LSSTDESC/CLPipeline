@@ -1,0 +1,48 @@
+
+SCRIPT=${PWD}/../../../clpipeline/scripts/configure_pipeline.py
+CFG=baseline_configuration.yml
+
+Change the site if running at nersc!!!!
+BASELINE
+# --- FULL ANALYSIS (3)
+python $SCRIPT $CFG '{"runidentifier":"cosmo","analysis":"cosmodc2_redmapper_full_analysis"}'
+python $SCRIPT $CFG '{"runidentifier":"mor","analysis":"cosmodc2_redmapper_full_analysis"}'
+python $SCRIPT $CFG '{"runidentifier":"both","analysis":"cosmodc2_redmapper_full_analysis"}'
+
+# --- COUNTS (3)
+python $SCRIPT $CFG '{"runidentifier":"cosmo","analysis":"cosmodc2_redmapper_counts"}'
+python $SCRIPT $CFG '{"runidentifier":"mor","analysis":"cosmodc2_redmapper_counts"}'
+python $SCRIPT $CFG '{"runidentifier":"both","analysis":"cosmodc2_redmapper_counts"}'
+
+Note: Change the configuration files to use_shear_profile = False
+
+
+# --- LENSING (3)
+python $SCRIPT $CFG '{"runidentifier":"cosmo","analysis":"cosmodc2_redmapper_lensing"}'
+python $SCRIPT $CFG '{"runidentifier":"mor","analysis":"cosmodc2_redmapper_lensing"}'
+python $SCRIPT $CFG '{"runidentifier":"both","analysis":"cosmodc2_redmapper_lensing"}'
+
+
+Note: Change the configuration files to use_counts = False
+
+HMF
+
+# --- Tinker08
+python $SCRIPT $CFG '{"folder":"hmf_analysis","runidentifier":"mor","analysis":"tinker08", "batch_id":"general_job"}'
+python $SCRIPT $CFG '{"folder":"hmf_analysis","runidentifier":"both","analysis":"tinker08", "batch_id":"general_job"}'
+
+# --- Tinker10
+python $SCRIPT $CFG '{"folder":"hmf_analysis","runidentifier":"mor","analysis":"tinker10", "batch_id":"general_job"}'
+python $SCRIPT $CFG '{"folder":"hmf_analysis","runidentifier":"both","analysis":"tinker10", "batch_id":"general_job"}'
+
+# --- Bocquet16
+python $SCRIPT $CFG '{"folder":"hmf_analysis","runidentifier":"mor","analysis":"bocquet16", "batch_id":"general_job"}'
+python $SCRIPT $CFG '{"folder":"hmf_analysis","runidentifier":"both","analysis":"bocquet16", "batch_id":"general_job"}'
+
+# --- Watson13
+python $SCRIPT $CFG '{"folder":"hmf_analysis","runidentifier":"mor","analysis":"watson13", "batch_id":"general_job"}'
+python $SCRIPT $CFG '{"folder":"hmf_analysis","runidentifier":"both","analysis":"watson13", "batch_id":"general_job"}'
+
+Note: CHange the HMF entries both in the covariance and in the firecrow configuration stages.
+
+After generation of the files, the configuration files for each run must be changed as pointed above.
