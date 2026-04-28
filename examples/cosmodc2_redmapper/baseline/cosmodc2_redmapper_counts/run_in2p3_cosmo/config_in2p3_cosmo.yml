@@ -7,7 +7,7 @@ FirecrownPipeline:
     min_z: 0.2
     max_z: 0.8
     mass_def: '200c'
-    use_shear_profile: True
+    use_shear_profile: False
     use_completeness: True
     use_purity: True
     use_grid: True

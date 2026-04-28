@@ -45,4 +45,30 @@ python $SCRIPT $CFG '{"folder":"hmf_analysis","runidentifier":"both","analysis":
 
 Note: CHange the HMF entries both in the covariance and in the firecrow configuration stages.
 
+
+DIFFERENT COSMOLOGY FOR SHEAR VECTOR
+
+python $SCRIPT $CFG '{"folder":"deltasigma_cosmology_analysis","runidentifier":"both","analysis":"cosmo_0.4_0.8","batch_id":"general_job","txpipe_outputdir":"/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-cosmo-04-08/"}'
+
+python $SCRIPT $CFG '{"folder":"deltasigma_cosmology_analysis","runidentifier":"both","analysis":"cosmo_0.4_0.8_lensing","batch_id":"general_job","txpipe_outputdir":"/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-cosmo-04-08/"}'
+
+
+python $SCRIPT $CFG '{"folder":"deltasigma_cosmology_analysis","runidentifier":"both","analysis":"cosmo_0.22_0.7","batch_id":"general_job","txpipe_outputdir":"/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-cosmo-022-07/"}'
+
+python $SCRIPT $CFG '{"folder":"deltasigma_cosmology_analysis","runidentifier":"both","analysis":"cosmo_0.22_0.7_lensing","batch_id":"general_job","txpipe_outputdir":"/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-cosmo-022-07/"}'
+
+
+python $SCRIPT $CFG '{"folder":"deltasigma_cosmology_analysis","runidentifier":"both","analysis":"cosmo_0.3_0.9","batch_id":"general_job","txpipe_outputdir":"/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-cosmo-03-09/"}'
+
+python $SCRIPT $CFG '{"folder":"deltasigma_cosmology_analysis","runidentifier":"both","analysis":"cosmo_0.3_0.9_lensing","batch_id":"general_job","txpipe_outputdir":"/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-cosmo-03-09/"}'
+
+
+For this example we must change the input cosmology file for each one of this cases. Also we must use only lensing for some of these examples
+
+
+
+
+
+
+
 After generation of the files, the configuration files for each run must be changed as pointed above.

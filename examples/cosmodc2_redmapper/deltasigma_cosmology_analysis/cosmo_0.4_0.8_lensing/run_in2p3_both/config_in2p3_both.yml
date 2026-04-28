@@ -7,7 +7,7 @@ FirecrownPipeline:
     min_z: 0.2
     max_z: 0.8
     mass_def: '200c'
-    use_shear_profile: False
+    use_shear_profile: True
     use_completeness: True
     use_purity: True
     use_grid: True
@@ -18,7 +18,7 @@ FirecrownPipeline:
     pivot_z: 0.5
     survey_name: 'cosmodc2_redmapper'
     sampler: 'emcee'
-    use_cluster_counts: True
+    use_cluster_counts: False
     use_mean_log_mass: False
     use_mean_deltasigma: True
     set_concentration: False
@@ -26,8 +26,8 @@ FirecrownPipeline:
     emcee_samples: 20000
     emcee_nsteps: 20
     cosmological_parameters:
-        omega_c: {'sample': False, 'values': 0.22} # 'values': [0.1552, 0.2052, 0.3552]}
-        sigma_8: {'sample': False, 'values': 0.8} # [0.7, 0.800, 0.9]}
+        omega_c: {'sample': True, 'values': [0.15, 0.2052, 0.4]}
+        sigma_8: {'sample': True, 'values': [0.7, 0.800, 0.9]}
         omega_k: {'sample': False, 'values': 0.0}
         omega_b: {'sample': False, 'values': 0.0448}
         tau: {'sample': False, 'values': 0.08}
@@ -46,10 +46,6 @@ FirecrownPipeline:
         completeness_b_n: {'sample': False, 'values': 0.7751}
         completeness_a_logm_piv: {'sample': False, 'values': 13.31}
         completeness_b_logm_piv: {'sample': False, 'values': 0.2025}
-        purity_a_n: {'sample': False, 'values': 1.98298628209}
-        purity_b_n: {'sample': False, 'values': 0.81212176229}
-        purity_a_logm_piv: {'sample': False, 'values': 2.2183}
-        purity_b_logm_piv: {'sample': False, 'values': -0.6592}
         cluster_theory_cluster_concentration: {'sample': False, 'values': 3.8}
 TJPCovPipeline:
     use_mpi: False
@@ -163,7 +159,7 @@ CLClusterBinningRedshiftRichness:
     richedge: [20., 35., 70., 100., 200.]
 
 CLClusterShearCatalogs:
-    max_radius: 8.0   # Mpc
+    max_radius: 6.0   # Mpc
     delta_z: 0.2   # redshift buffer
     redshift_cut_criterion: ztrue
     redshift_weight_criterion: ztrue
