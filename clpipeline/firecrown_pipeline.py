@@ -16,7 +16,21 @@ import textwrap
 import numpy as np
 class FirecrownPipeline(PipelineStage):
     """
-    Firecrown Pipeline stage.
+    Firecrown pipeline stage for cluster cosmology analysis.
+
+    This stage:
+    - Builds a Firecrown likelihood from a SACC file
+    - Generates the corresponding CosmoSIS configuration
+    - Writes parameter files for sampling
+
+    Key configuration groups:
+    - Modeling options (hmf, mass range, redshift range)
+    - Observable selection (cluster counts, shear)
+    - Systematics (purity, completeness)
+    - Sampling configuration (emcee, polychord)
+
+    Full configuration documentation:
+    See docs/firecrown_pipeline_options.txt
     """
     name = "FirecrownPipeline"
 

@@ -10,7 +10,23 @@ import sys
 
 class TJPCovPipeline(PipelineStage):
     """
-    TJPCov Pipeline stage.
+    TJPCov pipeline stage for covariance computation.
+
+    This stage:
+    - Reads an input SACC file (data vector)
+    - Computes covariance terms using TJPCov
+    - Writes a new SACC file with covariance
+    - Optionally preserves non-cluster covariance blocks
+    - Optionally replaces cluster-count covariance using CROW
+
+    Key configuration groups:
+    - Covariance selection (cov_type)
+    - Cosmology (parameters)
+    - Mass–observable relation (mor_parameters)
+    - Pipeline behavior (replace_tjpcov_cov)
+
+    Full configuration documentation:
+    See docs/tjpcov_pipeline_options.txt
     """
     name = "TJPCovPipeline"
 
@@ -31,12 +47,12 @@ class TJPCovPipeline(PipelineStage):
 
     def run(self):
         """
-        Run the analysis for this stage.
+        Main execution:
 
-         - Load global config file
-         - Insert this configuration into the TJPCov configuration
-         - Compute the theoretical covariance for counts
-         - Keep old data drive covariance terms for other data types
+        - Load input SACC file
+        - Compute covariance via TJPCov
+        - Merge with existing covariance (if needed)
+        - Optionally replace cluster-count covariance
         """
         import sacc
         import time
@@ -132,6 +148,21 @@ class TJPCovPipeline(PipelineStage):
         return sacc_final
 
     def replace_crow_counts(self, config_dict):
+        """
+        Replace TJPCov cluster-count covariance using CROW predictions.
+
+        This is a temporary workaround.
+
+        Steps:
+        - Build cosmology from config["parameters"]
+        - Construct mass–observable relation (mor_parameters)
+        - Compute theoretical counts
+        - Replace covariance elements using SSC scaling
+
+        WARNING:
+        - Hardcoded modeling choices (mass function, grids)
+        - Should eventually be implemented inside TJPCov
+        """
         import sacc
         import numpy as np
         import pyccl as ccl
