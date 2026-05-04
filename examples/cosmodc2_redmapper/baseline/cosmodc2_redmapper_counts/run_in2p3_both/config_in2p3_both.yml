@@ -26,7 +26,7 @@ FirecrownPipeline:
     emcee_samples: 20000
     emcee_nsteps: 20
     cosmological_parameters:
-        omega_c: {'sample': True, 'values': [0.15, 0.2052, 0.4]}
+        omega_c: {'sample': True, 'values': [0.1552, 0.2052, 0.3552]}
         sigma_8: {'sample': True, 'values': [0.7, 0.800, 0.9]}
         omega_k: {'sample': False, 'values': 0.0}
         omega_b: {'sample': False, 'values': 0.0448}
@@ -50,7 +50,6 @@ FirecrownPipeline:
         purity_b_n: {'sample': False, 'values': 0.81212176229}
         purity_a_logm_piv: {'sample': False, 'values': 2.2183}
         purity_b_logm_piv: {'sample': False, 'values': -0.6592}
-        cluster_theory_cluster_concentration: {'sample': False, 'values': 3.8}
 TJPCovPipeline:
     use_mpi: False
     do_xi: False

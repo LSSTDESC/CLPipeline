@@ -12,8 +12,6 @@ conda activate /sps/lsst/groups/clusters/cl_pipeline_project/conda_envs/txpipe_c
 export PYTHONPATH=/sps/lsst/users/ebarroso/CLPipeline:$PYTHONPATH
 export PYTHONPATH=/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe:$PYTHONPATH
 
-cd /sps/lsst/users/ebarroso/CLPipeline/examples/cosmodc2_redmapper/templates/../baseline/cosmodc2_redmapper_lensing/run_in2p3_mor
-
 ceci TXPipe.yml
 
 conda deactivate

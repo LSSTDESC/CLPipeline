@@ -50,7 +50,6 @@ FirecrownPipeline:
         purity_b_n: {'sample': False, 'values': 0.81212176229}
         purity_a_logm_piv: {'sample': False, 'values': 2.2183}
         purity_b_logm_piv: {'sample': False, 'values': -0.6592}
-        cluster_theory_cluster_concentration: {'sample': False, 'values': 3.8}
 TJPCovPipeline:
     use_mpi: False
     do_xi: False

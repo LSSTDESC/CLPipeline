@@ -25,6 +25,17 @@ python $SCRIPT $CFG '{"runidentifier":"both","analysis":"cosmodc2_redmapper_lens
 
 Note: Change the configuration files to use_counts = False
 
+
+NO SELECTION FUNCTION
+
+python $SCRIPT $CFG '{"folder":"selection_analysis","runidentifier":"both","analysis":"exclude_first_rich_bin","batch_id":"general_job","txpipe_outputdir":"/sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/outputs-selection/"}'
+
+
+Here we must change the configuration to not use completeness and purity and also the TXPipe binning scheme. In the pipeline file we changed to not recompute source pdzs since it is not necessary
+
+
+
+
 HMF
 
 # --- Tinker08
