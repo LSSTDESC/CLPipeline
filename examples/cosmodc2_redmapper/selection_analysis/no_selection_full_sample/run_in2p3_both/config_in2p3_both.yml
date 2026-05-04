@@ -42,14 +42,6 @@ FirecrownPipeline:
         mass_distribution_sigma0: {'sample': True, 'values': [0.1, 0.3, 2.0]}
         mass_distribution_sigma1: {'sample': True, 'values': [-0.6, 0.01, 0.3]}
         mass_distribution_sigma2: {'sample': True, 'values': [-0.5, 0.03, 2.0]}
-        completeness_a_n: {'sample': False, 'values': 1.1321}
-        completeness_b_n: {'sample': False, 'values': 0.7751}
-        completeness_a_logm_piv: {'sample': False, 'values': 13.31}
-        completeness_b_logm_piv: {'sample': False, 'values': 0.2025}
-        purity_a_n: {'sample': False, 'values': 1.98298628209}
-        purity_b_n: {'sample': False, 'values': 0.81212176229}
-        purity_a_logm_piv: {'sample': False, 'values': 2.2183}
-        purity_b_logm_piv: {'sample': False, 'values': -0.6592}
         cluster_theory_cluster_concentration: {'sample': False, 'values': 3.8}
 TJPCovPipeline:
     use_mpi: False
