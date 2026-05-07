@@ -62,7 +62,7 @@ TJPCovPipeline:
     cosmo: 'set' 
     parameters:
         # Not used for while (read by ccl.cosmo):
-        Omega_c: 0.22
+        Omega_c: 0.3
         Omega_b: 0.0448
         h: 0.71
         n_s: 0.963

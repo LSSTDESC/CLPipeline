@@ -72,10 +72,10 @@ _PAPER_RC = {
     "font.family":       "serif",
     "font.serif":        ["Computer Modern Roman", "DejaVu Serif"],
     "text.usetex":       False,   # flip to True if LaTeX is available
-    "axes.labelsize":    11,
-    "xtick.labelsize":    8,
-    "ytick.labelsize":    8,
-    "legend.fontsize":   10,
+    "axes.labelsize":    18,
+    "xtick.labelsize":    13,
+    "ytick.labelsize":    13,
+    "legend.fontsize":   15,
     "legend.frameon":   False,
     "figure.dpi":       150,
 }
@@ -250,9 +250,9 @@ def plot_triangle(
     # ── Render ────────────────────────────────────────────────────────────────
     with mpl.rc_context(_PAPER_RC):
         g = plots.get_subplot_plotter(width_inch=config.figsize)
-        g.settings.axes_fontsize      = 9
-        g.settings.lab_fontsize       = 11
-        g.settings.legend_fontsize    = 10
+        g.settings.axes_fontsize      = 13
+        g.settings.lab_fontsize       = 18
+        g.settings.legend_fontsize    = 15
         g.settings.figure_legend_loc  = "upper right"
         g.settings.axis_tick_x_rotation = 45
         g.settings.num_plot_contours  = 2   # 68 % and 95 %
