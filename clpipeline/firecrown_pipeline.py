@@ -175,7 +175,6 @@ class FirecrownPipeline(PipelineStage):
                 f.write(f"    mass_interval=({min_mass}, {max_mass}),\n")
                 f.write(f"    true_z_interval=({min_z}, {max_z}),\n")
                 f.write(f"    is_reduced_shear = False,\n")
-                f.write("    force_no_purity = False,\n")
                 f.write("):\n")
                 f.write("    \"\"\"Creates and returns a ClusterRecipe.\n\n")
                 f.write("    Parameters\n")
@@ -188,10 +187,7 @@ class FirecrownPipeline(PipelineStage):
                 else:
                     f.write(f"    completeness = None\n")
                 if use_purity:
-                    f.write(f"    if force_no_purity:\n")
-                    f.write(f"        purity = None\n")
-                    f.write(f"    else:\n")
-                    f.write(f"        purity = purity_models.PurityAguena16LnProxy()\n")
+                    f.write(f"    purity = purity_models.PurityAguena16LnProxy()\n")
                 else:
                     f.write(f"    purity = None\n")
                 f.write("    if is_reduced_shear:\n")
@@ -244,7 +240,7 @@ class FirecrownPipeline(PipelineStage):
                 f.write(f"    survey_name = '{survey_name}'\n")
                 if use_shear_profile and use_cluster_counts:
                     f.write("    recipe_counts = get_cluster_recipe(get_cluster_abundance())\n")
-                    f.write(f"    recipe_shear = get_cluster_recipe(get_cluster_shear_profile(), is_reduced_shear = {not is_deltasigma}, force_no_purity=True)\n")
+                    f.write(f"    recipe_shear = get_cluster_recipe(get_cluster_shear_profile(), is_reduced_shear = {not is_deltasigma})\n")
                     f.write("    likelihood = ConstGaussian(\n")
                     f.write("        [\n")
                     f.write("            BinnedClusterNumberCounts(\n")
@@ -259,7 +255,7 @@ class FirecrownPipeline(PipelineStage):
                     f.write("    likelihood = ConstGaussian(\n")
                     f.write("        [BinnedClusterNumberCounts(average_on, survey_name, recipe_counts)]\n")
                 elif use_shear_profile:
-                    f.write(f"    recipe_shear = get_cluster_recipe(get_cluster_shear_profile(), is_reduced_shear = {not is_deltasigma}, force_no_purity=True)\n")
+                    f.write(f"    recipe_shear = get_cluster_recipe(get_cluster_shear_profile(), is_reduced_shear = {not is_deltasigma})\n")
                     f.write("    likelihood = ConstGaussian(\n")
                     f.write("        [BinnedClusterShearProfile(average_on, survey_name, recipe_shear)]\n")
                 f.write("    )\n\n")
