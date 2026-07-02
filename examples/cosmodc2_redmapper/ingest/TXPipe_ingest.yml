@@ -1,0 +1,21 @@
+id: TXPipe
+site:
+    name: local
+    max_threads: 30
+launcher:
+    name: mini
+    interval: 0.5
+modules: >
+    txpipe
+    txpipe.extensions
+python_paths: []
+stages:
+  - name: TXCosmoDC2Mock
+    nprocess: 30
+output_dir: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/
+log_dir: ./logs_mor
+config: ./config_ingest.yml
+inputs:
+    response_model: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe/data/DESY1-R-model.hdf5
+resume: true
+pipeline_log: ./logs_mor/log_mor.txt
