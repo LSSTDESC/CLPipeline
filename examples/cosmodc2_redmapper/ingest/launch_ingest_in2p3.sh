@@ -1,8 +1,8 @@
 #!/usr/bin/bash
-#SBATCH --time=12:00:00
+#SBATCH --time=7:00:00
 #SBATCH --partition=hpc,lsst
 #SBATCH --cpus-per-task=1
-#SBATCH --mem=200gb
+#SBATCH --mem=80gb
 #SBATCH --ntasks=1
 
 module load conda
