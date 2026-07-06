@@ -26,7 +26,7 @@ FirecrownPipeline:
     emcee_samples: 20000
     emcee_nsteps: 20
     cosmological_parameters:
-        omega_c: {'sample': True, 'values': [0.1552, 0.2052, 0.3552]}
+        omega_c: {'sample': True, 'values': [0.15, 0.20, 0.35]}
         sigma_8: {'sample': True, 'values': [0.7, 0.850, 0.9]}
         omega_k: {'sample': False, 'values': 0.0}
         omega_b: {'sample': False, 'values': 0.0448}
@@ -95,14 +95,13 @@ CLClusterSACC:
 TXSourceSelectorMetadetect:
     input_pz: false
     bands: riz #used for selection
-    T_cut: 0.5
-    s2n_cut: 3.0
+    T_cut: 0.0
+    s2n_cut: 0.0
     max_rows: 1000
     delta_gamma: 0.02
     source_zbin_edges: [0.1, 3.0]
     chunk_rows: 100000
     true_z: true
-    shear_prefix: ''
 TXSourceTomography:
     bands: riz #used for selection
     source_zbin_edges: [0.1, 3.0]
