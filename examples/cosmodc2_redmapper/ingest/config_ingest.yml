@@ -1,2 +1,4 @@
 TXCosmoDC2Mock:
-    apply_i_mag_cut: true
+    apply_i_mag_cut: True
+    snr_limit: 0.0
+    Mag_i_limit: 24.5

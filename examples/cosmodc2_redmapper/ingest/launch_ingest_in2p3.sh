@@ -2,7 +2,7 @@
 #SBATCH --time=7:00:00
 #SBATCH --partition=hpc,lsst
 #SBATCH --cpus-per-task=1
-#SBATCH --mem=80gb
+#SBATCH --mem=300gb
 #SBATCH --ntasks=1
 
 module load conda
