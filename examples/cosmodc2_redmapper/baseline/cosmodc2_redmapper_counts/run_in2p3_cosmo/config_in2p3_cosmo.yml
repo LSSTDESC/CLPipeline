@@ -22,12 +22,12 @@ FirecrownPipeline:
     use_mean_log_mass: False
     use_mean_deltasigma: True
     set_concentration: False
-    emcee_walkers: 50
-    emcee_samples: 20000
+    emcee_walkers: 100
+    emcee_samples: 50000
     emcee_nsteps: 20
     cosmological_parameters:
-        omega_c: {'sample': True, 'values': [0.15, 0.20, 0.35]}
-        sigma_8: {'sample': True, 'values': [0.7, 0.850, 0.9]}
+        omega_c: {'sample': True, 'values': [0.15, 0.22, 0.35]}
+        sigma_8: {'sample': True, 'values': [0.7, 0.800, 0.9]}
         omega_k: {'sample': False, 'values': 0.0}
         omega_b: {'sample': False, 'values': 0.0448}
         tau: {'sample': False, 'values': 0.08}
