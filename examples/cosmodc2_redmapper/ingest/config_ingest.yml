@@ -1,4 +1,9 @@
 TXCosmoDC2Mock:
-    apply_i_mag_cut: True
+    cat_name: cosmoDC2_v1.1.4_image
     snr_limit: 0.0
-    Mag_i_limit: 24.5
+    Mag_i_limit: 24.25
+    Mag_r_limit: 50
+    apply_mag_cut: True
+    extra_cols: Mag_true_r_sdss_z0 mag_i
+    unit_response: True
+    flip_g2: True

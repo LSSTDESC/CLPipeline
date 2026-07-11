@@ -12,7 +12,7 @@ python_paths: []
 stages:
   - name: TXCosmoDC2Mock
     nprocess: 1
-output_dir: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full/
+output_dir: /sps/lsst/groups/clusters/cl_pipeline_project/TXPipe_data/cosmodc2/full_test/
 log_dir: ./logs_mor
 config: ./config_ingest.yml
 inputs:
