@@ -43,6 +43,7 @@ class TJPCovPipeline(PipelineStage):
         "txpipe_flag": True,
         "firecrown_flag": False,
         "replace_tjpcov_cov": True,
+        "sel_func": True,
     }
 
     def run(self):
@@ -172,6 +173,7 @@ class TJPCovPipeline(PipelineStage):
         #This function should not exist as it should be implemented in TJPCov
         #This is temporary and so most of the options and configurations are fixed
         is_wazp = config_dict.get("wazp_catalog", False)
+        sel_func = config_dict.get("sel_func", True)
         cosmo_params = config_dict["parameters"]
         cosmo = ccl.Cosmology(
             Omega_c=cosmo_params["Omega_c"],
@@ -207,6 +209,9 @@ class TJPCovPipeline(PipelineStage):
             completeness_aguena['a_logm_piv'] = 14.264386
             completeness_aguena['b_logm_piv'] = 0.029814
         redshift_distribution = kernel.SpectroscopicRedshift()
+        if not sel_func:
+            completeness_aguena = None
+            purity_aguena = None
         recipe_grid_abundance = GridBinnedClusterRecipe(
             mass_interval=mass_interval,
             cluster_theory=cl_abundance,

@@ -195,11 +195,12 @@ def _print_constraints(
 
 def plot_triangle(
     paths:   list[str],
-    params:  list[tuple[str, float]],
+    params,
     styles:  list[ChainStyle],
     name:    str        = "triangle_plot",
     config:  PlotConfig = None,
-    save: bool = True
+    save: bool = True,
+    multiple_fiducials: bool = False,
 ) -> list[MCSamples]:
     """
     Generate a paper-ready GetDist triangle plot.
@@ -208,14 +209,17 @@ def plot_triangle(
     ----------
     paths   : One chain file path per chain, matched to `styles`.
     params  : List of (param_name, fiducial_value) tuples.
-              param_name is the raw string used in the chain file, e.g. r'\\Omega_c'.
-    styles  : One ChainStyle per chain (controls color, fill, linestyle, label).
-    name    : Output filename stem.  Saved as {config.output_dir}/{name}.pdf
-    config  : PlotConfig instance.  Uses sensible defaults if None.
-    save    : Boolean. Save figure or not. 
+              If multiple_fiducials=True, this should instead be a list
+              of parameter lists, one per chain.
+    styles  : One ChainStyle per chain.
+    name    : Output filename stem.
+    config  : PlotConfig instance.
+    save    : Save figure.
+    multiple_fiducials : If True, use one fiducial dictionary per chain.
+
     Returns
     -------
-    samples_list : The loaded MCSamples objects (useful for further inspection).
+    samples_list : Loaded GetDist MCSamples objects.
     """
     if config is None:
         config = PlotConfig()
@@ -225,9 +229,19 @@ def plot_triangle(
             f"len(paths)={len(paths)} must equal len(styles)={len(styles)}"
         )
 
-    param_names     = [p[0] for p in params]
-    fiducial_values = {p[0]: p[1] for p in params}
-    styles          = _resolve_colors(styles)
+    if multiple_fiducials:
+        if len(params) != len(paths):
+            raise ValueError(
+                f"Expected {len(paths)} parameter lists, got {len(params)}."
+            )
+
+        param_names = [p[0] for p in params[0]]
+        fiducial_values = [{p[0]: p[1] for p in par} for par in params]
+    else:
+        param_names = [p[0] for p in params]
+        fiducial_values = {p[0]: p[1] for p in params}
+
+    styles = _resolve_colors(styles)
 
     # ── Load chains ───────────────────────────────────────────────────────────
     samples_list = []
@@ -237,44 +251,54 @@ def plot_triangle(
         print(f"  {style.label}: {len(s.samples):,} samples  ({path})")
 
     # ── Build GetDist arguments per chain ─────────────────────────────────────
-    colors      = [s.color      for s in styles]
-    filled      = [s.filled     for s in styles]
-    alphas      = [
+    colors = [s.color for s in styles]
+    filled = [s.filled for s in styles]
+    alphas = [
         s.fill_alpha if s.filled else s.line_alpha
         for s in styles
     ]
-    contour_ls  = [s.linestyle  for s in styles]
-    contour_lws = [s.linewidth  for s in styles]
-    labels      = [s.label      for s in styles]
+    contour_ls = [s.linestyle for s in styles]
+    contour_lws = [s.linewidth for s in styles]
+    labels = [s.label for s in styles]
 
     # ── Render ────────────────────────────────────────────────────────────────
     with mpl.rc_context(_PAPER_RC):
         g = plots.get_subplot_plotter(width_inch=config.figsize)
-        g.settings.axes_fontsize      = 13
-        g.settings.lab_fontsize       = 18
-        g.settings.legend_fontsize    = 15
-        g.settings.figure_legend_loc  = "upper right"
+        g.settings.axes_fontsize = 13
+        g.settings.lab_fontsize = 18
+        g.settings.legend_fontsize = 15
+        g.settings.figure_legend_loc = "upper right"
         g.settings.axis_tick_x_rotation = 45
-        g.settings.num_plot_contours  = 2   # 68 % and 95 %
-        #g.settings.line_styles = colors
+        g.settings.num_plot_contours = 2
+
         g.triangle_plot(
             samples_list,
-            legend_labels = labels,
-            filled        = filled,
-            colors        = colors,
-            contour_colors = colors,
-            alphas        = alphas,
-            contour_ls    = contour_ls,
-            contour_lws   = contour_lws,
-            fine_bins     = 1,
-            markers       = fiducial_values,
-            param_limits  = config.param_limits,
+            legend_labels=labels,
+            filled=filled,
+            colors=colors,
+            contour_colors=colors,
+            alphas=alphas,
+            contour_ls=contour_ls,
+            contour_lws=contour_lws,
+            fine_bins=1,
+            markers=None if multiple_fiducials else fiducial_values,
+            param_limits=config.param_limits,
         )
 
+        if multiple_fiducials:
+            for marker, style in zip(fiducial_values, styles):
+                g.add_param_markers(
+                    marker,
+                    color=style.color,
+                    ls=":",
+                    lw=0.8,
+                )
+
         out_path = Path(config.output_dir) / f"{name}.pdf"
-        if save is True:
+        if save:
             plt.savefig(out_path, bbox_inches="tight", dpi=config.dpi)
             print(f"\nSaved to {out_path}")
+
         plt.show()
 
     # ── Constraints ───────────────────────────────────────────────────────────
@@ -282,7 +306,6 @@ def plot_triangle(
         _print_constraints(samples_list, styles, param_names)
 
     return samples_list
-
 
 # ══════════════════════════════════════════════════════════════════════════════
 # FITS export
@@ -416,3 +439,93 @@ def fits_to_samples(
         samples_list.append(sample)
 
     return samples_list
+
+
+def plot_box_triangle(
+    paths_lower:  list[str],
+    styles_lower: list[ChainStyle],
+    paths_upper:  list[str],
+    styles_upper: list[ChainStyle],
+    params:       list[tuple[str, float]],
+    name:         str = "box_triangle",
+    config:       PlotConfig = None,
+    save:         bool = True,
+) -> tuple[list[MCSamples], list[MCSamples]]:
+    if config is None:
+        config = PlotConfig()
+
+    param_names     = [p[0] for p in params]
+    fiducial_values = {p[0]: p[1] for p in params}
+
+    styles_lower = _resolve_colors(styles_lower)
+    styles_upper = _resolve_colors(styles_upper)
+
+    samples_lower = [
+        _load_cosmosis_chain(p, param_names, config.burn_fraction)
+        for p in paths_lower
+    ]
+    samples_upper = [
+        _load_cosmosis_chain(p, param_names, config.burn_fraction)
+        for p in paths_upper
+    ]
+
+    with mpl.rc_context(_PAPER_RC):
+        g = plots.get_subplot_plotter(width_inch=config.figsize)
+        g.settings.axes_fontsize        = 13
+        g.settings.lab_fontsize         = 18
+        g.settings.legend_fontsize      = 15
+        g.settings.axis_tick_x_rotation = 45
+        g.settings.num_plot_contours    = 2
+        g.settings.figure_legend_loc = "lower left"
+        g.triangle_plot(
+            samples_lower,
+            params=param_names,
+            filled=[s.filled for s in styles_lower],
+            contour_colors=[s.color for s in styles_lower],
+            contour_ls=[s.linestyle for s in styles_lower],
+            contour_lws=[s.linewidth for s in styles_lower],
+            legend_labels=[s.label for s in styles_lower],
+            markers=fiducial_values,
+            upper_roots=samples_upper,
+            upper_kwargs=dict(
+                filled=[s.filled for s in styles_upper],
+                contour_colors=[s.color for s in styles_upper],
+                contour_ls=[s.linestyle for s in styles_upper],
+                contour_lws=[s.linewidth for s in styles_upper],
+                show_1d=True,
+            ),
+            upper_label_right=True,
+        )
+
+        # Second legend for the upper-triangle chains (triangle_plot only
+        # auto-legends the main `roots`, not upper_roots)
+        upper_handles = [
+            plt.Line2D([0], [0], color=s.color, lw=s.linewidth, ls=s.linestyle)
+            for s in styles_upper
+        ]
+        g.fig.legend(
+            upper_handles, [s.label for s in styles_upper],
+            loc="upper center",
+            bbox_to_anchor=(0.5, 1.02),   # centered, just above the grid
+            ncol=len(styles_upper),       # one row
+            frameon=False,
+            fontsize=13,
+        )
+        
+        # make room so the top legend doesn't overlap the top row of panels
+        g.fig.subplots_adjust(top=0.93)
+
+        out_path = Path(config.output_dir) / f"{name}.pdf"
+        Path(config.output_dir).mkdir(parents=True, exist_ok=True)
+        if save:
+            plt.savefig(out_path, bbox_inches="tight", dpi=config.dpi)
+            print(f"\nSaved to {out_path}")
+        plt.show()
+
+    if config.print_constraints:
+        print("\n=== Lower triangle ===")
+        _print_constraints(samples_lower, styles_lower, param_names)
+        print("\n=== Upper triangle ===")
+        _print_constraints(samples_upper, styles_upper, param_names)
+
+    return samples_lower, samples_upper
