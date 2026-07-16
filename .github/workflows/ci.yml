@@ -115,7 +115,7 @@ jobs:
       fail-fast: false
       matrix:
         os: ["ubuntu"]
-        python-version: ["3.13"]
+        python-version: ["3.12"]
         # Add more OS/python combos here later once the single combo is
         # green and stable. Keeping it to one combo initially keeps the
         # expensive cosmosis build from fanning out before it's trusted.

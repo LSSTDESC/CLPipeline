@@ -6,7 +6,6 @@ dependencies:
   - babel
   - black
   - charset-normalizer
-  - clmm
   - compilers <= 1.8
   - cosmosis >= 3.0
   - cosmosis-build-standard-library
@@ -24,7 +23,6 @@ dependencies:
   - matplotlib-base
   - more-itertools
   - mypy
-  - numcosmo >=0.21.1
   - numpy >= 2.0, < 2.4
   - pip >= 20.1
   - portalocker
