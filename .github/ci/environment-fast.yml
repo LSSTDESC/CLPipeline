@@ -9,5 +9,6 @@ dependencies:
   - scipy
   - pyyaml
   - pytest
+pip:
   - ceci
   - sacc
