@@ -37,6 +37,8 @@ concurrency:
 
 env:
   CACHE_VERSION: 1
+  FAST_ENV_FILE: .github/ci/environment-fast.yml
+  FULL_ENV_FILE: .github/ci/environment-full.yml
 
 jobs:
   # ------------------------------------------------------------------ #
@@ -55,7 +57,7 @@ jobs:
         with:
           python-version: "3.12"
           activate-environment: clpipeline-fast
-          environment-file: .github/ci/environment-fast.yml
+          environment-file: ${{ env.FAST_ENV_FILE }}
           use-mamba: true
 
       - name: Cache fast conda env
@@ -63,11 +65,11 @@ jobs:
         id: cache-fast
         with:
           path: ${{ env.CONDA }}/envs
-          key: conda-fast-${{ runner.os }}-py3.12-${{ hashFiles('ci/environment-fast.yml') }}-v${{ env.CACHE_VERSION }}
+          key: conda-fast-${{ runner.os }}-py3.12-${{ hashFiles(env.FAST_ENV_FILE) }}-v${{ env.CACHE_VERSION }}
 
       - name: Update fast env if cache missed
         if: steps.cache-fast.outputs.cache-hit != 'true'
-        run: conda env update -n clpipeline-fast -f ci/environment-fast.yml
+        run: conda env update -n clpipeline-fast -f ${{ env.FAST_ENV_FILE }}
 
       - name: Install CLPipeline (no deps)
         shell: bash -l {0}
@@ -125,7 +127,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           activate-environment: clpipeline-full
-          environment-file: firecrown_environment.yml
+          environment-file: ${{ env.FULL_ENV_FILE }}
           use-mamba: true
 
       - name: Cache full conda env
@@ -133,11 +135,11 @@ jobs:
         id: cache-full
         with:
           path: ${{ env.CONDA }}/envs
-          key: conda-full-${{ runner.os }}-py${{ matrix.python-version }}-${{ hashFiles('ci/environment-full.yml') }}-v${{ env.CACHE_VERSION }}
+          key: conda-full-${{ runner.os }}-py${{ matrix.python-version }}-${{ hashFiles(env.FULL_ENV_FILE) }}-v${{ env.CACHE_VERSION }}
 
       - name: Update full env if cache missed
         if: steps.cache-full.outputs.cache-hit != 'true'
-        run: conda env update -n clpipeline-full -f ci/environment-full.yml
+        run: conda env update -n clpipeline-full -f ${{ env.FULL_ENV_FILE }}
 
       - name: Install firecrown from main
         # firecrown's cluster connector (BinnedClusterShearProfile, the
