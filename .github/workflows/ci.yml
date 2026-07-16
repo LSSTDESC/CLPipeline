@@ -141,16 +141,6 @@ jobs:
         if: steps.cache-full.outputs.cache-hit != 'true'
         run: conda env update -n clpipeline-full -f ${{ env.FULL_ENV_FILE }}
 
-      - name: Install firecrown from main
-        # firecrown's cluster connector (BinnedClusterShearProfile, the
-        # cluster_theory parameter binding, etc.) moves fast; pin to a git
-        # install from main rather than a released package. If you need to
-        # pin to a specific commit for reproducibility, replace @main with
-        # @<sha>.
-        shell: bash -l {0}
-        run: |
-          pip install --no-deps "firecrown @ git+https://github.com/LSSTDESC/firecrown.git@main"
-
       - name: Build cosmosis-standard-library
         # The generated cosmosis .ini references ${CSL_DIR}/utility/... and
         # ${CSL_DIR}/boltzmann/camb/... -- these come from the CSL, which
