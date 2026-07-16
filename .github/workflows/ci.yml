@@ -38,7 +38,7 @@ concurrency:
 env:
   CACHE_VERSION: 1
   FAST_ENV_FILE: .github/ci/environment-fast.yml
-  FULL_ENV_FILE: .github/ci/environment-full.yml
+  FULL_ENV_FILE: firecrown_environment.yml
 
 jobs:
   # ------------------------------------------------------------------ #
