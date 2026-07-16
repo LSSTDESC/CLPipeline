@@ -141,6 +141,13 @@ jobs:
         if: steps.cache-full.outputs.cache-hit != 'true'
         run: conda env update -n clpipeline-full -f ${{ env.FULL_ENV_FILE }}
 
+      - name: Save full conda env
+        if: steps.cache-full.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.CONDA }}/envs
+          key: ${{ steps.cache-full.outputs.cache-primary-key }}
+
       - name: Build cosmosis-standard-library
         # The generated cosmosis .ini references ${CSL_DIR}/utility/... and
         # ${CSL_DIR}/boltzmann/camb/... -- these come from the CSL, which
