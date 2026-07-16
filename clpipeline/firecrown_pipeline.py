@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 #File dedicated to impement the Firecrown pipeline stage into ceci
-from logging import config
 from .ceci_types import (
     SACCFile,
     YamlFile,
@@ -8,15 +7,18 @@ from .ceci_types import (
     CosmosisFile,
 )
 from ceci import PipelineStage
+from ceci.config import StageParameter
+
 import sys
 import os
 import shutil
 import re
 import textwrap
 import numpy as np
+
+
 class FirecrownPipeline(PipelineStage):
-    """
-    Firecrown pipeline stage for cluster cosmology analysis.
+    """Firecrown pipeline stage for cluster cosmology analysis.
 
     This stage:
     - Builds a Firecrown likelihood from a SACC file
@@ -36,7 +38,6 @@ class FirecrownPipeline(PipelineStage):
 
     inputs = [
         ("clusters_sacc_file_cov", SACCFile),  # For firecrown Likelihood
-    #    ("tracer_metadata_yml", YamlFile),  # For metadata
     ]
 
     outputs = [
@@ -46,40 +47,85 @@ class FirecrownPipeline(PipelineStage):
     ]
 
     config_options = {
-        "txpipe_flag": False,
-        "firecrown_flag": True
+        # Modeling
+        "hmf": StageParameter(str, "despali16", msg="Halo mass function model."),
+        "min_mass": StageParameter(float, 12.0, msg="Minimum log10 halo mass."),
+        "max_mass": StageParameter(float, 15.5, msg="Maximum log10 halo mass."),
+        "min_z": StageParameter(float, 0.2, msg="Minimum cluster redshift."),
+        "max_z": StageParameter(float, 0.8, msg="Maximum cluster redshift."),
+        "mass_def": StageParameter(str, "200c", msg="Halo mass definition."),
+        "pivot_mass": StageParameter(float, 14.3, msg="Pivot log10 halo mass for the mass-richness relation."),
+        "pivot_z": StageParameter(float, 0.5, msg="Pivot redshift for the mass-richness relation."),
+        "survey_name": StageParameter(str, "cosmodc2_redmapper", msg="Survey name used in the SACC file."),
+        # Observable selection
+        "use_cluster_counts": StageParameter(bool, True, msg="Include cluster number counts."),
+        "use_mean_log_mass": StageParameter(bool, False, msg="Include mean log-mass observable."),
+        "use_mean_deltasigma": StageParameter(bool, False, msg="Include DeltaSigma observable."),
+        "use_shear_profile": StageParameter(bool, False, msg="Generate the cluster shear profile likelihood."),
+        # Systematics
+        "use_completeness": StageParameter(bool, True, msg="Apply completeness model."),
+        "use_purity": StageParameter(bool, True, msg="Apply purity model."),
+        "use_grid": StageParameter(bool, True, msg="Use the gridded recipe."),
+        "is_deltasigma": StageParameter(bool, False, msg="Use DeltaSigma instead of reduced shear."),
+        "use_beta_interp": StageParameter(bool, False, msg="Use beta interpolation."),
+        "beta_parameters": StageParameter(list, [10.0, 5.0], msg="Parameters for beta interpolation."),
+        "redshift_grid_size": StageParameter(int, 20, msg="Number of redshift grid points."),
+        "mass_grid_size": StageParameter(int, 60, msg="Number of mass grid points."),
+        "proxy_grid_size": StageParameter(int, 20, msg="Number of richness grid points."),
+        "two_halo_term": StageParameter(bool, False, msg="Include the two-halo term."),
+        "boost_factor": StageParameter(bool, False, msg="Apply the boost-factor correction."),
+        # Sampling
+        "sampler": StageParameter(str, "emcee", msg="CosmoSIS sampler."),
+        "emcee_walkers": StageParameter(int, 100, msg="Number of emcee walkers."),
+        "emcee_samples": StageParameter(int, 20000, msg="Number of emcee samples."),
+        "emcee_nsteps": StageParameter(int, 20, msg="Number of emcee steps per sample."),
+        "polycord_live_points": StageParameter(int, 500, msg="Number of PolyChord live points."),
+        "polycord_num_repeats": StageParameter(int, 30, msg="Number of PolyChord repeats."),
+        "polycord_tolerance": StageParameter(float, 0.05, msg="PolyChord evidence tolerance."),
+        "polycord_feedback": StageParameter(int, 1, msg="PolyChord feedback level."),
+        "resume": StageParameter(bool, False, msg="If True, CosmoSIS appends to the existing chain at `filename` instead of starting fresh"),
+        # Parameter blocks
+        "cosmological_parameters": StageParameter(dict, {}, msg="Dictionary describing cosmological sampling parameters."),
+        "firecrown_parameters": StageParameter(dict, {}, msg="Dictionary describing Firecrown likelihood parameters."),
     }
 
     def run(self):
+        """Run the analysis for this stage.
+        Generates Firecrown likelihood and
+        cosmosis ini files.
         """
-        Run the analysis for this stage.
 
-         - Load global config file
-         - Choose the right recipe based on the file
-         - Output firecrown likelihood python file
-        """
-        import sacc
-        my_config = self.config
-        ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-        FIRECROWN_INPUTS = ROOT_DIR.replace('clpipeline', 'firecrown_inputs')
-        print(self.get_input("clusters_sacc_file_cov"))
-        output_cosmosis_file = self.get_output('cluster_counts_mean_mass_redshift_richness', final_name=True)
-        output_likelihood_file = self.get_output('cluster_redshift_richness', final_name=True)
-        self.generate_python_file(my_config, output_likelihood_file)#self.cosmosis_files(FIRECROWN_INPUTS)
-        self.generate_ini_file(my_config, output_cosmosis_file)
-        print(my_config['cosmological_parameters'])
-        self.generate_cosmosis_parameters_file(my_config, self.get_output('cluster_richness_values', final_name=True))
-    
-    def generate_python_file(self, yml_config, path_name):
-        """
-        Generates a Python file based on the configuration dictionary.
+        output_cosmosis_file = self.get_output(
+            'cluster_counts_mean_mass_redshift_richness',
+            final_name=True
+        )
+        output_likelihood_file = self.get_output(
+            'cluster_redshift_richness',
+            final_name=True
+        )
+        output_parameters_file = self.get_output(
+            'cluster_richness_values',
+            final_name=True
+        )
+
+        ok_python = self.generate_python_file(output_likelihood_file)
+        ok_ini = self.generate_ini_file(output_cosmosis_file)
+        ok_params = self.generate_cosmosis_parameters_file(output_parameters_file)
+
+        if not (ok_python and ok_ini and ok_params):
+            raise RuntimeError(
+                "FirecrownPipeline: one or more output files failed to "
+                "generate. See the printed errors above for details. "
+                f"(python={ok_python}, ini={ok_ini}, params={ok_params})"
+            )
+
+    def generate_python_file(self, path_name):
+        """Generates a Python file based on the configuration dictionary.
 
         Args:
-            config (dict): Configuration dictionary.
             path_name (str): Path to save the generated Python file.
         """
         my_configs = self.config
-        sacc_file_name = os.path.basename(self.get_input('clusters_sacc_file_cov'))
         hmf_dict = {
             'angulo12': 'ccl.halos.MassFuncAngulo12',
             'bocquet16': 'ccl.halos.MassFuncBocquet16',
@@ -93,34 +139,52 @@ class FirecrownPipeline(PipelineStage):
             'watson13': 'ccl.halos.MassFuncWatson13',
         }
         try:
-            # Extract values from the configuration
-            hmf_key = yml_config.get('hmf', 'bocquet16').lower()  # Default to 'bocquet16' if not specified
-            hmf = hmf_dict.get(hmf_key, 'ccl.halos.MassFuncBocquet16')  # Default to MassFuncBocquet16 if not found
-            mass_def = str(yml_config.get('mass_def', '200c'))
-            min_mass = yml_config.get('min_mass', 13.0)
-            max_mass = yml_config.get('max_mass', 16.0)
-            min_z = yml_config.get('min_z', 0.2)
-            max_z = yml_config.get('max_z', 0.8)
-            pivot_mass = yml_config.get('pivot_mass', 14.3)
-            pivot_z = yml_config.get('pivot_z', 0.6)
-            survey_name = yml_config.get('survey_name', 'numcosmo_simulated_redshift_richness')
-            sacc_path = sacc_file_name
-            ln_pivot_mass = np.log(10**pivot_mass)
-            use_shear_profile = yml_config.get('use_shear_profile', False)
-            use_completeness = yml_config.get('use_completeness', None)
-            use_purity = yml_config.get('use_purity', None)
-            cluster_concentration = yml_config.get('cluster_concentration', None)
-            use_grid = yml_config.get('use_grid', True)
-            is_deltasigma = yml_config.get('is_deltasigma', False)
-            use_beta_interp = yml_config.get('use_beta_interp', False)
-            redshift_grid_size = yml_config.get('redshift_grid_size', 20)
-            mass_grid_size = yml_config.get('mass_grid_size', 60)
-            proxy_grid_size = yml_config.get('proxy_grid_size', 20)
-            beta_parameters = yml_config.get('beta_parameters', (10.0, 5.0))
-            two_halo_term = yml_config.get('two_halo_term', False)
-            boost_factor = yml_config.get('boost_factor', False)
-            use_cluster_counts = yml_config.get('use_cluster_counts', True)
-            use_poisson_noise = yml_config.get('use_poisson_noise', False)
+            cfg = self.config
+
+            # Input file
+            sacc_path = self.get_input("clusters_sacc_file_cov")
+            sacc_filename = os.path.basename(sacc_path)
+
+            # Halo mass function
+            hmf_key = cfg["hmf"].lower()
+            try:
+                hmf = hmf_dict[hmf_key]
+            except KeyError:
+                raise ValueError(
+                    f"Unknown halo mass function '{hmf_key}'. "
+                    f"Available options are: {', '.join(sorted(hmf_dict))}"
+                )
+
+            # Modeling
+            mass_def = cfg["mass_def"]
+            min_mass = cfg["min_mass"]
+            max_mass = cfg["max_mass"]
+            min_z = cfg["min_z"]
+            max_z = cfg["max_z"]
+            pivot_mass = cfg["pivot_mass"]
+            pivot_z = cfg["pivot_z"]
+            survey_name = cfg["survey_name"]
+
+            # Observables
+            use_cluster_counts = cfg["use_cluster_counts"]
+            use_shear_profile = cfg["use_shear_profile"]
+            use_mean_log_mass = cfg["use_mean_log_mass"]
+            use_mean_deltasigma = cfg["use_mean_deltasigma"]
+
+            # Systematics
+            use_completeness = cfg["use_completeness"]
+            use_purity = cfg["use_purity"]
+
+            # Grid / recipe options
+            use_grid = cfg["use_grid"]
+            is_deltasigma = cfg["is_deltasigma"]
+            use_beta_interp = cfg["use_beta_interp"]
+            beta_parameters = cfg["beta_parameters"]
+            redshift_grid_size = cfg["redshift_grid_size"]
+            mass_grid_size = cfg["mass_grid_size"]
+            proxy_grid_size = cfg["proxy_grid_size"]
+            two_halo_term = cfg["two_halo_term"]
+            boost_factor = cfg["boost_factor"]
             # Open the file to be written
             with open(path_name, "w") as f:
                 f.write("import os\n\n")
@@ -133,7 +197,7 @@ class FirecrownPipeline(PipelineStage):
                 f.write("from crow.properties import ClusterProperty\n")
                 f.write("from crow.recipes.binned_grid import GridBinnedClusterRecipe\n\n")
                 f.write(
-                "from crow import purity_models, completeness_models\n"
+                    "from crow import purity_models, completeness_models\n"
                 )
                 # Firecrown likelihoods
                 f.write(
@@ -161,7 +225,7 @@ class FirecrownPipeline(PipelineStage):
                     f.write("    cluster_theory = ClusterShearProfile(\n")
                     f.write("    cosmo=ccl.CosmologyVanillaLCDM(),\n")
                     f.write(f"    halo_mass_function = {hmf}(mass_def=\"{mass_def}\"),\n")
-                    f.write(f"    cluster_concentration={cluster_concentration},\n")
+                    f.write("    cluster_concentration=None,\n")
                     f.write(f"    is_delta_sigma={is_deltasigma},\n")
                     f.write(f"    use_beta_s_interp={use_beta_interp},\n")
                     f.write(f"    two_halo_term={two_halo_term},\n")
@@ -200,8 +264,6 @@ class FirecrownPipeline(PipelineStage):
                         f"        pivot_log_mass={pivot_mass},\n"
                         f"        pivot_redshift={pivot_z},\n"
                     )
-                    if use_poisson_noise:
-                        f.write(f"        use_noise={use_poisson_noise},\n")
                     f.write("    )\n\n")
                     f.write("    recipe = GridBinnedClusterRecipe(\n")
                     f.write(f"        redshift_grid_size = {redshift_grid_size},\n")
@@ -259,7 +321,7 @@ class FirecrownPipeline(PipelineStage):
                     f.write("    likelihood = ConstGaussian(\n")
                     f.write("        [BinnedClusterShearProfile(average_on, survey_name, recipe_shear)]\n")
                 f.write("    )\n\n")
-                f.write(f"    sacc_path = '{sacc_path}'\n")
+                f.write(f"    sacc_path = '{sacc_filename}'\n")
                 f.write("    sacc_data = sacc.Sacc.load_fits(sacc_path)\n")
                 f.write("    likelihood.read(sacc_data)\n\n")
                 f.write("    modeling_tools = ModelingTools()\n\n")
@@ -272,48 +334,44 @@ class FirecrownPipeline(PipelineStage):
             print(f"Error generating file: {e}")
             return False
 
-    def generate_ini_file(self, config, output_ini_path):
-        """
-        Generates an .ini file based on the configuration dictionary.
+    def generate_ini_file(self, output_ini_path):
+        """Generates an .ini file.
 
         Args:
-            config (dict): Configuration dictionary containing the values for substitution.
             output_ini_path (str): Path where the generated .ini file will be saved.
         """
         import cosmosis
         import firecrown
 
         try:
-            # Get the configuration values
-            sampler = config.get('sampler', 'test')
-            root = os.getcwd()  # Using current working directory for root
-            out_filename = config.get('filename', 'output_rp/number_counts_samples.txt')
-            
-            use_cluster_counts = config.get('use_cluster_counts', True)
-            use_mean_log_mass = config.get('use_mean_log_mass', True)
-            use_mean_deltasigma = config.get('use_mean_deltasigma', False)    
+            cfg = self.config
+            out_filename = cfg.get('filename', 'output_rp/number_counts_samples.txt')
 
-            # Emcee configuration
-            emcee_walkers = config.get('emcee_walkers', 20)
-            emcee_samples = config.get('emcee_samples', 4000)
-            emcee_nsteps = config.get('emcee_nsteps', 10)
-            # polycord configuration
-            emcee_walkers = config.get('emcee_walkers', 20)
-            emcee_samples = config.get('emcee_samples', 4000)
-            emcee_nsteps = config.get('emcee_nsteps', 10)
-            polycord_live_points = config.get('polycord_live_points', 500)
-            polycord_num_repeats = config.get('polycord_num_repeats', 30)
-            polycord_tolerance = config.get('polycord_tolerance', 0.05)
-            polycord_feedback = config.get('polycord_feedback', 1)
-
-            beta_parameters = config.get('beta_parameters', (10.0, 5.0))
+            root = os.getcwd()
             FIRECROWN_DIR = os.path.dirname(firecrown.__file__)
 
+            sampler = cfg["sampler"]
+            resume = cfg["resume"]
+            use_cluster_counts = cfg["use_cluster_counts"]
+            use_mean_log_mass = cfg["use_mean_log_mass"]
+            use_mean_deltasigma = cfg["use_mean_deltasigma"]
+
+            emcee_walkers = cfg["emcee_walkers"]
+            emcee_samples = cfg["emcee_samples"]
+            emcee_nsteps = cfg["emcee_nsteps"]
+
+            polycord_live_points = cfg["polycord_live_points"]
+            polycord_num_repeats = cfg["polycord_num_repeats"]
+            polycord_tolerance = cfg["polycord_tolerance"]
+            polycord_feedback = cfg["polycord_feedback"]
+
+            beta_parameters = cfg["beta_parameters"]
             with open(output_ini_path, 'w') as f:
                 f.write("[runtime]\n")
                 f.write(f"sampler = {sampler}\n")
-                f.write(f"root = {root}\n\n")
-
+                f.write(f"root = {root}\n")
+                f.write(f"resume = {'T' if resume else 'F'}\n\n")
+                
                 f.write("[default]\n")
                 f.write("fatal_errors = F\n\n")
 
@@ -374,52 +432,50 @@ class FirecrownPipeline(PipelineStage):
                 f.write(f"tolerance = {polycord_tolerance}\n")
                 f.write(f"feedback = {polycord_feedback}\n")
             print(f"INI file written to {output_ini_path}")
-            print(f"INI file generated at {output_ini_path}")
             return True
 
         except Exception as e:
             print(f"Error generating INI file: {e}")
             return False
 
-    def generate_cosmosis_parameters_file(self, config, output_ini_path):
-        """
-        Generates a .ini file based on the configuration dictionary.
+    def generate_cosmosis_parameters_file(self, output_ini_path):
+        """Generates a .ini file based on the configuration dictionary.
 
         Args:
-            config (dict): Configuration dictionary containing the values for substitution.
             output_ini_path (str): Path where the generated .ini file will be saved.
         """
         try:
+            cfg = self.config
             with open(output_ini_path, 'w') as f:
                 f.write("; Parameters and data in CosmoSIS are organized into sections\n")
                 f.write("; so we can easily see what they mean.\n")
                 f.write("; There is only one section in this case, called cosmological_parameters\n")
                 f.write("[cosmological_parameters]\n")
                 f.write("; These are the only cosmological parameters being varied.\n")
-                for param, value in config.get('cosmological_parameters', {}).items():
+                for param, value in cfg["cosmological_parameters"].items():
                     if value['sample']:
                         f.write(f"{param} = {value['values'][0]} {value['values'][1]} {value['values'][2]}\n")
 
                 f.write("; The following parameters are set, but not varied.\n")
-                for param, value in config.get('cosmological_parameters', {}).items():
+                for param, value in cfg["cosmological_parameters"].items():
                     if not value['sample']:
                         f.write(f"{param} = {value['values']}\n")
-                
+
                 f.write("[firecrown_number_counts]\n")
                 f.write("; These are the firecrown likelihood parameters.\n")
                 f.write("; These parameters are used to set the richness-mass\n")
                 f.write("; proxy relation using the data from cluster number counts.\n")
-                
+
                 # Writing firecrown_number_counts parameters
-                for param, value in config.get('firecrown_parameters', {}).items():
+                for param, value in cfg["firecrown_parameters"].items():
                     if value['sample']:
-                        f.write(f"{param} = {value['values'][0]} {value['values'][1]} {value['values'][2]}\n")
+                        f.write(f"{param} = {float(value['values'][0])} {float(value['values'][1])} {float(value['values'][2])}\n")
                     else:
-                        f.write(f"{param} = {value['values']}\n")
-                
-            print(f"INI file written to {output_ini_path}")
+                        f.write(f"{param} = {float(value['values'])}\n")
+
+            print(f"Parameters INI file written to {output_ini_path}")
             return True
-        
+
         except Exception as e:
             print(f"Error generating INI file: {e}")
             return False

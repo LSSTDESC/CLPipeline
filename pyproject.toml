@@ -15,3 +15,10 @@ where = ["."]
 [project.urls]
 Homepage = "https://github.com/eduardojsbarroso/CLPipeline"
 Issues = "https://github.com/eduardojsbarroso/CLPipeline/issues"
+
+[tool.pytest.ini_options]
+markers = [
+    "slow: does real covariance computation or runs cosmosis; needs the full DESC stack",
+]
+addopts = "--strict-markers"
+testpaths = ["tests"]
