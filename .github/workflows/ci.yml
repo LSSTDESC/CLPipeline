@@ -55,7 +55,7 @@ jobs:
         with:
           python-version: "3.12"
           activate-environment: clpipeline-fast
-          environment-file: ci/environment-fast.yml
+          environment-file: .github/ci/environment-fast.yml
           use-mamba: true
 
       - name: Cache fast conda env
