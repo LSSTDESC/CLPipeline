@@ -1,12 +1,7 @@
 #!/usr/bin/env python
 #File dedicated to impement the Firecrown pipeline stage into ceci
 from logging import config
-from .ceci_types import (
-    SACCFile,
-    YamlFile,
-    PythonFile,
-    CosmosisFile,
-)
+from .file_types import SACCFile, PythonFile, CosmosisFile
 from ceci import PipelineStage
 import sys
 import os
@@ -36,7 +31,6 @@ class FirecrownPipeline(PipelineStage):
 
     inputs = [
         ("clusters_sacc_file_cov", SACCFile),  # For firecrown Likelihood
-    #    ("tracer_metadata_yml", YamlFile),  # For metadata
     ]
 
     outputs = [

@@ -1,9 +1,6 @@
 #!/usr/bin/env python
-#File dedicated to impement the Firecrown pipeline stage into ceci
-from .ceci_types import (
-    SACCFile,
-    YamlFile,
-)
+#File dedicated to impement the TJPCov pipeline stage into ceci
+from .file_types import SACCFile
 from ceci import PipelineStage
 import sys
 
@@ -32,7 +29,6 @@ class TJPCovPipeline(PipelineStage):
 
     inputs = [
         ("clusters_sacc_file", SACCFile),  # For firecrown Likelihood
-    #    ("tracer_metadata_yml", YamlFile),  # For metadata
     ]
 
     outputs = [
