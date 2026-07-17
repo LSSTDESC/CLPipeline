@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #File dedicated to impement the Firecrown pipeline stage into ceci
-from .file_types import SACCFile, PythonFile, CosmosisFile
+from .file_types import SACCFile, PythonFile, CosmosisFile, FiducialCosmology
 from ceci import PipelineStage
 from ceci.config import StageParameter
 
@@ -9,7 +9,21 @@ import os
 import shutil
 import re
 import textwrap
+import math
 import numpy as np
+
+# CosmoSIS's [cosmological_parameters] naming differs from the fiducial
+# cosmology file's CCL-native naming. Maps CCL key -> CosmoSIS key.
+_CCL_TO_COSMOSIS_COSMO_MAP = {
+    "Omega_c": "omega_c",
+    "Omega_b": "omega_b",
+    "h": "h0",
+    "n_s": "n_s",
+    "sigma8": "sigma_8",
+    "Omega_k": "omega_k",
+    "w0": "w",
+    "wa": "wa",
+}
 
 
 class FirecrownPipeline(PipelineStage):
@@ -18,7 +32,10 @@ class FirecrownPipeline(PipelineStage):
     This stage:
     - Builds a Firecrown likelihood from a SACC file
     - Generates the corresponding CosmoSIS configuration
-    - Writes parameter files for sampling
+    - Writes parameter files for sampling, defaulting the cosmological
+      block to the fiducial cosmology (shared with TXPipe/TJPCov); any
+      entry in `cosmological_parameters` overrides that default, which is
+      how a parameter gets sampled instead of held fixed
 
     Key configuration groups:
     - Modeling options (hmf, mass range, redshift range)
@@ -33,6 +50,7 @@ class FirecrownPipeline(PipelineStage):
 
     inputs = [
         ("clusters_sacc_file_cov", SACCFile),  # For firecrown Likelihood
+        ("fiducial_cosmology", FiducialCosmology),
     ]
 
     outputs = [
@@ -79,8 +97,20 @@ class FirecrownPipeline(PipelineStage):
         "polycord_tolerance": StageParameter(float, 0.05, msg="PolyChord evidence tolerance."),
         "polycord_feedback": StageParameter(int, 1, msg="PolyChord feedback level."),
         "resume": StageParameter(bool, False, msg="If True, CosmoSIS appends to the existing chain at `filename` instead of starting fresh"),
+        # Cosmology -- tau is a CAMB input (reionization optical depth), not
+        # a CCL cosmology parameter, so it isn't in the fiducial cosmology
+        # file and has to stay a stage config option.
+        "tau": StageParameter(float, 0.08, msg="CMB optical depth to reionization (CAMB input, not part of the CCL fiducial cosmology)."),
         # Parameter blocks
-        "cosmological_parameters": StageParameter(dict, {}, msg="Dictionary describing cosmological sampling parameters."),
+        "cosmological_parameters": StageParameter(
+            dict, {},
+            msg=(
+                "Overrides on top of the fiducial cosmology. Only needs to "
+                "contain entries you want to sample or fix to a non-fiducial "
+                "value; anything not listed here is taken from "
+                "fiducial_cosmology as a fixed value."
+            ),
+        ),
         "firecrown_parameters": StageParameter(dict, {}, msg="Dictionary describing Firecrown likelihood parameters."),
     }
 
@@ -113,6 +143,22 @@ class FirecrownPipeline(PipelineStage):
                 "generate. See the printed errors above for details. "
                 f"(python={ok_python}, ini={ok_ini}, params={ok_params})"
             )
+
+    def _fiducial_cosmological_parameters(self):
+        """Fiducial cosmology (shared with TXPipe), translated into
+        CosmoSIS's [cosmological_parameters] naming and CosmoSIS-parameter
+        dict shape, all fixed (sample=False). tau has no fiducial-file
+        equivalent and comes from the stage config instead.
+        """
+        with self.open_input("fiducial_cosmology", wrapper=True) as f:
+            raw = f.content
+
+        params = {
+            cosmosis_name: {"sample": False, "values": raw[ccl_name]}
+            for ccl_name, cosmosis_name in _CCL_TO_COSMOSIS_COSMO_MAP.items()
+        }
+        params["tau"] = {"sample": False, "values": self.config["tau"]}
+        return params
 
     def generate_python_file(self, path_name):
         """Generates a Python file based on the configuration dictionary.
@@ -434,34 +480,29 @@ class FirecrownPipeline(PipelineStage):
             return False
 
     def generate_cosmosis_parameters_file(self, output_ini_path):
-        """Generates a .ini file based on the configuration dictionary.
-
-        Args:
-            output_ini_path (str): Path where the generated .ini file will be saved.
-        """
         try:
             cfg = self.config
+            cosmological_parameters = self._fiducial_cosmological_parameters()
+            for name, override in cfg["cosmological_parameters"].items():
+                if name in cosmological_parameters and not override.get("sample", False):
+                    fiducial_value = cosmological_parameters[name]["values"]
+                    if not math.isclose(float(override["values"]), float(fiducial_value), rel_tol=1e-6):
+                        raise ValueError(
+                            f"cosmological_parameters['{name}']={override['values']} "
+                            f"does not match fiducial value {fiducial_value}"
+                        )
+                cosmological_parameters[name] = override
+
             with open(output_ini_path, 'w') as f:
-                f.write("; Parameters and data in CosmoSIS are organized into sections\n")
-                f.write("; so we can easily see what they mean.\n")
-                f.write("; There is only one section in this case, called cosmological_parameters\n")
                 f.write("[cosmological_parameters]\n")
-                f.write("; These are the only cosmological parameters being varied.\n")
-                for param, value in cfg["cosmological_parameters"].items():
+                for param, value in cosmological_parameters.items():
                     if value['sample']:
                         f.write(f"{param} = {value['values'][0]} {value['values'][1]} {value['values'][2]}\n")
-
-                f.write("; The following parameters are set, but not varied.\n")
-                for param, value in cfg["cosmological_parameters"].items():
+                for param, value in cosmological_parameters.items():
                     if not value['sample']:
                         f.write(f"{param} = {value['values']}\n")
 
                 f.write("[firecrown_number_counts]\n")
-                f.write("; These are the firecrown likelihood parameters.\n")
-                f.write("; These parameters are used to set the richness-mass\n")
-                f.write("; proxy relation using the data from cluster number counts.\n")
-
-                # Writing firecrown_number_counts parameters
                 for param, value in cfg["firecrown_parameters"].items():
                     if value['sample']:
                         f.write(f"{param} = {float(value['values'][0])} {float(value['values'][1])} {float(value['values'][2])}\n")

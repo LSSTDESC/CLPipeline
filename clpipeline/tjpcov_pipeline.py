@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #File dedicated to impement the TJPCov pipeline stage into ceci
-from .file_types import SACCFile
+from .file_types import SACCFile, FiducialCosmology
 from ceci import PipelineStage
 from ceci.config import StageParameter
 import numpy as np
@@ -17,6 +17,7 @@ class TJPCovPipeline(PipelineStage):
 
     This stage:
     - Reads an input SACC file (data vector)
+    - Reads the fiducial cosmology (shared with TXPipe)
     - Computes covariance terms using TJPCov
     - Optionally merges in non-cluster covariance blocks from the input file
     - Optionally replaces cluster-count covariance using CROW
@@ -24,17 +25,14 @@ class TJPCovPipeline(PipelineStage):
 
     Key configuration groups:
     - Covariance selection (cov_type)
-    - Cosmology (parameters)
     - Mass–observable relation (mor_parameters)
     - Pipeline behavior (replace_tjpcov_cov)
-
-    Full configuration documentation:
-    See docs/tjpcov_pipeline_options.txt
     """
     name = "TJPCovPipeline"
 
     inputs = [
         ("clusters_sacc_file", SACCFile),  # For firecrown Likelihood
+        ("fiducial_cosmology", FiducialCosmology),
     ]
 
     outputs = [
@@ -57,9 +55,6 @@ class TJPCovPipeline(PipelineStage):
         "use_mpi": StageParameter(bool, False, msg="Use MPI parallelization in TJPCov."),
         "do_xi": StageParameter(bool, False, msg="Compute xi covariance terms."),
         "cov_type": StageParameter(list, ["ClusterCountsGaussian", "ClusterCountsSSC"], msg="TJPCov covariance terms to compute."),
-        # Cosmology
-        "cosmo": StageParameter(str, "set", msg="How cosmology is provided to TJPCov."),
-        "parameters": StageParameter(dict, {}, msg="Cosmological parameters used to build CCL cosmology if cosmo='set'."),
         # Photo-z
         "photo-z": StageParameter(dict, {}, msg="Photo-z uncertainty parameters."),
         # Mass-observable relation
@@ -70,7 +65,7 @@ class TJPCovPipeline(PipelineStage):
         """
         Main execution:
 
-        - Load input SACC file
+        - Load input SACC file and fiducial cosmology
         - Compute covariance via TJPCov
         - Merge with existing non-cluster covariance blocks (if needed)
         - Optionally replace cluster-count covariance
@@ -93,6 +88,22 @@ class TJPCovPipeline(PipelineStage):
         # Load the SACC file
         sacc_obj = sacc.Sacc.load_fits(sacc_file)
 
+        with self.open_input("fiducial_cosmology", wrapper=True) as f:
+            ccl_cosmo = f.to_ccl()
+ 
+        config_dict['cosmo'] = ccl_cosmo
+        ## This duplication below is because of code that should be fixed in TJPCov
+        config_dict['parameters'] = {
+            "Omega_c": ccl_cosmo["Omega_c"],
+            "Omega_b": ccl_cosmo["Omega_b"],
+            "h": ccl_cosmo["h"],
+            "n_s": ccl_cosmo["n_s"],
+            "sigma8": ccl_cosmo["sigma8"],
+            "w0": ccl_cosmo["w0"],
+            "wa": ccl_cosmo["wa"],
+            "Omega_k": ccl_cosmo["Omega_k"],
+        }
+
         # Check if the data contains only cluster counts
         data_types = set(dp.data_type for dp in sacc_obj.data)
         only_counts = data_types == {sacc.standard_types.cluster_counts}
@@ -102,7 +113,7 @@ class TJPCovPipeline(PipelineStage):
 
         # TJPCov expects settings both nested under "tjpcov" (most of
         # CovarianceBuilder) and at top level (e.g. get_cosmology() reads
-        # config["parameters"] directly).
+        # config["cosmo"] directly).
         config_dict['sacc_file'] = sacc_file
         combined_config = {'tjpcov': config_dict}
         combined_config.update(config_dict)
@@ -125,7 +136,7 @@ class TJPCovPipeline(PipelineStage):
         if config_dict["replace_tjpcov_cov"]:
             print("Replacing Counts TJPCov cov for Crow cov. SSC + Counts")
             full_cov = self.replace_crow_counts(
-                config_dict, sacc_with_cov, cov_terms, full_cov
+                config_dict, sacc_with_cov, cov_terms, full_cov, ccl_cosmo
             )
 
         sacc_with_cov.covariance = sacc.covariance.FullCovariance(full_cov)
@@ -208,14 +219,13 @@ class TJPCovPipeline(PipelineStage):
                 full_cov[np.ix_(ix1, ix1)] = sacc_obj.covariance.covmat[np.ix_(ix1, ix1)]
         return full_cov
 
-    def replace_crow_counts(self, config_dict, sacc_full, cov_terms, full_cov):
+    def replace_crow_counts(self, config_dict, sacc_full, cov_terms, full_cov, cosmo):
         """
         Replace TJPCov cluster-count covariance using CROW predictions.
 
         This is a temporary workaround.
 
         Steps:
-        - Build cosmology from config["parameters"]
         - Construct mass–observable relation (mor_parameters)
         - Compute theoretical counts
         - Replace covariance elements using SSC scaling
@@ -231,6 +241,8 @@ class TJPCovPipeline(PipelineStage):
             cov_terms (dict): {'gauss': array, 'SSC': array} raw covariance
                 term arrays from TJPCov.
             full_cov (np.ndarray): Full covariance array to modify in place.
+            cosmo (pyccl.Cosmology): fiducial cosmology, the same object
+                used for TJPCov's own covariance computation in run().
 
         Returns:
             np.ndarray: full_cov with cluster-count blocks replaced.
@@ -245,17 +257,6 @@ class TJPCovPipeline(PipelineStage):
         # This is temporary and so most of the options and configurations are fixed.
         is_wazp = config_dict.get("wazp_catalog", False)
         sel_func = config_dict.get("sel_func", True)
-        cosmo_params = config_dict["parameters"]
-        cosmo = ccl.Cosmology(
-            Omega_c=cosmo_params["Omega_c"],
-            Omega_b=cosmo_params["Omega_b"],
-            h=cosmo_params["h"],
-            n_s=cosmo_params["n_s"],
-            sigma8=cosmo_params["sigma8"],
-            w0=cosmo_params["w0"],
-            wa=cosmo_params["wa"],
-            transfer_function=cosmo_params["transfer_function"]
-        )
         mor_params = config_dict["mor_parameters"]
         hmf = ccl.halos.MassFuncDespali16(mass_def="200c")
         mass_richness_unb = mass_proxy.MurataUnbinned(pivot_log_mass=mor_params["m_pivot"], pivot_redshift=mor_params["z_pivot"])
