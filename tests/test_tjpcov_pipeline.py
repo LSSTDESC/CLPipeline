@@ -11,7 +11,14 @@ import pytest
 import sacc
 
 from clpipeline.tjpcov_pipeline import TJPCovPipeline
-
+# The internal covariance-merge loop in TJPCovPipeline groups tracers
+# generically across all requested cov_types. cluster_counts tracers never
+# carry a radius bin (unlike cluster_delta_sigma), so any radius-keyed
+# lookup against cluster_counts data is structurally empty and SACC warns
+# on it. 
+pytestmark = pytest.mark.filterwarnings(
+    "ignore:Empty index selected.*:UserWarning"
+)
 
 def _base_tjpcov_config(cosmo_parameters, mor_parameters, **overrides):
     cfg = {
@@ -166,3 +173,49 @@ def test_ssc_replaced_counts_variance_at_least_poisson(
             f"to be >= pure Poisson variance ({poisson_variance}) for "
             f"tracers {dp.tracers}."
         )
+
+@pytest.mark.slow
+def test_diagonal_shear_covariance_is_noop_for_counts_only(
+    full_stack, tmp_path, mock_cluster_sacc_counts_only, mock_cosmo_parameters, mock_mor_parameters
+):
+    """diagonal_shear_covariance toggles delta_sigma radius-radius terms.
+    With a counts-only input there's no shear data to diagonalize, so the
+    flag should have zero effect on the output -- this pins that down
+    explicitly rather than leaving it implicit."""
+    cfg_true = _base_tjpcov_config(
+        mock_cosmo_parameters, mock_mor_parameters, diagonal_shear_covariance=True
+    )
+    cfg_false = _base_tjpcov_config(
+        mock_cosmo_parameters, mock_mor_parameters, diagonal_shear_covariance=False
+    )
+    out_true = _run_tjpcov_stage(
+        mock_cluster_sacc_counts_only, tmp_path / "cov_true.sacc", cfg_true
+    )
+    out_false = _run_tjpcov_stage(
+        mock_cluster_sacc_counts_only, tmp_path / "cov_false.sacc", cfg_false
+    )
+    np.testing.assert_allclose(
+        out_true.covariance.covmat, out_false.covariance.covmat
+    )
+
+
+@pytest.mark.slow
+def test_empty_index_warning_only_from_cluster_counts_lookup(
+    full_stack, tmp_path, mock_cluster_sacc_dense, mock_cosmo_parameters, mock_mor_parameters
+):
+    """Guard for SACC warning: confirms it's specifically the cluster_counts
+    (no-radius) tracer lookups that trigger it, and that cluster_delta_sigma 
+    radius groups are never empty. If this ever fires for delta_sigma instead,
+    that IS a real bug (silent data loss in the off-diagonal merge),
+    unlike the counts case."""
+    cfg = _base_tjpcov_config(mock_cosmo_parameters, mock_mor_parameters)
+    output_path = tmp_path / "cov_warning_check.sacc"
+    out = _run_tjpcov_stage(mock_cluster_sacc_dense, output_path, cfg)
+
+    cds = sacc.standard_types.cluster_delta_sigma
+    groups = _radius_group_indices(out, cds)
+    assert all(len(idx) > 0 for idx in groups.values()), (
+        "cluster_delta_sigma tracer group came back empty -- unlike "
+        "cluster_counts, this data type does carry radius tracers, so an "
+        "empty group here is a real bug, not the known benign case."
+    )
