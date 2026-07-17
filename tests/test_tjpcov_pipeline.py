@@ -9,16 +9,18 @@ tmp_path, nothing needs manual cleanup.
 import numpy as np
 import pytest
 import sacc
+import yaml
 
 from clpipeline.tjpcov_pipeline import TJPCovPipeline
-# The internal covariance-merge loop in TJPCovPipeline groups tracers
-# generically across all requested cov_types. cluster_counts tracers never
-# carry a radius bin (unlike cluster_delta_sigma), so any radius-keyed
-# lookup against cluster_counts data is structurally empty and SACC warns
-# on it. 
+from .conftest import run_ceci_stage
+
+# cluster_counts tracers never carry a radius bin (unlike
+# cluster_delta_sigma), so radius-keyed lookups against them are
+# structurally empty and SACC warns on it. Expected, not a bug.
 pytestmark = pytest.mark.filterwarnings(
     "ignore:Empty index selected.*:UserWarning"
 )
+
 
 def _base_tjpcov_config(cosmo_parameters, mor_parameters, **overrides):
     cfg = {
@@ -51,14 +53,20 @@ def _run_tjpcov_stage(input_sacc_path, output_sacc_path, tjpcov_cfg):
     return sacc.Sacc.load_fits(str(output_sacc_path))
 
 
+def _write_stage_yaml(tmp_path, stage_name, cfg):
+    config_path = tmp_path / "stage_config.yml"
+    with open(config_path, "w") as f:
+        yaml.safe_dump({stage_name: cfg}, f)
+    return config_path
+
+
 def _diag_block(cov, idx):
     idx = np.asarray(sorted(idx))
     return cov[np.ix_(idx, idx)]
 
 
 def _radius_group_indices(sacc_obj, data_type):
-    """Group data point indices by (survey, richness, z) tracer combo,
-    isolating one stacked profile's radius bins at a time."""
+    """Group data point indices by (survey, richness, z) tracer combo."""
     data_points = sacc_obj.get_data_points(data_type=data_type)
     groups = {}
     for dp in data_points:
@@ -72,8 +80,7 @@ def _radius_group_indices(sacc_obj, data_type):
 def test_dense_merge_preserves_off_diagonal(
     full_stack, tmp_path, mock_cluster_sacc_dense, mock_cosmo_parameters, mock_mor_parameters
 ):
-    """diagonal_shear_covariance=False must preserve radius-radius
-    correlation from the input SACC's cluster_delta_sigma covariance."""
+    """diagonal_shear_covariance=False must preserve radius-radius correlation."""
     output_path = tmp_path / "cov_dense_kept.sacc"
     cfg = _base_tjpcov_config(
         mock_cosmo_parameters, mock_mor_parameters, diagonal_shear_covariance=False
@@ -85,20 +92,14 @@ def test_dense_merge_preserves_off_diagonal(
     idx = next(iter(groups.values()))
     block = _diag_block(out.covariance.covmat, idx)
     off_diag_max = np.max(np.abs(block - np.diag(np.diag(block))))
-    assert off_diag_max > 0, (
-        "diagonal_shear_covariance=False should preserve the input's "
-        "radius-radius correlation, but the merged block came back "
-        "diagonal-only."
-    )
+    assert off_diag_max > 0, "expected preserved radius-radius correlation"
 
 
 @pytest.mark.slow
 def test_diagonal_only_merge_drops_off_diagonal(
     full_stack, tmp_path, mock_cluster_sacc_dense, mock_cosmo_parameters, mock_mor_parameters
 ):
-    """diagonal_shear_covariance=True must strip off-diagonal terms, even
-    when the input SACC's covariance was dense (proves the pipeline
-    actively truncates rather than just passing through)."""
+    """diagonal_shear_covariance=True must strip off-diagonal terms."""
     output_path = tmp_path / "cov_diag_only.sacc"
     cfg = _base_tjpcov_config(
         mock_cosmo_parameters, mock_mor_parameters, diagonal_shear_covariance=True
@@ -110,19 +111,15 @@ def test_diagonal_only_merge_drops_off_diagonal(
     idx = next(iter(groups.values()))
     block = _diag_block(out.covariance.covmat, idx)
     off_diag_max = np.max(np.abs(block - np.diag(np.diag(block))))
-    assert off_diag_max == 0.0, (
-        "diagonal_shear_covariance=True should strip off-diagonal "
-        "radius-radius terms from the merged block."
-    )
-    assert np.all(np.diag(block) > 0), "variances themselves should still be kept"
+    assert off_diag_max == 0.0, "expected off-diagonal terms stripped"
+    assert np.all(np.diag(block) > 0), "variances should still be kept"
 
 
 @pytest.mark.slow
 def test_counts_only_input_completes_without_merge(
     full_stack, tmp_path, mock_cluster_sacc_counts_only, mock_cosmo_parameters, mock_mor_parameters
 ):
-    """With a counts-only input, there's no non-cluster-count data type to
-    merge; the stage should still complete and produce a valid covariance."""
+    """Counts-only input has nothing to merge; stage still completes."""
     output_path = tmp_path / "cov_counts_only.sacc"
     cfg = _base_tjpcov_config(mock_cosmo_parameters, mock_mor_parameters)
     out = _run_tjpcov_stage(mock_cluster_sacc_counts_only, output_path, cfg)
@@ -135,9 +132,7 @@ def test_counts_only_input_completes_without_merge(
 def test_mixed_input_data_types_preserved(
     full_stack, tmp_path, mock_cluster_sacc_dense, mock_cosmo_parameters, mock_mor_parameters
 ):
-    """With both counts and delta_sigma in the input, both data types
-    should still be present in the output (merge only touches covariance,
-    not data points)."""
+    """Both counts and delta_sigma should still be present in the output."""
     output_path = tmp_path / "cov_mixed.sacc"
     cfg = _base_tjpcov_config(mock_cosmo_parameters, mock_mor_parameters)
     out = _run_tjpcov_stage(mock_cluster_sacc_dense, output_path, cfg)
@@ -152,9 +147,7 @@ def test_mixed_input_data_types_preserved(
 def test_ssc_replaced_counts_variance_at_least_poisson(
     full_stack, tmp_path, mock_cluster_sacc_dense, mock_cosmo_parameters, mock_mor_parameters
 ):
-    """SSC contributes a strictly non-negative additional term to the
-    counts variance; after CROW replacement, the diagonal counts
-    covariance should be >= pure Poisson variance."""
+    """SSC-replaced counts variance must be >= pure Poisson variance."""
     output_path = tmp_path / "cov_ssc_check.sacc"
     cfg = _base_tjpcov_config(
         mock_cosmo_parameters, mock_mor_parameters, replace_tjpcov_cov=True
@@ -167,21 +160,18 @@ def test_ssc_replaced_counts_variance_at_least_poisson(
     for dp in counts_points:
         idx = out.indices(data_type=cc, tracers=dp.tracers)[0]
         replaced_variance = out.covariance.covmat[idx, idx]
-        poisson_variance = dp.value  # matches CLClusterSACC's diag(counts_values)
+        poisson_variance = dp.value
         assert replaced_variance >= poisson_variance, (
-            f"Expected SSC-replaced counts variance ({replaced_variance}) "
-            f"to be >= pure Poisson variance ({poisson_variance}) for "
-            f"tracers {dp.tracers}."
+            f"SSC-replaced variance ({replaced_variance}) < Poisson "
+            f"variance ({poisson_variance}) for tracers {dp.tracers}."
         )
+
 
 @pytest.mark.slow
 def test_diagonal_shear_covariance_is_noop_for_counts_only(
     full_stack, tmp_path, mock_cluster_sacc_counts_only, mock_cosmo_parameters, mock_mor_parameters
 ):
-    """diagonal_shear_covariance toggles delta_sigma radius-radius terms.
-    With a counts-only input there's no shear data to diagonalize, so the
-    flag should have zero effect on the output -- this pins that down
-    explicitly rather than leaving it implicit."""
+    """Flag should have zero effect when there's no shear data."""
     cfg_true = _base_tjpcov_config(
         mock_cosmo_parameters, mock_mor_parameters, diagonal_shear_covariance=True
     )
@@ -203,11 +193,7 @@ def test_diagonal_shear_covariance_is_noop_for_counts_only(
 def test_empty_index_warning_only_from_cluster_counts_lookup(
     full_stack, tmp_path, mock_cluster_sacc_dense, mock_cosmo_parameters, mock_mor_parameters
 ):
-    """Guard for SACC warning: confirms it's specifically the cluster_counts
-    (no-radius) tracer lookups that trigger it, and that cluster_delta_sigma 
-    radius groups are never empty. If this ever fires for delta_sigma instead,
-    that IS a real bug (silent data loss in the off-diagonal merge),
-    unlike the counts case."""
+    """cluster_delta_sigma radius groups must never be empty."""
     cfg = _base_tjpcov_config(mock_cosmo_parameters, mock_mor_parameters)
     output_path = tmp_path / "cov_warning_check.sacc"
     out = _run_tjpcov_stage(mock_cluster_sacc_dense, output_path, cfg)
@@ -215,7 +201,34 @@ def test_empty_index_warning_only_from_cluster_counts_lookup(
     cds = sacc.standard_types.cluster_delta_sigma
     groups = _radius_group_indices(out, cds)
     assert all(len(idx) > 0 for idx in groups.values()), (
-        "cluster_delta_sigma tracer group came back empty -- unlike "
-        "cluster_counts, this data type does carry radius tracers, so an "
-        "empty group here is a real bug, not the known benign case."
+        "cluster_delta_sigma tracer group came back empty"
     )
+
+
+# ---------------------------------------------------------------------------
+# CLI dispatch (python -m clpipeline), not direct instantiation
+# ---------------------------------------------------------------------------
+
+@pytest.mark.slow
+def test_cli_invocation_produces_valid_covariance(
+    full_stack, tmp_path, mock_cluster_sacc_dense, mock_cosmo_parameters, mock_mor_parameters
+):
+    """Runs TJPCovPipeline through the actual CLI entry point."""
+    cfg = _base_tjpcov_config(mock_cosmo_parameters, mock_mor_parameters)
+    config_path = _write_stage_yaml(tmp_path, "TJPCovPipeline", cfg)
+    output_path = tmp_path / "cov_cli.sacc"
+
+    result = run_ceci_stage(
+        module="clpipeline",
+        stage_name="TJPCovPipeline",
+        config_path=config_path,
+        io_args={
+            "clusters_sacc_file": str(mock_cluster_sacc_dense),
+            "clusters_sacc_file_cov": str(output_path),
+        },
+        cwd=tmp_path,
+    )
+    assert result.returncode == 0, f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
+
+    out = sacc.Sacc.load_fits(str(output_path))
+    assert out.covariance is not None

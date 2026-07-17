@@ -1,11 +1,9 @@
 """
 Tests for FirecrownPipeline.
 
-Ordered deliberately: file-generation tests (need only `ceci_stack`) come
-first, so a structural bug in the generator shows up immediately without
-waiting on any full-stack/slow test. Tests that need to actually import or
-execute cosmosis/firecrown/crow/pyccl are gated by `full_stack`, and the
-ones that do real computation are additionally marked `slow`.
+Tier 1 (ceci_stack) needs only ceci -- file generation, no cosmosis.
+Tier 2 (full_stack) checks generated config content, no execution.
+Tier 3 (full_stack + slow) actually runs cosmosis via stage.run() + subprocess.
 
 All output files are written under pytest's tmp_path.
 """
@@ -14,8 +12,10 @@ import configparser
 import subprocess
 
 import pytest
+import yaml
 
 from clpipeline.firecrown_pipeline import FirecrownPipeline
+from .conftest import run_ceci_stage
 
 
 COSMOLOGICAL_PARAMETERS = {
@@ -100,15 +100,12 @@ def _make_stage(tmp_path, sacc_path, cfg):
 
 
 def _without_param(params, name):
-    """Return a copy of a parameter dict with one entry removed."""
     d = dict(params)
     d.pop(name, None)
     return d
 
 
 def _as_fixed(params):
-    """Force every parameter in a dict to sample=False. Triplet [lo, val, hi]
-    values collapse to their central value; scalars pass through unchanged."""
     fixed = {}
     for name, spec in params.items():
         values = spec["values"]
@@ -118,9 +115,6 @@ def _as_fixed(params):
 
 
 def _as_sampled(params, spread=0.1):
-    """Force every parameter in a dict to sample=True. Scalars become a
-    [lo, val, hi] triplet with a modest fractional spread; existing
-    triplets pass through unchanged."""
     sampled = {}
     for name, spec in params.items():
         values = spec["values"]
@@ -133,9 +127,6 @@ def _as_sampled(params, spread=0.1):
 
 
 def _section_sample_flags(ini_path, section, names):
-    """Read a generated CosmoSIS parameters .ini and return, for each
-    parameter name in `names`, whether it was written as a 3-value sampled
-    entry ('lo val hi') or a single fixed value."""
     parser = configparser.ConfigParser()
     parser.read(ini_path)
     flags = {}
@@ -145,27 +136,23 @@ def _section_sample_flags(ini_path, section, names):
     return flags
 
 
+def _write_stage_yaml(tmp_path, stage_name, cfg):
+    config_path = tmp_path / "stage_config.yml"
+    with open(config_path, "w") as f:
+        yaml.safe_dump({stage_name: cfg}, f)
+    return config_path
+
+
 def _run_full_cosmosis(tmp_path, cfg, sacc_fixture):
-    """Generate all three FirecrownPipeline outputs (.py, .ini, params.ini)
-    and actually invoke the `cosmosis` executable against them, returning
-    the completed subprocess.CompletedProcess. This is the real-execution
-    path -- not a config check. Filenames match the tags FirecrownPipeline
-    is configured with in _make_stage.
-    """
+    """Runs the stage via stage.run(), then invokes cosmosis on its output."""
     sacc_in_place = tmp_path / "clusters_sacc_file_cov.sacc"
     sacc_in_place.write_bytes(sacc_fixture.read_bytes())
     stage = _make_stage(tmp_path, sacc_in_place, cfg)
+    stage.run()
 
     ini_path = tmp_path / "cluster_counts_mean_mass_redshift_richness.ini"
-    py_path = tmp_path / "cluster_redshift_richness.py"
-    params_path = tmp_path / "cluster_richness_values.ini"
 
-    assert stage.generate_python_file(str(py_path))
-    assert stage.generate_ini_file(str(ini_path))
-    assert stage.generate_cosmosis_parameters_file(str(params_path))
-
-    # cosmosis is installed as a console-script entry point, not a runnable
-    # module -- `python -m cosmosis` does not work (no __main__.py).
+    # cosmosis is a console-script entry point, not a runnable module.
     return subprocess.run(
         ["cosmosis", str(ini_path)],
         cwd=tmp_path,
@@ -176,29 +163,24 @@ def _run_full_cosmosis(tmp_path, cfg, sacc_fixture):
 
 
 # ---------------------------------------------------------------------------
-# Tier 1: file generation only (ceci_stack) -- fast, run these first
+# Tier 1: file generation only (ceci_stack) -- fast
 # ---------------------------------------------------------------------------
 
 @pytest.mark.parametrize(
     "overrides",
     [
-        {},  # baseline: counts + shear, deltasigma, grid
-        {"use_shear_profile": False, "use_mean_deltasigma": False},  # counts only
-        {"use_cluster_counts": False},  # shear only
-        {"use_grid": False},  # exact binned recipe instead of grid
-        {"is_deltasigma": False},  # reduced shear instead of delta sigma
-        {"use_completeness": False, "use_purity": False},  # no selection function
-        {"use_beta_interp": True},  # beta interpolation branch
-        {"two_halo_term": True, "boost_factor": True},  # extra shear terms
+        {},
+        {"use_shear_profile": False, "use_mean_deltasigma": False},
+        {"use_cluster_counts": False},
+        {"use_grid": False},
+        {"is_deltasigma": False},
+        {"use_completeness": False, "use_purity": False},
+        {"use_beta_interp": True},
+        {"two_halo_term": True, "boost_factor": True},
     ],
     ids=[
-        "baseline",
-        "counts_only",
-        "shear_only",
-        "exact_binned",
-        "reduced_shear",
-        "no_selection_function",
-        "beta_interp",
+        "baseline", "counts_only", "shear_only", "exact_binned",
+        "reduced_shear", "no_selection_function", "beta_interp",
         "two_halo_and_boost",
     ],
 )
@@ -212,7 +194,7 @@ def test_generated_python_is_syntactically_valid(ceci_stack, tmp_path, overrides
     assert ok, f"generate_python_file failed for overrides={overrides}"
 
     source = output_path.read_text()
-    tree = ast.parse(source)  # raises SyntaxError -> test failure if invalid
+    tree = ast.parse(source)
 
     func_names = {
         node.name for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)
@@ -230,10 +212,7 @@ def test_generated_python_is_syntactically_valid(ceci_stack, tmp_path, overrides
 
 
 def test_sacc_path_baked_in_is_basename_only(ceci_stack, tmp_path):
-    """Regression test: the generated likelihood script must reference the
-    sacc file by basename only, since cosmosis runs with cwd set to the
-    output directory that holds the sacc file, not the directory ceci was
-    invoked from."""
+    """The generated script must reference the sacc file by basename only."""
     cfg = _base_firecrown_config()
     nested_sacc_path = tmp_path / "some" / "nested" / "dir" / "clusters_sacc_file_cov.sacc"
     stage = _make_stage(tmp_path, nested_sacc_path, cfg)
@@ -248,9 +227,7 @@ def test_sacc_path_baked_in_is_basename_only(ceci_stack, tmp_path):
 
 
 # ---------------------------------------------------------------------------
-# Tier 2: .ini content checks (full_stack to import cosmosis/firecrown, but
-# not slow -- generate_ini_file / generate_cosmosis_parameters_file don't
-# execute cosmosis, just write config files)
+# Tier 2: .ini content checks (full_stack, not slow)
 # ---------------------------------------------------------------------------
 
 @pytest.mark.parametrize("resume", [False, True])
@@ -283,11 +260,6 @@ def test_filename_option_used_not_hardcoded_default(full_stack, tmp_path):
 
 
 def test_only_cosmo_sampled_writes_correct_priors(full_stack, tmp_path):
-    """Config-level check (cheap, non-slow): when only the cosmological
-    block is set to sample=True, every cosmo parameter should be written as
-    a 3-value CosmoSIS range and every firecrown/MOR parameter as a single
-    fixed value. This is a precondition check for the real-execution test
-    below, not a substitute for it."""
     cfg = _base_firecrown_config(
         cosmological_parameters=_as_sampled(COSMOLOGICAL_PARAMETERS),
         firecrown_parameters=_as_fixed(FIRECROWN_PARAMETERS),
@@ -304,13 +276,11 @@ def test_only_cosmo_sampled_writes_correct_priors(full_stack, tmp_path):
     mor_flags = _section_sample_flags(
         params_path, "firecrown_number_counts", FIRECROWN_PARAMETERS.keys()
     )
-    assert all(cosmo_flags.values()), f"expected all cosmo params sampled, got: {cosmo_flags}"
-    assert not any(mor_flags.values()), f"expected all MOR params fixed, got: {mor_flags}"
+    assert all(cosmo_flags.values())
+    assert not any(mor_flags.values())
 
 
 def test_only_mor_sampled_writes_correct_priors(full_stack, tmp_path):
-    """Inverse of the above: only the mass-observable-relation block is
-    sampled, cosmology entirely fixed."""
     cfg = _base_firecrown_config(
         cosmological_parameters=_as_fixed(COSMOLOGICAL_PARAMETERS),
         firecrown_parameters=_as_sampled(FIRECROWN_PARAMETERS),
@@ -327,35 +297,23 @@ def test_only_mor_sampled_writes_correct_priors(full_stack, tmp_path):
     mor_flags = _section_sample_flags(
         params_path, "firecrown_number_counts", FIRECROWN_PARAMETERS.keys()
     )
-    assert not any(cosmo_flags.values()), f"expected all cosmo params fixed, got: {cosmo_flags}"
-    assert all(mor_flags.values()), f"expected all MOR params sampled, got: {mor_flags}"
+    assert not any(cosmo_flags.values())
+    assert all(mor_flags.values())
 
 
 # ---------------------------------------------------------------------------
-# Tier 3: actually run cosmosis (full_stack + slow) -- these are the
-# meaningful tests: they exercise the real firecrown parameter-binding
-# path, the same one that produced the MissingSamplerParameterError /
-# RuntimeError shown when purity_a_n was removed manually.
+# Tier 3: stage.run() + actual cosmosis execution (full_stack, slow)
 # ---------------------------------------------------------------------------
 
 @pytest.mark.slow
 def test_generated_files_run_with_test_sampler(full_stack, tmp_path, mock_cluster_sacc_dense):
-    """Full smoke test with the complete baseline config: everything that's
-    required is present, so this should run cleanly end to end."""
     cfg = _base_firecrown_config(sampler="test", filename=str(tmp_path / "chain.txt"))
     result = _run_full_cosmosis(tmp_path, cfg, mock_cluster_sacc_dense)
-    assert result.returncode == 0, (
-        f"cosmosis test-sampler run failed.\n"
-        f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
-    )
+    assert result.returncode == 0, f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
 
 
 @pytest.mark.slow
 def test_only_cosmo_sampled_runs_successfully(full_stack, tmp_path, mock_cluster_sacc_dense):
-    """test sampler evaluates the likelihood once regardless of the sample
-    flag, so this mainly confirms that toggling sample=True/False doesn't
-    accidentally drop a parameter out of the generated files -- if it did,
-    this would fail the same way the purity_a_n removal did."""
     cfg = _base_firecrown_config(
         sampler="test",
         filename=str(tmp_path / "chain.txt"),
@@ -363,9 +321,7 @@ def test_only_cosmo_sampled_runs_successfully(full_stack, tmp_path, mock_cluster
         firecrown_parameters=_as_fixed(FIRECROWN_PARAMETERS),
     )
     result = _run_full_cosmosis(tmp_path, cfg, mock_cluster_sacc_dense)
-    assert result.returncode == 0, (
-        f"cosmo-only-sampled run failed.\nstdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
-    )
+    assert result.returncode == 0, f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
 
 
 @pytest.mark.slow
@@ -377,9 +333,7 @@ def test_only_mor_sampled_runs_successfully(full_stack, tmp_path, mock_cluster_s
         firecrown_parameters=_as_sampled(FIRECROWN_PARAMETERS),
     )
     result = _run_full_cosmosis(tmp_path, cfg, mock_cluster_sacc_dense)
-    assert result.returncode == 0, (
-        f"MOR-only-sampled run failed.\nstdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
-    )
+    assert result.returncode == 0, f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
 
 
 @pytest.mark.slow
@@ -390,10 +344,6 @@ def test_only_mor_sampled_runs_successfully(full_stack, tmp_path, mock_cluster_s
 def test_missing_purity_parameter_fails_at_runtime(
     full_stack, tmp_path, mock_cluster_sacc_dense, missing_param
 ):
-    """Direct regression test for the failure mode you hit manually:
-    removing a purity_* parameter while use_purity=True should surface
-    firecrown's own MissingSamplerParameterError, naming that exact
-    parameter, not an unrelated or silent failure."""
     cfg = _base_firecrown_config(
         sampler="test",
         filename=str(tmp_path / "chain.txt"),
@@ -403,31 +353,21 @@ def test_missing_purity_parameter_fails_at_runtime(
     result = _run_full_cosmosis(tmp_path, cfg, mock_cluster_sacc_dense)
     combined = result.stdout + result.stderr
 
-    assert result.returncode != 0, (
-        f"Expected failure with {missing_param} missing, but cosmosis exited 0.\n"
-        f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
-    )
-    assert missing_param in combined, (
-        f"Expected the missing parameter name '{missing_param}' to appear in "
-        f"cosmosis output, but it didn't.\nstdout:\n{result.stdout}\n\n"
-        f"stderr:\n{result.stderr}"
-    )
+    assert result.returncode != 0, f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
+    assert missing_param in combined
 
 
 @pytest.mark.slow
 @pytest.mark.parametrize(
     "missing_param",
     [
-        "completeness_a_n",
-        "completeness_b_n",
-        "completeness_a_logm_piv",
-        "completeness_b_logm_piv",
+        "completeness_a_n", "completeness_b_n",
+        "completeness_a_logm_piv", "completeness_b_logm_piv",
     ],
 )
 def test_missing_completeness_parameter_fails_at_runtime(
     full_stack, tmp_path, mock_cluster_sacc_dense, missing_param
 ):
-    """Mirror of the purity test for use_completeness=True."""
     cfg = _base_firecrown_config(
         sampler="test",
         filename=str(tmp_path / "chain.txt"),
@@ -437,15 +377,8 @@ def test_missing_completeness_parameter_fails_at_runtime(
     result = _run_full_cosmosis(tmp_path, cfg, mock_cluster_sacc_dense)
     combined = result.stdout + result.stderr
 
-    assert result.returncode != 0, (
-        f"Expected failure with {missing_param} missing, but cosmosis exited 0.\n"
-        f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
-    )
-    assert missing_param in combined, (
-        f"Expected the missing parameter name '{missing_param}' to appear in "
-        f"cosmosis output, but it didn't.\nstdout:\n{result.stdout}\n\n"
-        f"stderr:\n{result.stderr}"
-    )
+    assert result.returncode != 0, f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
+    assert missing_param in combined
 
 
 @pytest.mark.slow
@@ -453,10 +386,6 @@ def test_missing_completeness_parameter_fails_at_runtime(
 def test_missing_cluster_concentration_fails_at_runtime(
     full_stack, tmp_path, mock_cluster_sacc_dense, is_deltasigma
 ):
-    """cluster_theory_cluster_concentration is bound whenever a shear
-    profile is requested (delta_sigma or reduced shear alike -- see the
-    class docstring on cluster_concentration=None at construction).
-    """
     cfg = _base_firecrown_config(
         sampler="test",
         filename=str(tmp_path / "chain.txt"),
@@ -469,25 +398,14 @@ def test_missing_cluster_concentration_fails_at_runtime(
     result = _run_full_cosmosis(tmp_path, cfg, mock_cluster_sacc_dense)
     combined = result.stdout + result.stderr
 
-    assert result.returncode != 0, (
-        f"Expected failure with cluster_theory_cluster_concentration missing, "
-        f"but cosmosis exited 0.\nstdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
-    )
-    assert "cluster_theory_cluster_concentration" in combined, (
-        f"Expected the missing parameter name to appear in cosmosis output.\n"
-        f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
-    )
+    assert result.returncode != 0, f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
+    assert "cluster_theory_cluster_concentration" in combined
 
 
 @pytest.mark.slow
 def test_selection_function_disabled_runs_without_purity_completeness_params(
     full_stack, tmp_path, mock_cluster_sacc_dense
 ):
-    """Inverse guard for the missing-parameter tests above: when
-    use_purity=False and use_completeness=False, those parameters aren't
-    required at all -- removing them should NOT cause a failure. Confirms
-    firecrown's requirement is genuinely conditional on the flags, not on
-    the parameter dict's contents."""
     stripped = FIRECROWN_PARAMETERS
     for name in [
         "purity_a_n", "purity_b_n", "purity_a_logm_piv", "purity_b_logm_piv",
@@ -504,8 +422,43 @@ def test_selection_function_disabled_runs_without_purity_completeness_params(
         firecrown_parameters=stripped,
     )
     result = _run_full_cosmosis(tmp_path, cfg, mock_cluster_sacc_dense)
-    assert result.returncode == 0, (
-        f"Expected success with purity/completeness disabled and their params "
-        f"removed, but cosmosis failed.\nstdout:\n{result.stdout}\n\n"
-        f"stderr:\n{result.stderr}"
+    assert result.returncode == 0, f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
+
+
+# ---------------------------------------------------------------------------
+# CLI dispatch (python -m clpipeline), not direct instantiation
+# ---------------------------------------------------------------------------
+
+@pytest.mark.slow
+def test_cli_invocation_generates_all_outputs(full_stack, tmp_path, mock_cluster_sacc_dense):
+    """Runs FirecrownPipeline through the actual CLI entry point."""
+    sacc_in_place = tmp_path / "clusters_sacc_file_cov.sacc"
+    sacc_in_place.write_bytes(mock_cluster_sacc_dense.read_bytes())
+
+    cfg = _base_firecrown_config(sampler="test", filename=str(tmp_path / "chain.txt"))
+    config_path = _write_stage_yaml(tmp_path, "FirecrownPipeline", cfg)
+
+    ini_path = tmp_path / "cluster_counts_mean_mass_redshift_richness.ini"
+    py_path = tmp_path / "cluster_redshift_richness.py"
+    params_path = tmp_path / "cluster_richness_values.ini"
+
+    result = run_ceci_stage(
+        module="clpipeline",
+        stage_name="FirecrownPipeline",
+        config_path=config_path,
+        io_args={
+            "clusters_sacc_file_cov": str(sacc_in_place),
+            "cluster_counts_mean_mass_redshift_richness": str(ini_path),
+            "cluster_redshift_richness": str(py_path),
+            "cluster_richness_values": str(params_path),
+        },
+        cwd=tmp_path,
     )
+    assert result.returncode == 0, f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
+
+    assert ini_path.exists() and py_path.exists() and params_path.exists()
+    ast.parse(py_path.read_text())
+
+    parser = configparser.ConfigParser()
+    parser.read(ini_path)
+    assert "runtime" in parser

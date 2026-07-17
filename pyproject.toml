@@ -22,3 +22,6 @@ markers = [
 ]
 addopts = "--strict-markers"
 testpaths = ["tests"]
+filterwarnings = [
+    "ignore:Conversion of an array with ndim > 0 to a scalar is deprecated.*:DeprecationWarning:scipy\\.integrate",
+]

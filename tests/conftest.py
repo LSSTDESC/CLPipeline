@@ -229,30 +229,10 @@ def full_stack():
     pytest.importorskip("cosmosis")
 
 
-# ---------------------------------------------------------------------------
-# ceci stage runner (subprocess, CLI-based)
-#
-# Direct construction (TJPCovPipeline({...}), FirecrownPipeline({...})) is
-# confirmed to work against the installed ceci version and is what the
-# actual tests use. This subprocess-based helper is kept as a fallback for
-# cases where direct construction isn't viable (e.g. testing __main__.py
-# argument parsing itself), not needed for the main test suite.
-# ---------------------------------------------------------------------------
 def run_ceci_stage(module, stage_name, config_path, io_args, cwd):
     """Run a single ceci PipelineStage via the CLI, matching how
     clpipeline/__main__.py -> PipelineStage.main() is invoked in
     production.
-
-    IMPORTANT: verify these flag names against your actual ceci version /
-    __main__.py before relying on this. ceci's PipelineStage.main() is
-    normally invoked as:
-
-        python -m <module> <StageName> --<input_tag>=<path> ...
-            --<output_tag>=<path> ... --config=<config.yml>
-
-    where <input_tag>/<output_tag> are exactly the string tags used in the
-    stage's `inputs`/`outputs` class attributes (e.g. "clusters_sacc_file",
-    "clusters_sacc_file_cov"), not arbitrary names.
 
     Args:
         module: python -m target, e.g. "clpipeline"
