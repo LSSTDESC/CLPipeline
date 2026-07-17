@@ -2,7 +2,13 @@
 #File dedicated to impement the TJPCov pipeline stage into ceci
 from .file_types import SACCFile
 from ceci import PipelineStage
-import sys
+from ceci.config import StageParameter
+import numpy as np
+
+# Some older CROW/TJPCov code paths still reference np.bool (removed in
+# recent numpy). Alias once at import time rather than per-call.
+if not hasattr(np, 'bool'):
+    np.bool = bool
 
 
 class TJPCovPipeline(PipelineStage):
@@ -12,9 +18,9 @@ class TJPCovPipeline(PipelineStage):
     This stage:
     - Reads an input SACC file (data vector)
     - Computes covariance terms using TJPCov
-    - Writes a new SACC file with covariance
-    - Optionally preserves non-cluster covariance blocks
+    - Optionally merges in non-cluster covariance blocks from the input file
     - Optionally replaces cluster-count covariance using CROW
+    - Writes a single output SACC file with the final covariance
 
     Key configuration groups:
     - Covariance selection (cov_type)
@@ -34,12 +40,30 @@ class TJPCovPipeline(PipelineStage):
     outputs = [
         ("clusters_sacc_file_cov", SACCFile),
     ]
-
     config_options = {
-        "txpipe_flag": True,
-        "firecrown_flag": False,
-        "replace_tjpcov_cov": True,
-        "sel_func": True,
+        "replace_tjpcov_cov": StageParameter(bool, True, msg="Replace TJPCov cluster-count covariance with CROW covariance."),
+        # Selection function
+        "sel_func": StageParameter(bool, True, msg="Include purity and completeness selection functions."),
+        "wazp_catalog": StageParameter(bool, False, msg="Use WaZP completeness parameters instead of Aguena+16 defaults (extra, non-default)."),
+        "diagonal_shear_covariance": StageParameter(
+            bool, True,
+            msg=(
+                "If True, keep only the diagonal (per radius-bin variance) of "
+                "non-cluster-count covariance blocks (e.g. cluster_delta_sigma) "
+                "when merging them from the input SACC file."
+            ),
+        ),
+        # TJPCov options
+        "use_mpi": StageParameter(bool, False, msg="Use MPI parallelization in TJPCov."),
+        "do_xi": StageParameter(bool, False, msg="Compute xi covariance terms."),
+        "cov_type": StageParameter(list, ["ClusterCountsGaussian", "ClusterCountsSSC"], msg="TJPCov covariance terms to compute."),
+        # Cosmology
+        "cosmo": StageParameter(str, "set", msg="How cosmology is provided to TJPCov."),
+        "parameters": StageParameter(dict, {}, msg="Cosmological parameters used to build CCL cosmology if cosmo='set'."),
+        # Photo-z
+        "photo-z": StageParameter(dict, {}, msg="Photo-z uncertainty parameters."),
+        # Mass-observable relation
+        "mor_parameters": StageParameter(dict, {}, msg="Mass-observable relation parameters."),
     }
 
     def run(self):
@@ -48,8 +72,9 @@ class TJPCovPipeline(PipelineStage):
 
         - Load input SACC file
         - Compute covariance via TJPCov
-        - Merge with existing covariance (if needed)
+        - Merge with existing non-cluster covariance blocks (if needed)
         - Optionally replace cluster-count covariance
+        - Save the final result exactly once
         """
         import sacc
         import time
@@ -57,15 +82,12 @@ class TJPCovPipeline(PipelineStage):
 
         # tjpcov packages
         from tjpcov.covariance_calculator import CovarianceCalculator
-        from tjpcov.covariance_cluster_counts_ssc import ClusterCountsSSC
 
-        # compute covariance terms from the covariance class (and save results in a .sacc file)
         st = time.time()
-        tjpcov_out_sacc = self.get_output('clusters_sacc_file_cov', final_name=True) 
+        tjpcov_out_sacc = self.get_output('clusters_sacc_file_cov', final_name=True)
         config_dict = self.config.to_dict()
         outdir = os.path.dirname(tjpcov_out_sacc)
         filename = os.path.basename(tjpcov_out_sacc)
-        config_dict = self.config.to_dict()
         config_dict['outdir'] = outdir
         sacc_file = self.get_input("clusters_sacc_file")
         # Load the SACC file
@@ -77,18 +99,38 @@ class TJPCovPipeline(PipelineStage):
 
         # Check if covariance is present
         has_covariance = sacc_obj.covariance is not None
+
+        # TJPCov expects settings both nested under "tjpcov" (most of
+        # CovarianceBuilder) and at top level (e.g. get_cosmology() reads
+        # config["parameters"] directly).
         config_dict['sacc_file'] = sacc_file
         combined_config = {'tjpcov': config_dict}
         combined_config.update(config_dict)
+
         cc = CovarianceCalculator(combined_config)
-        cov_terms     = cc.get_covariance_terms()
+        cov_terms = cc.get_covariance_terms()   # {'gauss': array, 'SSC': array}
+        full_cov = cc.get_covariance()
         sacc_with_cov = cc.create_sacc_cov(output=filename, save_terms=True)
-        print('Time: ', (time.time()-st), ' sec')
-        if only_counts == False and has_covariance == True:
-            new_sacc = self.extract_data_covariance(sacc_file, tjpcov_out_sacc)
+        print('Time: ', (time.time() - st), ' sec')
+
+        # From here on, full_cov and sacc_with_cov are the single source of
+        # truth. Both post-processing steps mutate and hand them forward;
+        # nothing is reloaded from disk, and we save exactly once at the end.
+        if not only_counts and has_covariance:
+            full_cov = self.merge_data_covariance(
+                sacc_obj, full_cov,
+                diagonal_only=config_dict.get("diagonal_shear_covariance", True),
+            )
+
         if config_dict["replace_tjpcov_cov"]:
             print("Replacing Counts TJPCov cov for Crow cov. SSC + Counts")
-            self.replace_crow_counts(config_dict)
+            full_cov = self.replace_crow_counts(
+                config_dict, sacc_with_cov, cov_terms, full_cov
+            )
+
+        sacc_with_cov.covariance = sacc.covariance.FullCovariance(full_cov)
+        sacc_with_cov.save_fits(tjpcov_out_sacc, overwrite=True)
+
     def extract_and_save_cluster_counts(self, input_sacc_file: str, output_sacc_file: str):
         """
         Reads a SACC file, extracts only the cluster counts data (without covariance),
@@ -120,31 +162,53 @@ class TJPCovPipeline(PipelineStage):
         new_sacc.to_canonical_order()
         new_sacc.save_fits(output_sacc_file, overwrite=True)
         return output_sacc_file
-    
-    def extract_data_covariance(self, input_sacc_file: str, output_sacc_file: str):
+
+    def merge_data_covariance(self, sacc_obj, full_cov, diagonal_only=True):
         """
-        Reads a SACC file, extracts only the cluster counts data (without covariance),
-        and saves it to a new SACC file.
+        Copy non-cluster-count covariance blocks from the original input
+        SACC file's covariance into the newly computed full covariance.
+
+        TJPCov only computes cluster-related covariance terms in this
+        pipeline (cov_type is restricted to Cluster* classes), so any other
+        data type (e.g. cluster_delta_sigma) that was already present with a
+        covariance in the input file needs to be preserved here rather than
+        left at TJPCov's placeholder value.
 
         Args:
-            input_sacc_file (str): Path to the input SACC file containing full data.
-            output_sacc_file (str): Path where the new SACC file with only cluster counts will be saved.
+            sacc_obj (sacc.Sacc): The original input SACC file, still
+                carrying its original covariance matrix.
+            full_cov (np.ndarray): The newly computed full covariance array
+                to merge non-cluster blocks into (modified in place and
+                returned).
+            diagonal_only (bool): If True, only copy the diagonal (per-point
+                variance) for each non-cluster-count data type, dropping any
+                off-diagonal correlation between data points of that type.
+
+        Returns:
+            np.ndarray: full_cov with non-cluster-count blocks copied over
+            from sacc_obj, either diagonal-only or full dense blocks
+            depending on diagonal_only.
         """
         import sacc
-        import numpy as np
-        if not hasattr(np, 'bool'):
-            np.bool = bool  # add alias if missing
-        # Load the input SACC file
-        sacc_data_cov = sacc.Sacc.load_fits(input_sacc_file)
-        sacc_final = sacc.Sacc.load_fits(output_sacc_file)
-        data_types_sacc = [d_type for d_type in sacc_data_cov.get_data_types() if d_type != sacc.standard_types.cluster_counts]
-        for d_type in data_types_sacc:
-            ix1 = sacc_data_cov.indices(data_type=d_type)
-            sacc_final.covariance.covmat[ix1,ix1] = sacc_data_cov.covariance.covmat[ix1,ix1]
-        sacc_final.save_fits(output_sacc_file, overwrite=True)
-        return sacc_final
 
-    def replace_crow_counts(self, config_dict):
+        data_types_sacc = [
+            d_type for d_type in sacc_obj.get_data_types()
+            if d_type != sacc.standard_types.cluster_counts
+        ]
+        for d_type in data_types_sacc:
+            ix1 = sacc_obj.indices(data_type=d_type)
+            if diagonal_only:
+                # Deliberately keep only per-point variance: off-diagonal
+                # radius-radius terms are dropped, not accidentally lost.
+                full_cov[ix1, ix1] = sacc_obj.covariance.covmat[ix1, ix1]
+            else:
+                # np.ix_ is required for a full block copy: covmat[ix1, ix1]
+                # would only pick out diagonal elements pairwise, not the
+                # full (ix1 x ix1) block.
+                full_cov[np.ix_(ix1, ix1)] = sacc_obj.covariance.covmat[np.ix_(ix1, ix1)]
+        return full_cov
+
+    def replace_crow_counts(self, config_dict, sacc_full, cov_terms, full_cov):
         """
         Replace TJPCov cluster-count covariance using CROW predictions.
 
@@ -159,15 +223,26 @@ class TJPCovPipeline(PipelineStage):
         WARNING:
         - Hardcoded modeling choices (mass function, grids)
         - Should eventually be implemented inside TJPCov
+
+        Args:
+            config_dict (dict): Stage configuration.
+            sacc_full (sacc.Sacc): SACC object with tracers/data points for
+                the full covariance (used to look up tracer metadata).
+            cov_terms (dict): {'gauss': array, 'SSC': array} raw covariance
+                term arrays from TJPCov.
+            full_cov (np.ndarray): Full covariance array to modify in place.
+
+        Returns:
+            np.ndarray: full_cov with cluster-count blocks replaced.
         """
         import sacc
-        import numpy as np
         import pyccl as ccl
         from crow import ClusterAbundance
         from crow.recipes.binned_grid import GridBinnedClusterRecipe
         from crow import completeness_models, mass_proxy, purity_models, kernel
-        #This function should not exist as it should be implemented in TJPCov
-        #This is temporary and so most of the options and configurations are fixed
+
+        # This function should not exist as it should be implemented in TJPCov.
+        # This is temporary and so most of the options and configurations are fixed.
         is_wazp = config_dict.get("wazp_catalog", False)
         sel_func = config_dict.get("sel_func", True)
         cosmo_params = config_dict["parameters"]
@@ -194,7 +269,7 @@ class TJPCovPipeline(PipelineStage):
         mass_grid_size     = 80
         redshift_grid_size = 40
         proxy_grid_size    = 40
-        mass_interval      = (np.log10(float(mor_params["min_halo_mass"])),np.log10(float(mor_params["max_halo_mass"])))
+        mass_interval      = (np.log10(float(mor_params["min_halo_mass"])), np.log10(float(mor_params["max_halo_mass"])))
         cl_abundance          = ClusterAbundance(cosmo, hmf)
         purity_aguena         = purity_models.PurityAguena16LnProxy()
         completeness_aguena   = completeness_models.CompletenessAguena16()
@@ -220,22 +295,18 @@ class TJPCovPipeline(PipelineStage):
             completeness=completeness_aguena
         )
         recipe_grid_abundance.setup()
-        sacc_tjpcov_ssc = sacc.Sacc.load_fits(f"{config_dict['outdir']}/clusters_sacc_file_cov_SSC.sacc")
-        sacc_tjpcov_counts = sacc.Sacc.load_fits(f"{config_dict['outdir']}/clusters_sacc_file_cov_gauss.sacc")
-        sacc_tjpcov_full = sacc.Sacc.load_fits(f"{config_dict['outdir']}/clusters_sacc_file_cov.sacc")
 
-        ssc_cov   = sacc_tjpcov_ssc.covariance.covmat.copy()
-        counts_cov = sacc_tjpcov_counts.covariance.covmat.copy()
-        full_cov  = sacc_tjpcov_full.covariance.covmat.copy()
+        ssc_cov    = cov_terms["SSC"].copy()
+        counts_cov = cov_terms["gauss"].copy()
 
         data_type = sacc.standard_types.cluster_counts
-        data_points = sacc_tjpcov_full.get_data_points(data_type=data_type)
+        data_points = sacc_full.get_data_points(data_type=data_type)
         theory_counts = {}
 
         for d_point in data_points:
             trs = d_point.tracers
-            point_idx = sacc_tjpcov_full.indices(data_type=data_type, tracers=trs)
-            tr_objs = [sacc_tjpcov_full.get_tracer(tr) for tr in trs]
+            point_idx = sacc_full.indices(data_type=data_type, tracers=trs)
+            tr_objs = [sacc_full.get_tracer(tr) for tr in trs]
             area   = tr_objs[0].sky_area
             rich_l = tr_objs[1].lower
             rich_u = tr_objs[1].upper
@@ -249,23 +320,20 @@ class TJPCovPipeline(PipelineStage):
             )
 
         for i in theory_counts:
-            tjpcov_counts_i = counts_cov[i,i]
-            ssc_term_i      = ssc_cov[i,i]
-            old_cov_ii = full_cov[i,i]            
-            full_cov[i,i]   = theory_counts[i] + ssc_term_i * theory_counts[i]**2 / (tjpcov_counts_i**2)
-            print(f"Replaced cov points at {i,i}. From {old_cov_ii} to {full_cov[i,i]}")
+            tjpcov_counts_i = counts_cov[i, i]
+            ssc_term_i      = ssc_cov[i, i]
+            old_cov_ii = full_cov[i, i]
+            full_cov[i, i] = theory_counts[i] + ssc_term_i * theory_counts[i]**2 / (tjpcov_counts_i**2)
+            print(f"Replaced cov points at {i, i}. From {old_cov_ii} to {full_cov[i, i]}")
             for j in theory_counts:
                 if j <= i:
                     continue
-                old_cov_ij      = full_cov[i,j]
-                tjpcov_counts_j = counts_cov[j,j] 
-                ssc_term_ij     = ssc_cov[i,j]
+                old_cov_ij      = full_cov[i, j]
+                tjpcov_counts_j = counts_cov[j, j]
+                ssc_term_ij     = ssc_cov[i, j]
                 val = ssc_term_ij * theory_counts[i] * theory_counts[j] / (tjpcov_counts_i * tjpcov_counts_j)
-                full_cov[i,j] = val
-                full_cov[j,i] = val
-                print(f"Replaced cov points at {i,j}. From {old_cov_ij} to {full_cov[i,j]}")
-        sacc_tjpcov_full.covariance = sacc.covariance.FullCovariance(full_cov)
-        sacc_tjpcov_full.save_fits(f"{config_dict['outdir']}/clusters_sacc_file_cov.sacc", overwrite=True)
+                full_cov[i, j] = val
+                full_cov[j, i] = val
+                print(f"Replaced cov points at {i, j}. From {old_cov_ij} to {full_cov[i, j]}")
 
-
-
+        return full_cov

@@ -9,9 +9,19 @@ authors = [
 ]
 description = "CLPipeline project"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.12"
 [tool.setuptools.packages.find]
 where = ["."]
 [project.urls]
 Homepage = "https://github.com/eduardojsbarroso/CLPipeline"
 Issues = "https://github.com/eduardojsbarroso/CLPipeline/issues"
+
+[tool.pytest.ini_options]
+markers = [
+    "slow: does real covariance computation or runs cosmosis; needs the full DESC stack",
+]
+addopts = "--strict-markers"
+testpaths = ["tests"]
+filterwarnings = [
+    "ignore:Conversion of an array with ndim > 0 to a scalar is deprecated.*:DeprecationWarning:scipy\\.integrate",
+]
