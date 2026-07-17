@@ -20,7 +20,6 @@ dependencies:
   - getdist
   - glib
   - idna
-  - lsstdesc-ceci=2.4.*
   - matplotlib-base
   - more-itertools
   - mypy
@@ -58,6 +57,7 @@ dependencies:
   - linkchecker
   - pytest-json-report
   - pip:
+    - ceci>= 2.5
     - qp-prob
     - git+https://github.com/LSSTDESC/CLMM.git@1.14.6
     - git+https://github.com/LSSTDESC/firecrown
