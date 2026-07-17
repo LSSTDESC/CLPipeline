@@ -24,6 +24,7 @@ dependencies:
   - more-itertools
   - mypy
   - numpy >= 2.0, < 2.4
+  - numcosmo >= 0.27
   - pip >= 20.1
   - portalocker
   - pybobyqa
@@ -32,7 +33,7 @@ dependencies:
   - pylint
   - pytest
   - pytest-cov
-  - python >=3.11
+  - python >=3.12
   - pyyaml
   - requests
   - sacc >= 2.1
