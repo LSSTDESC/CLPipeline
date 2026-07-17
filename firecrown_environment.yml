@@ -57,7 +57,7 @@ dependencies:
   - linkchecker
   - pytest-json-report
   - pip:
-    - ceci>= 2.5
+    - ceci >= 2.5
     - qp-prob
     - git+https://github.com/LSSTDESC/CLMM.git@1.14.6
     - git+https://github.com/LSSTDESC/firecrown
