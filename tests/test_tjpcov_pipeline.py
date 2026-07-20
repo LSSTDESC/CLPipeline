@@ -1,11 +1,3 @@
-"""
-Tests for TJPCovPipeline.
-
-TJPCovPipeline.run() always does real covariance computation (tjpcov/pyccl/
-crow, no dry-run mode exists), so every test here needs the `full_stack`
-fixture and is marked `slow`. All output files are written under pytest's
-tmp_path, nothing needs manual cleanup.
-"""
 import numpy as np
 import pytest
 import sacc
@@ -14,15 +6,12 @@ import yaml
 from clpipeline.tjpcov_pipeline import TJPCovPipeline
 from .conftest import run_ceci_stage
 
-# cluster_counts tracers never carry a radius bin (unlike
-# cluster_delta_sigma), so radius-keyed lookups against them are
-# structurally empty and SACC warns on it. Expected, not a bug.
 pytestmark = pytest.mark.filterwarnings(
     "ignore:Empty index selected.*:UserWarning"
 )
 
 
-def _base_tjpcov_config(cosmo_parameters, mor_parameters, **overrides):
+def _base_tjpcov_config(mor_parameters, **overrides):
     cfg = {
         "replace_tjpcov_cov": True,
         "sel_func": True,
@@ -31,8 +20,6 @@ def _base_tjpcov_config(cosmo_parameters, mor_parameters, **overrides):
         "use_mpi": False,
         "do_xi": False,
         "cov_type": ["ClusterCountsGaussian", "ClusterCountsSSC"],
-        "cosmo": "set",
-        "parameters": cosmo_parameters,
         "photo-z": {"sigma_0": 0.05},
         "mor_parameters": mor_parameters,
     }
@@ -40,12 +27,13 @@ def _base_tjpcov_config(cosmo_parameters, mor_parameters, **overrides):
     return cfg
 
 
-def _run_tjpcov_stage(input_sacc_path, output_sacc_path, tjpcov_cfg):
+def _run_tjpcov_stage(input_sacc_path, output_sacc_path, fiducial_cosmology_path, tjpcov_cfg):
     stage = TJPCovPipeline(
         {
             "config": None,
             "clusters_sacc_file": str(input_sacc_path),
             "clusters_sacc_file_cov": str(output_sacc_path),
+            "fiducial_cosmology": str(fiducial_cosmology_path),
         }
     )
     stage.config.update(tjpcov_cfg)
@@ -66,7 +54,6 @@ def _diag_block(cov, idx):
 
 
 def _radius_group_indices(sacc_obj, data_type):
-    """Group data point indices by (survey, richness, z) tracer combo."""
     data_points = sacc_obj.get_data_points(data_type=data_type)
     groups = {}
     for dp in data_points:
@@ -78,14 +65,11 @@ def _radius_group_indices(sacc_obj, data_type):
 
 @pytest.mark.slow
 def test_dense_merge_preserves_off_diagonal(
-    full_stack, tmp_path, mock_cluster_sacc_dense, mock_cosmo_parameters, mock_mor_parameters
+    full_stack, tmp_path, mock_fiducial_cosmology, mock_cluster_sacc_dense, mock_mor_parameters
 ):
-    """diagonal_shear_covariance=False must preserve radius-radius correlation."""
     output_path = tmp_path / "cov_dense_kept.sacc"
-    cfg = _base_tjpcov_config(
-        mock_cosmo_parameters, mock_mor_parameters, diagonal_shear_covariance=False
-    )
-    out = _run_tjpcov_stage(mock_cluster_sacc_dense, output_path, cfg)
+    cfg = _base_tjpcov_config(mock_mor_parameters, diagonal_shear_covariance=False)
+    out = _run_tjpcov_stage(mock_cluster_sacc_dense, output_path, mock_fiducial_cosmology, cfg)
 
     cds = sacc.standard_types.cluster_delta_sigma
     groups = _radius_group_indices(out, cds)
@@ -97,14 +81,11 @@ def test_dense_merge_preserves_off_diagonal(
 
 @pytest.mark.slow
 def test_diagonal_only_merge_drops_off_diagonal(
-    full_stack, tmp_path, mock_cluster_sacc_dense, mock_cosmo_parameters, mock_mor_parameters
+    full_stack, tmp_path, mock_fiducial_cosmology, mock_cluster_sacc_dense, mock_mor_parameters
 ):
-    """diagonal_shear_covariance=True must strip off-diagonal terms."""
     output_path = tmp_path / "cov_diag_only.sacc"
-    cfg = _base_tjpcov_config(
-        mock_cosmo_parameters, mock_mor_parameters, diagonal_shear_covariance=True
-    )
-    out = _run_tjpcov_stage(mock_cluster_sacc_dense, output_path, cfg)
+    cfg = _base_tjpcov_config(mock_mor_parameters, diagonal_shear_covariance=True)
+    out = _run_tjpcov_stage(mock_cluster_sacc_dense, output_path, mock_fiducial_cosmology, cfg)
 
     cds = sacc.standard_types.cluster_delta_sigma
     groups = _radius_group_indices(out, cds)
@@ -117,12 +98,11 @@ def test_diagonal_only_merge_drops_off_diagonal(
 
 @pytest.mark.slow
 def test_counts_only_input_completes_without_merge(
-    full_stack, tmp_path, mock_cluster_sacc_counts_only, mock_cosmo_parameters, mock_mor_parameters
+    full_stack, tmp_path, mock_fiducial_cosmology, mock_cluster_sacc_counts_only, mock_mor_parameters
 ):
-    """Counts-only input has nothing to merge; stage still completes."""
     output_path = tmp_path / "cov_counts_only.sacc"
-    cfg = _base_tjpcov_config(mock_cosmo_parameters, mock_mor_parameters)
-    out = _run_tjpcov_stage(mock_cluster_sacc_counts_only, output_path, cfg)
+    cfg = _base_tjpcov_config(mock_mor_parameters)
+    out = _run_tjpcov_stage(mock_cluster_sacc_counts_only, output_path, mock_fiducial_cosmology, cfg)
 
     assert out.get_data_types() == [sacc.standard_types.cluster_counts]
     assert out.covariance is not None
@@ -130,12 +110,11 @@ def test_counts_only_input_completes_without_merge(
 
 @pytest.mark.slow
 def test_mixed_input_data_types_preserved(
-    full_stack, tmp_path, mock_cluster_sacc_dense, mock_cosmo_parameters, mock_mor_parameters
+    full_stack, tmp_path, mock_fiducial_cosmology, mock_cluster_sacc_dense, mock_mor_parameters
 ):
-    """Both counts and delta_sigma should still be present in the output."""
     output_path = tmp_path / "cov_mixed.sacc"
-    cfg = _base_tjpcov_config(mock_cosmo_parameters, mock_mor_parameters)
-    out = _run_tjpcov_stage(mock_cluster_sacc_dense, output_path, cfg)
+    cfg = _base_tjpcov_config(mock_mor_parameters)
+    out = _run_tjpcov_stage(mock_cluster_sacc_dense, output_path, mock_fiducial_cosmology, cfg)
 
     assert set(out.get_data_types()) == {
         sacc.standard_types.cluster_counts,
@@ -145,14 +124,11 @@ def test_mixed_input_data_types_preserved(
 
 @pytest.mark.slow
 def test_ssc_replaced_counts_variance_at_least_poisson(
-    full_stack, tmp_path, mock_cluster_sacc_dense, mock_cosmo_parameters, mock_mor_parameters
+    full_stack, tmp_path, mock_fiducial_cosmology, mock_cluster_sacc_dense, mock_mor_parameters
 ):
-    """SSC-replaced counts variance must be >= pure Poisson variance."""
     output_path = tmp_path / "cov_ssc_check.sacc"
-    cfg = _base_tjpcov_config(
-        mock_cosmo_parameters, mock_mor_parameters, replace_tjpcov_cov=True
-    )
-    out = _run_tjpcov_stage(mock_cluster_sacc_dense, output_path, cfg)
+    cfg = _base_tjpcov_config(mock_mor_parameters, replace_tjpcov_cov=True)
+    out = _run_tjpcov_stage(mock_cluster_sacc_dense, output_path, mock_fiducial_cosmology, cfg)
 
     cc = sacc.standard_types.cluster_counts
     counts_points = out.get_data_points(data_type=cc)
@@ -169,20 +145,15 @@ def test_ssc_replaced_counts_variance_at_least_poisson(
 
 @pytest.mark.slow
 def test_diagonal_shear_covariance_is_noop_for_counts_only(
-    full_stack, tmp_path, mock_cluster_sacc_counts_only, mock_cosmo_parameters, mock_mor_parameters
+    full_stack, tmp_path, mock_fiducial_cosmology, mock_cluster_sacc_counts_only, mock_mor_parameters
 ):
-    """Flag should have zero effect when there's no shear data."""
-    cfg_true = _base_tjpcov_config(
-        mock_cosmo_parameters, mock_mor_parameters, diagonal_shear_covariance=True
-    )
-    cfg_false = _base_tjpcov_config(
-        mock_cosmo_parameters, mock_mor_parameters, diagonal_shear_covariance=False
-    )
+    cfg_true = _base_tjpcov_config(mock_mor_parameters, diagonal_shear_covariance=True)
+    cfg_false = _base_tjpcov_config(mock_mor_parameters, diagonal_shear_covariance=False)
     out_true = _run_tjpcov_stage(
-        mock_cluster_sacc_counts_only, tmp_path / "cov_true.sacc", cfg_true
+        mock_cluster_sacc_counts_only, tmp_path / "cov_true.sacc", mock_fiducial_cosmology, cfg_true
     )
     out_false = _run_tjpcov_stage(
-        mock_cluster_sacc_counts_only, tmp_path / "cov_false.sacc", cfg_false
+        mock_cluster_sacc_counts_only, tmp_path / "cov_false.sacc", mock_fiducial_cosmology, cfg_false
     )
     np.testing.assert_allclose(
         out_true.covariance.covmat, out_false.covariance.covmat
@@ -191,12 +162,11 @@ def test_diagonal_shear_covariance_is_noop_for_counts_only(
 
 @pytest.mark.slow
 def test_empty_index_warning_only_from_cluster_counts_lookup(
-    full_stack, tmp_path, mock_cluster_sacc_dense, mock_cosmo_parameters, mock_mor_parameters
+    full_stack, tmp_path, mock_fiducial_cosmology, mock_cluster_sacc_dense, mock_mor_parameters
 ):
-    """cluster_delta_sigma radius groups must never be empty."""
-    cfg = _base_tjpcov_config(mock_cosmo_parameters, mock_mor_parameters)
+    cfg = _base_tjpcov_config(mock_mor_parameters)
     output_path = tmp_path / "cov_warning_check.sacc"
-    out = _run_tjpcov_stage(mock_cluster_sacc_dense, output_path, cfg)
+    out = _run_tjpcov_stage(mock_cluster_sacc_dense, output_path, mock_fiducial_cosmology, cfg)
 
     cds = sacc.standard_types.cluster_delta_sigma
     groups = _radius_group_indices(out, cds)
@@ -205,16 +175,29 @@ def test_empty_index_warning_only_from_cluster_counts_lookup(
     )
 
 
+@pytest.mark.slow
+def test_missing_fiducial_cosmology_input_fails_clearly(full_stack, tmp_path, mock_cluster_sacc_dense, mock_mor_parameters):
+    cfg = _base_tjpcov_config(mock_mor_parameters)
+    output_path = tmp_path / "cov_no_fiducial.sacc"
+    with pytest.raises(Exception):
+        TJPCovPipeline(
+            {
+                "config": None,
+                "clusters_sacc_file": str(mock_cluster_sacc_dense),
+                "clusters_sacc_file_cov": str(output_path),
+            }
+        )
+
+
 # ---------------------------------------------------------------------------
-# CLI dispatch (python -m clpipeline), not direct instantiation
+# CLI dispatch
 # ---------------------------------------------------------------------------
 
 @pytest.mark.slow
 def test_cli_invocation_produces_valid_covariance(
-    full_stack, tmp_path, mock_cluster_sacc_dense, mock_cosmo_parameters, mock_mor_parameters
+    full_stack, tmp_path, mock_fiducial_cosmology, mock_cluster_sacc_dense, mock_mor_parameters
 ):
-    """Runs TJPCovPipeline through the actual CLI entry point."""
-    cfg = _base_tjpcov_config(mock_cosmo_parameters, mock_mor_parameters)
+    cfg = _base_tjpcov_config(mock_mor_parameters)
     config_path = _write_stage_yaml(tmp_path, "TJPCovPipeline", cfg)
     output_path = tmp_path / "cov_cli.sacc"
 
@@ -225,6 +208,7 @@ def test_cli_invocation_produces_valid_covariance(
         io_args={
             "clusters_sacc_file": str(mock_cluster_sacc_dense),
             "clusters_sacc_file_cov": str(output_path),
+            "fiducial_cosmology": str(mock_fiducial_cosmology),
         },
         cwd=tmp_path,
     )

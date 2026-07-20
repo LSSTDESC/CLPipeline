@@ -12,6 +12,7 @@ import sys
 import numpy as np
 import pytest
 import sacc
+import yaml
 from scipy.linalg import block_diag
 
 
@@ -157,22 +158,8 @@ def mock_cluster_sacc_counts_only(tmp_path):
 
 
 # ---------------------------------------------------------------------------
-# Minimal TJPCov / cosmology / mor config fixtures
+# Minimal TJPCov / mor config fixtures
 # ---------------------------------------------------------------------------
-
-@pytest.fixture
-def mock_cosmo_parameters():
-    return {
-        "Omega_c": 0.22,
-        "Omega_b": 0.0448,
-        "h": 0.71,
-        "n_s": 0.963,
-        "sigma8": 0.8,
-        "w0": -1,
-        "wa": 0,
-        "transfer_function": "boltzmann_camb",
-    }
-
 
 @pytest.fixture
 def mock_mor_parameters():
@@ -252,3 +239,22 @@ def run_ceci_stage(module, stage_name, config_path, io_args, cwd):
     return subprocess.run(
         cmd, cwd=cwd, capture_output=True, text=True, timeout=600
     )
+
+@pytest.fixture
+def mock_fiducial_cosmology(tmp_path):
+    content = {
+        "Omega_c": 0.22,
+        "Omega_b": 0.0448,
+        "h": 0.71,
+        "n_s": 0.963,
+        "sigma8": 0.8,
+        "A_s": "nan",
+        "Omega_k": 0.0,
+        "Neff": 3.046,
+        "w0": -1.0,
+        "wa": 0.0,
+    }
+    path = tmp_path / "fiducial_cosmology.yml"
+    with open(path, "w") as f:
+        yaml.safe_dump(content, f)
+    return path

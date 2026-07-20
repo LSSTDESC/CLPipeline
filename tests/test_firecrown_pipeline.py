@@ -1,12 +1,3 @@
-"""
-Tests for FirecrownPipeline.
-
-Tier 1 (ceci_stack) needs only ceci -- file generation, no cosmosis.
-Tier 2 (full_stack) checks generated config content, no execution.
-Tier 3 (full_stack + slow) actually runs cosmosis via stage.run() + subprocess.
-
-All output files are written under pytest's tmp_path.
-"""
 import ast
 import configparser
 import subprocess
@@ -83,11 +74,12 @@ def _base_firecrown_config(**overrides):
     return cfg
 
 
-def _make_stage(tmp_path, sacc_path, cfg):
+def _make_stage(tmp_path, sacc_path, fiducial_cosmology_path, cfg):
     stage = FirecrownPipeline(
         {
             "config": None,
             "clusters_sacc_file_cov": str(sacc_path),
+            "fiducial_cosmology": str(fiducial_cosmology_path),
             "cluster_counts_mean_mass_redshift_richness": str(
                 tmp_path / "cluster_counts_mean_mass_redshift_richness.ini"
             ),
@@ -143,16 +135,13 @@ def _write_stage_yaml(tmp_path, stage_name, cfg):
     return config_path
 
 
-def _run_full_cosmosis(tmp_path, cfg, sacc_fixture):
-    """Runs the stage via stage.run(), then invokes cosmosis on its output."""
+def _run_full_cosmosis(tmp_path, fiducial_cosmology_path, cfg, sacc_fixture):
     sacc_in_place = tmp_path / "clusters_sacc_file_cov.sacc"
     sacc_in_place.write_bytes(sacc_fixture.read_bytes())
-    stage = _make_stage(tmp_path, sacc_in_place, cfg)
+    stage = _make_stage(tmp_path, sacc_in_place, fiducial_cosmology_path, cfg)
     stage.run()
 
     ini_path = tmp_path / "cluster_counts_mean_mass_redshift_richness.ini"
-
-    # cosmosis is a console-script entry point, not a runnable module.
     return subprocess.run(
         ["cosmosis", str(ini_path)],
         cwd=tmp_path,
@@ -163,7 +152,7 @@ def _run_full_cosmosis(tmp_path, cfg, sacc_fixture):
 
 
 # ---------------------------------------------------------------------------
-# Tier 1: file generation only (ceci_stack) -- fast
+# Tier 1: file generation only (ceci_stack)
 # ---------------------------------------------------------------------------
 
 @pytest.mark.parametrize(
@@ -184,10 +173,10 @@ def _run_full_cosmosis(tmp_path, cfg, sacc_fixture):
         "two_halo_and_boost",
     ],
 )
-def test_generated_python_is_syntactically_valid(ceci_stack, tmp_path, overrides):
+def test_generated_python_is_syntactically_valid(ceci_stack, tmp_path, mock_fiducial_cosmology, overrides):
     cfg = _base_firecrown_config(**overrides)
     sacc_path = tmp_path / "clusters_sacc_file_cov.sacc"
-    stage = _make_stage(tmp_path, sacc_path, cfg)
+    stage = _make_stage(tmp_path, sacc_path, mock_fiducial_cosmology, cfg)
 
     output_path = tmp_path / f"generated_{hash(frozenset(overrides.items())) & 0xffff}.py"
     ok = stage.generate_python_file(str(output_path))
@@ -211,11 +200,10 @@ def test_generated_python_is_syntactically_valid(ceci_stack, tmp_path, overrides
         assert "cluster_concentration=None" in source
 
 
-def test_sacc_path_baked_in_is_basename_only(ceci_stack, tmp_path):
-    """The generated script must reference the sacc file by basename only."""
+def test_sacc_path_baked_in_is_basename_only(ceci_stack, tmp_path, mock_fiducial_cosmology):
     cfg = _base_firecrown_config()
     nested_sacc_path = tmp_path / "some" / "nested" / "dir" / "clusters_sacc_file_cov.sacc"
-    stage = _make_stage(tmp_path, nested_sacc_path, cfg)
+    stage = _make_stage(tmp_path, nested_sacc_path, mock_fiducial_cosmology, cfg)
 
     output_path = tmp_path / "generated_basename_check.py"
     stage.generate_python_file(str(output_path))
@@ -226,15 +214,38 @@ def test_sacc_path_baked_in_is_basename_only(ceci_stack, tmp_path):
     assert "some" not in source and "nested" not in source
 
 
+def test_full_matching_cosmological_parameters_still_generates(ceci_stack, tmp_path, mock_fiducial_cosmology):
+    cfg = _base_firecrown_config()
+    sacc_path = tmp_path / "clusters_sacc_file_cov.sacc"
+    stage = _make_stage(tmp_path, sacc_path, mock_fiducial_cosmology, cfg)
+
+    params_path = tmp_path / "params_full_match.ini"
+    assert stage.generate_cosmosis_parameters_file(str(params_path))
+
+
+@pytest.mark.parametrize("name,bad_value", [("omega_c", 0.30), ("h0", 0.68), ("tau", 0.10)])
+def test_cosmological_parameter_mismatch_cancels_generation(
+    ceci_stack, tmp_path, mock_fiducial_cosmology, name, bad_value
+):
+    mismatched = dict(COSMOLOGICAL_PARAMETERS)
+    mismatched[name] = {"sample": False, "values": bad_value}
+    cfg = _base_firecrown_config(cosmological_parameters=mismatched)
+    sacc_path = tmp_path / "clusters_sacc_file_cov.sacc"
+    stage = _make_stage(tmp_path, sacc_path, mock_fiducial_cosmology, cfg)
+
+    params_path = tmp_path / f"params_mismatch_{name}.ini"
+    assert not stage.generate_cosmosis_parameters_file(str(params_path))
+
+
 # ---------------------------------------------------------------------------
 # Tier 2: .ini content checks (full_stack, not slow)
 # ---------------------------------------------------------------------------
 
 @pytest.mark.parametrize("resume", [False, True])
-def test_resume_flag_written_correctly(full_stack, tmp_path, resume):
+def test_resume_flag_written_correctly(full_stack, tmp_path, mock_fiducial_cosmology, resume):
     cfg = _base_firecrown_config(resume=resume, filename=str(tmp_path / "chain.txt"))
     sacc_path = tmp_path / "clusters_sacc_file_cov.sacc"
-    stage = _make_stage(tmp_path, sacc_path, cfg)
+    stage = _make_stage(tmp_path, sacc_path, mock_fiducial_cosmology, cfg)
 
     ini_path = tmp_path / "test_resume.ini"
     assert stage.generate_ini_file(str(ini_path))
@@ -245,11 +256,11 @@ def test_resume_flag_written_correctly(full_stack, tmp_path, resume):
     assert parser["runtime"]["resume"] == expected
 
 
-def test_filename_option_used_not_hardcoded_default(full_stack, tmp_path):
+def test_filename_option_used_not_hardcoded_default(full_stack, tmp_path, mock_fiducial_cosmology):
     custom_filename = str(tmp_path / "my_custom_chain.txt")
     cfg = _base_firecrown_config(filename=custom_filename)
     sacc_path = tmp_path / "clusters_sacc_file_cov.sacc"
-    stage = _make_stage(tmp_path, sacc_path, cfg)
+    stage = _make_stage(tmp_path, sacc_path, mock_fiducial_cosmology, cfg)
 
     ini_path = tmp_path / "test_filename.ini"
     stage.generate_ini_file(str(ini_path))
@@ -259,13 +270,13 @@ def test_filename_option_used_not_hardcoded_default(full_stack, tmp_path):
     assert parser["output"]["filename"] == custom_filename
 
 
-def test_only_cosmo_sampled_writes_correct_priors(full_stack, tmp_path):
+def test_only_cosmo_sampled_writes_correct_priors(full_stack, tmp_path, mock_fiducial_cosmology):
     cfg = _base_firecrown_config(
         cosmological_parameters=_as_sampled(COSMOLOGICAL_PARAMETERS),
         firecrown_parameters=_as_fixed(FIRECROWN_PARAMETERS),
     )
     sacc_path = tmp_path / "clusters_sacc_file_cov.sacc"
-    stage = _make_stage(tmp_path, sacc_path, cfg)
+    stage = _make_stage(tmp_path, sacc_path, mock_fiducial_cosmology, cfg)
 
     params_path = tmp_path / "params_cosmo_only.ini"
     assert stage.generate_cosmosis_parameters_file(str(params_path))
@@ -280,13 +291,13 @@ def test_only_cosmo_sampled_writes_correct_priors(full_stack, tmp_path):
     assert not any(mor_flags.values())
 
 
-def test_only_mor_sampled_writes_correct_priors(full_stack, tmp_path):
+def test_only_mor_sampled_writes_correct_priors(full_stack, tmp_path, mock_fiducial_cosmology):
     cfg = _base_firecrown_config(
         cosmological_parameters=_as_fixed(COSMOLOGICAL_PARAMETERS),
         firecrown_parameters=_as_sampled(FIRECROWN_PARAMETERS),
     )
     sacc_path = tmp_path / "clusters_sacc_file_cov.sacc"
-    stage = _make_stage(tmp_path, sacc_path, cfg)
+    stage = _make_stage(tmp_path, sacc_path, mock_fiducial_cosmology, cfg)
 
     params_path = tmp_path / "params_mor_only.ini"
     assert stage.generate_cosmosis_parameters_file(str(params_path))
@@ -306,33 +317,33 @@ def test_only_mor_sampled_writes_correct_priors(full_stack, tmp_path):
 # ---------------------------------------------------------------------------
 
 @pytest.mark.slow
-def test_generated_files_run_with_test_sampler(full_stack, tmp_path, mock_cluster_sacc_dense):
+def test_generated_files_run_with_test_sampler(full_stack, tmp_path, mock_fiducial_cosmology, mock_cluster_sacc_dense):
     cfg = _base_firecrown_config(sampler="test", filename=str(tmp_path / "chain.txt"))
-    result = _run_full_cosmosis(tmp_path, cfg, mock_cluster_sacc_dense)
+    result = _run_full_cosmosis(tmp_path, mock_fiducial_cosmology, cfg, mock_cluster_sacc_dense)
     assert result.returncode == 0, f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
 
 
 @pytest.mark.slow
-def test_only_cosmo_sampled_runs_successfully(full_stack, tmp_path, mock_cluster_sacc_dense):
+def test_only_cosmo_sampled_runs_successfully(full_stack, tmp_path, mock_fiducial_cosmology, mock_cluster_sacc_dense):
     cfg = _base_firecrown_config(
         sampler="test",
         filename=str(tmp_path / "chain.txt"),
         cosmological_parameters=_as_sampled(COSMOLOGICAL_PARAMETERS),
         firecrown_parameters=_as_fixed(FIRECROWN_PARAMETERS),
     )
-    result = _run_full_cosmosis(tmp_path, cfg, mock_cluster_sacc_dense)
+    result = _run_full_cosmosis(tmp_path, mock_fiducial_cosmology, cfg, mock_cluster_sacc_dense)
     assert result.returncode == 0, f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
 
 
 @pytest.mark.slow
-def test_only_mor_sampled_runs_successfully(full_stack, tmp_path, mock_cluster_sacc_dense):
+def test_only_mor_sampled_runs_successfully(full_stack, tmp_path, mock_fiducial_cosmology, mock_cluster_sacc_dense):
     cfg = _base_firecrown_config(
         sampler="test",
         filename=str(tmp_path / "chain.txt"),
         cosmological_parameters=_as_fixed(COSMOLOGICAL_PARAMETERS),
         firecrown_parameters=_as_sampled(FIRECROWN_PARAMETERS),
     )
-    result = _run_full_cosmosis(tmp_path, cfg, mock_cluster_sacc_dense)
+    result = _run_full_cosmosis(tmp_path, mock_fiducial_cosmology, cfg, mock_cluster_sacc_dense)
     assert result.returncode == 0, f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
 
 
@@ -342,7 +353,7 @@ def test_only_mor_sampled_runs_successfully(full_stack, tmp_path, mock_cluster_s
     ["purity_a_n", "purity_b_n", "purity_a_logm_piv", "purity_b_logm_piv"],
 )
 def test_missing_purity_parameter_fails_at_runtime(
-    full_stack, tmp_path, mock_cluster_sacc_dense, missing_param
+    full_stack, tmp_path, mock_fiducial_cosmology, mock_cluster_sacc_dense, missing_param
 ):
     cfg = _base_firecrown_config(
         sampler="test",
@@ -350,7 +361,7 @@ def test_missing_purity_parameter_fails_at_runtime(
         use_purity=True,
         firecrown_parameters=_without_param(FIRECROWN_PARAMETERS, missing_param),
     )
-    result = _run_full_cosmosis(tmp_path, cfg, mock_cluster_sacc_dense)
+    result = _run_full_cosmosis(tmp_path, mock_fiducial_cosmology, cfg, mock_cluster_sacc_dense)
     combined = result.stdout + result.stderr
 
     assert result.returncode != 0, f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
@@ -366,7 +377,7 @@ def test_missing_purity_parameter_fails_at_runtime(
     ],
 )
 def test_missing_completeness_parameter_fails_at_runtime(
-    full_stack, tmp_path, mock_cluster_sacc_dense, missing_param
+    full_stack, tmp_path, mock_fiducial_cosmology, mock_cluster_sacc_dense, missing_param
 ):
     cfg = _base_firecrown_config(
         sampler="test",
@@ -374,7 +385,7 @@ def test_missing_completeness_parameter_fails_at_runtime(
         use_completeness=True,
         firecrown_parameters=_without_param(FIRECROWN_PARAMETERS, missing_param),
     )
-    result = _run_full_cosmosis(tmp_path, cfg, mock_cluster_sacc_dense)
+    result = _run_full_cosmosis(tmp_path, mock_fiducial_cosmology, cfg, mock_cluster_sacc_dense)
     combined = result.stdout + result.stderr
 
     assert result.returncode != 0, f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
@@ -384,7 +395,7 @@ def test_missing_completeness_parameter_fails_at_runtime(
 @pytest.mark.slow
 @pytest.mark.parametrize("is_deltasigma", [True, False], ids=["deltasigma", "reduced_shear"])
 def test_missing_cluster_concentration_fails_at_runtime(
-    full_stack, tmp_path, mock_cluster_sacc_dense, is_deltasigma
+    full_stack, tmp_path, mock_fiducial_cosmology, mock_cluster_sacc_dense, is_deltasigma
 ):
     cfg = _base_firecrown_config(
         sampler="test",
@@ -395,7 +406,7 @@ def test_missing_cluster_concentration_fails_at_runtime(
             FIRECROWN_PARAMETERS, "cluster_theory_cluster_concentration"
         ),
     )
-    result = _run_full_cosmosis(tmp_path, cfg, mock_cluster_sacc_dense)
+    result = _run_full_cosmosis(tmp_path, mock_fiducial_cosmology, cfg, mock_cluster_sacc_dense)
     combined = result.stdout + result.stderr
 
     assert result.returncode != 0, f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
@@ -404,7 +415,7 @@ def test_missing_cluster_concentration_fails_at_runtime(
 
 @pytest.mark.slow
 def test_selection_function_disabled_runs_without_purity_completeness_params(
-    full_stack, tmp_path, mock_cluster_sacc_dense
+    full_stack, tmp_path, mock_fiducial_cosmology, mock_cluster_sacc_dense
 ):
     stripped = FIRECROWN_PARAMETERS
     for name in [
@@ -421,17 +432,16 @@ def test_selection_function_disabled_runs_without_purity_completeness_params(
         use_completeness=False,
         firecrown_parameters=stripped,
     )
-    result = _run_full_cosmosis(tmp_path, cfg, mock_cluster_sacc_dense)
+    result = _run_full_cosmosis(tmp_path, mock_fiducial_cosmology, cfg, mock_cluster_sacc_dense)
     assert result.returncode == 0, f"stdout:\n{result.stdout}\n\nstderr:\n{result.stderr}"
 
 
 # ---------------------------------------------------------------------------
-# CLI dispatch (python -m clpipeline), not direct instantiation
+# CLI dispatch
 # ---------------------------------------------------------------------------
 
 @pytest.mark.slow
-def test_cli_invocation_generates_all_outputs(full_stack, tmp_path, mock_cluster_sacc_dense):
-    """Runs FirecrownPipeline through the actual CLI entry point."""
+def test_cli_invocation_generates_all_outputs(full_stack, tmp_path, mock_fiducial_cosmology, mock_cluster_sacc_dense):
     sacc_in_place = tmp_path / "clusters_sacc_file_cov.sacc"
     sacc_in_place.write_bytes(mock_cluster_sacc_dense.read_bytes())
 
@@ -448,6 +458,7 @@ def test_cli_invocation_generates_all_outputs(full_stack, tmp_path, mock_cluster
         config_path=config_path,
         io_args={
             "clusters_sacc_file_cov": str(sacc_in_place),
+            "fiducial_cosmology": str(mock_fiducial_cosmology),
             "cluster_counts_mean_mass_redshift_richness": str(ini_path),
             "cluster_redshift_richness": str(py_path),
             "cluster_richness_values": str(params_path),
